@@ -1,0 +1,744 @@
+<!--#include file="/order/pages/system/header.html"-->
+<div class="container minHeightJS">
+	<div class="row">
+		<div class="span12">
+			<!-- features -->
+			<div class="features_2">
+				<h3>门店</h3>
+				<div id="productSearch" class="cjys-div">
+					<!--导航-->
+					<div class="nav">
+						<i class='fa icon-map-marker'></i>
+						<a class="a_style" href="home.html">首页</a>
+						<span>>></span>
+						<span>门店</span>
+					</div>
+					<table data-toggle="table" data-height="268" class="table table-striped table-bordered table-hover table-condensed active">
+						<tr>
+							<td>省</td>
+							<td><span id="provAll" class='all_style'>全部</span></td>
+							<td>
+								<ul id="provId" class="provs">
+								</ul>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>市</td>
+							<td><span id="cityAll" class='all_style'>全部</span></td>
+							<td>
+								<ul id="cityId" class="citys">
+								</ul>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>区</td>
+							<td><span id="areaAll" class='all_style'>全部</span></td>
+							<td>
+								<ul id="areaId" class="areas">
+								</ul>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>机构类型</td>
+							<td><span id="orgtypeAll" class='all_style'>全部</span></td>
+							<td>
+								<ul id="orgtypeId" class="orgTypes">
+								</ul>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>医院等级</td>
+							<td><span id="orgLevelAll" class='all_style'>全部</span></td>
+							<td>
+								<ul id="orgLevelId" class="orgLevls">
+								</ul>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>机构名称</td>
+							<td><span id="orgNameAll" class='all_style'>全部</span></td>
+							<td>
+								<ul id="orgNameId" class="orgNames">
+								</ul>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>套餐类型</td>
+							<td><span id="suiteAll" class='all_style'>全部</span></td>
+							<td>
+								<ul id="suiteTypeId" class="suites">
+								</ul>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>关键词</td>
+							<td></td>
+							<td>
+								<input type="text" id="keywords" placeholder="请输入门店名称"><span id="serText" class="serInput">搜索</span>
+							</td>
+							<td><span class="search_style" id="emptySerchSel">清空</span></td>
+						</tr>
+					</table>
+				</div>
+				<div class="tab-content">
+					<div class="tab-pane active" id="branchBody">
+					</div>
+					<div class="row">
+						<div id="callBackPager" class="page_div_style"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end container -->
+<!--#include file="/order/pages/system/footer.html"-->
+<script src="/order/assets/js/plugin/extendPagination.js"></script>
+<script>
+
+	var thisURL = document.URL;
+	if(thisURL != orderIp + '/order/index.shtml') {
+		$('#branchNavId').addClass('active');
+		$('#branchNavId').siblings('li').removeClass('active');
+	}
+
+	prov_init();
+	hosptialList();
+	suiteList();
+	orgNameList();
+	orgLevelList();
+	//鼠标滑过添加样式
+	$($('table').find('li')).hover(function() {
+		$(this).addClass('li_style');
+	}, function() {
+		$(this).removeClass('li_style');
+	})
+
+	//创建省信息 
+	function prov_init() {
+		var otype = "get";
+		var osync = false;
+		var str = '';
+		var reqResult = httpRequest(getAllProvinceUrl, null, otype, osync);
+		if(reqResult.result == 0) {
+			var datal = reqResult.data;
+			if(datal.id != "") {
+				for(var i = 0; i < datal.length; i++) {
+					str += "<li class='search' onclick='prov_city(" + datal[i].id + ")' value= '" + datal[i].id + "'>" + datal[i].provinceName + "</li>";
+				}
+				$("#provId").empty().append(str);
+				//判断省信息长度
+				var provLiWidth = 0;
+				$($('#provId').children()).each(function() {
+					provLiWidth += $(this).width();
+				})
+				if(provLiWidth > 900) {
+					$('#provId').parent().next().html("<span>展开<i class='fa fa-angle-down'></i></span>");
+					$('#provId').addClass('down');
+				}
+				//展开收起动作
+				$($('#provId').parent().next().children('span')).on('click', function() {
+					if($('#provId').hasClass('down')) {
+						$('#provId').parent().next().children().html("<span>收起<i class='fa fa-angle-up'></i></span>");
+						$('#provId').removeClass('down');
+						$('#provId').addClass('up');
+					} else {
+						$('#provId').removeClass('up');
+						$('#provId').addClass('down');
+						$('#provId').parent().next().children().html("<span>展开<i class='fa fa-angle-down'></i></span>");
+					}
+				})
+				$($('tbody').children('tr').eq(1)).hide();
+				$($('tbody').children('tr').eq(2)).hide();
+				$($('#provId').children('li')).on('click', function() {
+					$(this).addClass('search_bg').siblings('li').removeClass('search_bg').parent().prev().addClass('all_remove');
+					$('#provAll').removeClass('all_style').addClass('all_add_sty');
+					$('#cityAll').addClass('all_style');
+					provSearchText = '';
+					citySearchText = '';
+					areaSearchText = '';
+					provSearchText = $(this).val();
+					//选中每一个省信息进行一次搜索
+					singleSearch();
+				})
+			}
+		}
+	}
+
+	//创建市信息
+	function prov_city(prov) {
+		$("#cityId").empty();
+		var param = {
+			'provinceId': prov
+		}
+		var otype = "get";
+		var osync = false;
+		var reqResult = httpRequest(getCityByProvinceIdUrl, param, otype, osync);
+		if(reqResult.result == 0) {
+			var datal = reqResult.data;
+			var str = "";
+			if(prov != "") {
+				if(datal.id != "") {
+					for(var i = 0; i < datal.length; i++) {
+						str += "<li class='search' onclick='city_area(" + datal[i].id + ")' value= '" + datal[i].id + "'>" + datal[i].cityName + "</li>";
+					}
+				}
+			}
+			$('#cityId').append(str);
+			$($('tbody').children('tr').eq(1)).show()
+				//鼠标滑过添加样式
+			$($('table').find('li')).hover(function() {
+					$(this).addClass('li_style');
+				}, function() {
+					$(this).removeClass('li_style');
+				})
+				//判断市信息长度
+			var cityLiWidth = 0;
+			$('#cityId').parent().next().html('');
+			$($('#cityId').children()).each(function() {
+				cityLiWidth += $(this).width();
+			})
+			if(cityLiWidth > 850) {
+				$('#cityId').parent().next().html("<span>展开<i class='fa fa-angle-down'></i></span>");
+				$('#cityId').addClass('down');
+			}
+			//展开收起动作
+			$($('#cityId').parent().next().children('span')).on('click', function() {
+				if($('#cityId').hasClass('down')) {
+					$('#cityId').parent().next().children().html("<span>收起<i class='fa fa-angle-up'></i></span>");
+					$('#cityId').removeClass('down');
+					$('#cityId').addClass('up');
+				} else {
+					$('#cityId').removeClass('up');
+					$('#cityId').addClass('down');
+					$('#cityId').parent().next().children().html("<span>展开<i class='fa fa-angle-down'></i></span>");
+				}
+			})
+			$('#areaId').empty();
+			$($('tbody').children('tr').eq(2)).hide();
+			$($('#cityId').children('li')).on('click', function() {
+				$(this).addClass('search_bg').siblings('li').removeClass('search_bg').parent().prev().addClass('all_remove');
+				$('#cityAll').removeClass('all_style').addClass('all_add_sty');
+				$('#areaAll').addClass('all_style');
+
+				citySearchText = '';
+				areaSearchText = '';
+				citySearchText = $(this).val();
+				singleSearch();
+			})
+		}
+	}
+	//创建区信息
+	function city_area(areas) {
+		$('#areaId').empty();
+		var param = {
+			'cityId': areas
+		}
+		var otype = "get";
+		var osync = false;
+		var reqResult = httpRequest(getDistrictByCityIdUrl, param, otype, osync);
+		if(reqResult.result == 0) {
+			var datal = reqResult.data;
+			var str = "";
+			if(datal.id != "") {
+				for(var i = 0; i < datal.length; i++) {
+					str += "<li class='search' value= '" + datal[i].id + "'>" + datal[i].districtName + "</li>";
+				}
+			}
+			$('#areaId').append(str);
+			$($('tbody').children('tr').eq(2)).show();
+			//鼠标滑过添加样式
+			$($('table').find('li')).hover(function() {
+					$(this).addClass('li_style');
+				}, function() {
+					$(this).removeClass('li_style');
+				})
+				//判断市信息长度
+			var areaLiWidth = 0;
+			$('#areaId').parent().next().html('');
+			$($('#areaId').children()).each(function() {
+				areaLiWidth += $(this).width();
+			})
+			if(areaLiWidth > 850) {
+				$('#areaId').parent().next().html("<span>展开<i class='fa fa-angle-down'></i></span>");
+				$('#areaId').addClass('down');
+			}
+			//展开收起动作
+			$($('#areaId').parent().next().children('span')).on('click', function() {
+				if($('#areaId').hasClass('down')) {
+					$('#areaId').parent().next().children().html("<span>收起<i class='fa fa-angle-up'></i></span>");
+					$('#areaId').removeClass('down');
+					$('#areaId').addClass('up');
+				} else {
+					$('#areaId').removeClass('up');
+					$('#areaId').addClass('down');
+					$('#areaId').parent().next().children().html("<span>展开<i class='fa fa-angle-down'></i></span>");
+				}
+			})
+			$($('#areaId').children('li')).on('click', function() {
+				$(this).addClass('search_bg').siblings('li').removeClass('search_bg').parent().prev().addClass('all_remove');
+				$('#areaAll').removeClass('all_style').addClass('all_add_sty');
+				areaSearchText = '';
+				areaSearchText = $(this).val();
+				//选中每一个区信息进行一遍搜索
+				singleSearch();
+			})
+		}
+	}
+	//分类搜索获取参数
+	var provSearchText, citySearchText, areaSearchText, orgSearchText, suiteSearchText, orgNameSearchText, orgLevelSearchText;
+	$('.search').on('click', function() {
+		if($(this).parent().hasClass('suites')) {
+			$(this).addClass('search_bg').siblings('li').removeClass('search_bg').parent().prev().addClass('all_remove');
+			$('#suiteAll').removeClass('all_style').addClass('all_add_sty');
+			suiteSearchText = '';
+			suiteSearchText = $(this).val();
+			singleSearch();
+		}
+	})
+	$('#serText').on('click', function() {
+		singleSearch();
+	})
+
+	//单击全部,清空当前分类搜索条件
+	$('#provAll').on('click', function() {
+		$(this).addClass('all_style').removeClass('all_add_sty');
+		$('#provId').children().removeClass('search_bg');
+		$($('tbody').children('tr').eq(1)).hide();
+		$($('tbody').children('tr').eq(2)).hide();
+		provSearchText = '';
+		citySearchText = '';
+		areaSearchText = '';
+		singleSearch();
+	})
+	$('#cityAll').on('click', function() {
+		$(this).addClass('all_style').removeClass('all_add_sty');
+		$('#cityId').children().removeClass('search_bg');
+		$($('tbody').children('tr').eq(2)).hide();
+		citySearchText = '';
+		areaSearchText = '';
+		singleSearch();
+	})
+	$('#areaAll').on('click', function() {
+		$(this).addClass('all_style').removeClass('all_add_sty');
+		$('#areaId').children().removeClass('search_bg');
+		areaSearchText = '';
+		singleSearch();
+	})
+	$('#orgtypeAll').on('click', function() {
+		$(this).addClass('all_style').removeClass('all_add_sty');
+		$('#orgtypeId').children().removeClass('search_bg');
+		$($('tbody').children('tr').eq(4)).hide();
+		orgSearchText = '';
+		orgLevelSearchText = '';
+		singleSearch();
+	})
+	$('#orgLevelAll').on('click', function() {
+		$(this).addClass('all_style').removeClass('all_add_sty');
+		$('#orgLevelId').children().removeClass('search_bg');
+		orgLevelSearchText = '';
+		singleSearch();
+	})
+	$('#orgNameAll').on('click', function() {
+		$(this).addClass('all_style').removeClass('all_add_sty');
+		$('#orgNameId').children().removeClass('search_bg');
+		orgNameSearchText = '';
+		singleSearch();
+	})
+	$('#suiteAll').on('click', function() {
+			$(this).addClass('all_style').removeClass('all_add_sty');
+			$('#suiteTypeId').children().removeClass('search_bg');
+			suiteSearchText = '';
+			singleSearch();
+		})
+		//清空搜索条件
+	$('#emptySerchSel').on('click', function() {
+			$('#cityId').empty();
+			$('#areaId').empty();
+			$($('tbody').children('tr').eq(1)).hide();
+			$($('tbody').children('tr').eq(2)).hide();
+			$($('tbody').children('tr').eq(4)).hide();
+			$('#keywords').val("");
+			$('table').find('li').removeClass('search_bg');
+			$('#provAll').addClass('all_style').removeClass('all_add_sty');
+			$('#cityAll').addClass('all_style').removeClass('all_add_sty');
+			$('#areaAll').addClass('all_style').removeClass('all_add_sty');
+			$('#orgtypeAll').addClass('all_style').removeClass('all_add_sty');
+			$('#suiteAll').addClass('all_style').removeClass('all_add_sty');
+			$('#orgNameAll').addClass('all_style').removeClass('all_add_sty');
+			$('#orgLevelAll').addClass('all_style').removeClass('all_add_sty');
+			var otype = "post";
+			var osync = false;
+			var param = {
+				"page": page_curr,
+				"rows": 12
+			};
+			var reqResult = httpRequest(searchBranchUrl, param, otype, osync);
+			if(reqResult.result == 0) {
+				total_count = reqResult.data.total;
+				createTable(page_curr, limit, total_count, reqResult);
+				init_pager();
+				return false;
+			}
+		})
+		//创建机构类型信息
+	function hosptialList() {
+		$($('tbody').children('tr').eq(4)).hide();
+		$('#orgtypeId').empty();
+		var otype = "post";
+		var osync = false;
+		var str = '';
+		var reqResult = httpRequest(getOrgTypeUrl, null, otype, osync);
+		if(reqResult.result == 0) {
+			var datal = reqResult.data;
+			for(var i = 1; i < 3; i++) {
+				str += "<li class='search' value='" + i + "'>" + datal[i] + "</li>";
+			}
+			$("#orgtypeId").append(str);
+			return false;
+		}
+	}
+	//机构类型获取参数、添加样式
+	$($('#orgtypeId').children('li')).on('click', function() {
+			$(this).addClass('search_bg').siblings('li').removeClass('search_bg').parent().prev().addClass('all_remove');
+			$('#orgtypeAll').removeClass('all_style').addClass('all_add_sty');
+			$('#orgLevAll').addClass('all_style');
+
+			orgSearchText = '';
+			orgLevelSearchText = '';
+			orgSearchText = $(this).val();
+			singleSearch();
+
+			//根据机构类型获取医院等级信息
+			if($(this).val() == '2') {
+				$($('tbody').children('tr').eq(4)).show();
+			} else {
+				$($('tbody').children('tr').eq(4)).hide();
+			}
+		})
+		//创建医院等级信息
+	function orgLevelList() {
+		$('#orgLevelId').empty();
+		var otype = "post";
+		var osync = false;
+		var str = '';
+		var reqResult = httpRequest(getOrglevelUrl, null, otype, osync);
+		if(reqResult.result == 0) {
+			var datal = reqResult.data;
+			for(var i = 1; i < datal.length; i++) {
+				str += "<li class='search' value='" + datal[i].orgLevelId + "'>" + datal[i].orgLevelName + "</li>";
+			}
+			$("#orgLevelId").append(str);
+			return false;
+		}
+	}
+	$($('#orgLevelId').children('li')).on('click', function() {
+			$(this).addClass('search_bg').siblings('li').removeClass('search_bg').parent().prev().addClass('all_remove');
+			$('#orgLevelAll').removeClass('all_style').addClass('all_add_sty');
+			orgLevelSearchText = '';
+			orgLevelSearchText = $(this).val();
+			singleSearch();
+		})
+		//创建机构名称信息	
+	function orgNameList() {
+		$('#orgNameId').empty();
+		var otype = "post";
+		var osync = false;
+		var str = '';
+		var reqResult = httpRequest(getOrgNameAllUrl, null, otype, osync);
+		if(reqResult.result == 0) {
+			var datal = reqResult.data;
+			for(var i = 0; i < datal.length; i++) {
+				str += "<li class='search' orgId='" + datal[i].orgId + "'>" + datal[i].orgName + "</li>";
+			}
+			$("#orgNameId").append(str);
+			return false;
+		}
+	}
+	$($('#orgNameId').children('li')).on('click', function() {
+			$(this).addClass('search_bg').siblings('li').removeClass('search_bg').parent().prev().addClass('all_remove');
+			$('#orgNameAll').removeClass('all_style').addClass('all_add_sty');
+			orgNameSearchText = '';
+			orgNameSearchText = $(this).attr('orgId');
+			singleSearch();
+		})
+		//获取机构名称width
+	var orgNameLiWidth = 0;
+	$($('#orgNameId').children()).each(function() {
+		orgNameLiWidth += $(this).width();
+	})
+	if(orgNameLiWidth > 850) {
+		$('#orgNameId').parent().next().html("<span>展开<i class='fa fa-angle-down'></i></span>");
+		$('#orgNameId').addClass('down');
+	}
+	//展开收起动作
+	$($('#orgNameId').parent().next().children('span')).on('click', function() {
+			if($('#orgNameId').hasClass('down')) {
+				$('#orgNameId').parent().next().children().html("<span>收起<i class='fa fa-angle-up'></i></span>");
+				$('#orgNameId').removeClass('down');
+				$('#orgNameId').addClass('up');
+			} else {
+				$('#orgNameId').removeClass('up');
+				$('#orgNameId').addClass('down');
+				$('#orgNameId').parent().next().children().html("<span>展开<i class='fa fa-angle-down'></i></span>");
+			}
+		})
+		//创建套餐类型信息
+	function suiteList() {
+		$('#suiteTypeId').empty();
+		var otype = "post";
+		var osync = false;
+		var str = '';
+		var reqResult = httpRequest(getsuitetypeUrl, null, otype, osync);
+		if(reqResult.result == 0) {
+			var datal = reqResult.data;
+			for(var i = 0; i < datal.length; i++) {
+				str += "<li class='search' value='" + datal[i].examTypeId + "'>" + datal[i].examTypeName + "</li>";
+			}
+			$("#suiteTypeId").append(str);
+			return false;
+		}
+		//判断li长度超出的隐藏
+		var suiteLength = $('#suiteTypeId').children().length;
+		if(suiteLength > 10) {
+			$('#suiteTypeId').parent().next().html("<span>展开<i class='fa fa-angle-down'></i></span>");
+			$('#suiteTypeId').addClass('down');
+		}
+		//展开收起
+		$($('#suiteTypeId').parent().next().children('span')).on('click', function() {
+			if($('#suiteTypeId').hasClass('down')) {
+				$('#suiteTypeId').removeClass('down');
+				$('#suiteTypeId').addClass('up');
+			} else {
+				$('#suiteTypeId').removeClass('up');
+				$('#suiteTypeId').addClass('down');
+			}
+		})
+	}
+	//分页
+	page_curr = 1;
+	branchSearch();
+	init_pager();
+
+	function branchSearch() {
+		$('#branchBody').empty();
+		var branchName = $('#keywords').val();
+		if(thisURL.indexOf("?") != -1) {
+			var provinceId = getParamValue('provinceId');
+			var cityId = getParamValue('cityId');
+			var provaLi = $('#provId li');
+			var name = getParamValue('name');
+			$('#currentCity').empty();
+			$('#currentCity').text(name);
+			//		var provA =$('#provAll');
+			provSearchText = '';
+			citySearchText = '';
+			if(provaLi.length != 0) {
+				for(var p = 0; p < provaLi.length; p++) {
+					if(provaLi[p].value == provinceId) {
+						console.log(provaLi[p].value);
+						provaLi[p].className = 'search_bg';
+						$('#provAll').removeClass('all_style').addClass('all_add_sty');
+						provSearchText = provinceId;
+						prov_city(provaLi[p].value);
+					}
+				}
+				var cityLi = $('#cityId li');
+				if(cityLi.length != 0) {
+					for(var c = 0; c < cityLi.length; c++) {
+						if(cityLi[c].value == cityId) {
+							console.log(cityLi[c].value);
+							cityLi[c].className = 'search_bg';
+							$('#cityAll').removeClass('all_style').addClass('all_add_sty');
+							citySearchText = cityId;
+						}
+					}
+				}
+				$($('tbody').children('tr').eq(1)).show();
+				//				singleSearch();
+				var otype = "post";
+				var osync = false;
+				var param = {
+					"suiteType": suiteSearchText,
+					"orgType": orgSearchText,
+					"branchProvinceId": provSearchText,
+					"branchCityId": citySearchText,
+					"branchAreaId": areaSearchText,
+					"branchName": branchName,
+					"orgId": orgNameSearchText,
+					"orgLevel": orgLevelSearchText,
+					"page": page_curr,
+					"rows": 12
+				};
+			}
+			var reqResult = httpRequest(searchBranchUrl, param, otype, osync);
+			if(reqResult.result == 0) {
+				total_count = reqResult.data.total;
+				createTable(page_curr, limit, total_count, reqResult);
+				return false;
+			}
+		} else {
+			var otype = "post";
+			var osync = false;
+			var param = {
+				"page": page_curr,
+				"rows": 12
+			};
+			var reqResult = httpRequest(searchBranchUrl, param, otype, osync);
+			if(reqResult.result == 0) {
+				total_count = reqResult.data.total;
+				createTable(page_curr, limit, total_count, reqResult);
+				return false;
+			}
+		}
+
+	}
+	// 初始化分页信息
+	function init_pager() {
+		$('#callBackPager').extendPagination({
+			totalCount: total_count,
+			showCount: count_curr,
+			limit: limit,
+			callback: function(curr, limit, totalCount) {
+				page_curr = curr;
+				total_count = totalCount;
+				branchSearch();
+			}
+		});
+	}
+
+	function createTable(currPage, limit, total, dataBack) {
+		$("#branchBody").empty();
+		var showNum = limit;
+		if(total - (currPage * limit) < 0) showNum = total - ((currPage - 1) * limit);
+		var datal = dataBack.data.list;
+		var str = '';
+		for(var i = 0; i < datal.length; i++) {
+			if(i % 4 == 0) {
+				str += "<div class='" + 'row' + " ' > ";
+			} else {
+				str += '';
+			}
+			str += "<div class='span3 single-feature features-left-span' branchId='" + datal[i].branchId + "' onclick='branchIfo(this)'>";
+			if(datal[i].imgURL==null){
+				str += "<img class='inrow-style img-size' src='/order/assets/img/timg.jpg'>";
+			}else{
+				str += "<img class='inrow-style img-size'" + "src='" + orderIp + datal[i].imgURL + "'" + ">";
+			}
+			if(datal[i].branchName.length > 10) {
+				str += "<h4 title='" + datal[i].branchName + "' class='inrow-style cursor'>" + datal[i].branchName.substring(0, 10) + "...</h4>";
+			} else {
+				str += "<h4 title='" + datal[i].branchName + "' class='inrow-style cursor'>" + datal[i].branchName + "</h4>";
+			}
+			str += "<div class='description_height'>";
+			str += "<p class='inrow-style'>" + datal[i].branchAddress + "</p>";
+			str += "</div>";
+			str += "</div>";
+			if((i + 1) % 4 == 0) {
+				str += "</div>";
+			} else {
+				str += '';
+			}
+		}
+		$("#branchBody").append(str);
+		return false;
+	}
+	//多条件搜索
+	function singleSearch() {
+		var branchName = $('#keywords').val();
+
+		if($('table').find('li').hasClass('search_bg') || !branchName == '') {
+			var otype = "post";
+			var osync = false;
+			var param = {
+				"suiteType": suiteSearchText,
+				"orgType": orgSearchText,
+				"branchProvinceId": provSearchText,
+				"branchCityId": citySearchText,
+				"branchAreaId": areaSearchText,
+				"branchName": branchName,
+				"orgId": orgNameSearchText,
+				"orgLevel": orgLevelSearchText,
+				"page": page_curr,
+				"rows": 12
+			};
+			var reqResult = httpRequest(searchBranchUrl, param, otype, osync);
+			if(reqResult.result == 0) {
+				total_count = reqResult.data.total;
+				createTable(page_curr, limit, total_count, reqResult);
+			}
+			init_pager();
+			return false;
+		} else {
+			var branchName = $('#keywords').val("");
+			var otype = "post";
+			var osync = false;
+			var param = {
+				"suiteType": '',
+				"orgType": '',
+				"branchProvinceId": '',
+				"branchCityId": '',
+				"branchAreaId": '',
+				"branchName": '',
+				"page": page_curr,
+				"rows": 12
+			};
+			var reqResult = httpRequest(searchBranchUrl, param, otype, osync);
+			if(reqResult.result == 0) {
+				total_count = reqResult.data.total;
+				createTable(page_curr, limit, total_count, reqResult);
+			}
+			init_pager();
+			return false;
+		}
+	}
+	//定位传参搜索
+	//		if(thisURL.indexOf("?") != -1) {
+	//			var provinceId = getParamValue('provinceId');
+	//			var cityId = getParamValue('cityId');
+	//			var provaLi = $('#provId li');
+	//	      var name=getParamValue('name');
+	//	      $('#currentCity').empty();
+	//	      $('#currentCity').text(name);
+	//			//		var provA =$('#provAll');
+	//			provSearchText = '';
+	//			citySearchText = '';
+	//			if(provaLi.length != 0) {
+	//				for(var p = 0; p < provaLi.length; p++) {
+	//					if(provaLi[p].value == provinceId) {
+	//						console.log(provaLi[p].value);
+	//						provaLi[p].className = 'search_bg';
+	//						$('#provAll').removeClass('all_style').addClass('all_add_sty');
+	//						provSearchText = provinceId;
+	//						prov_city(provaLi[p].value);
+	//					}
+	//				}
+	//				var cityLi = $('#cityId li');
+	//				if(cityLi.length != 0) {
+	//					for(var c = 0; c < cityLi.length; c++) {
+	//						if(cityLi[c].value == cityId) {
+	//							console.log(cityLi[c].value);
+	//							cityLi[c].className = 'search_bg';
+	//							$('#cityAll').removeClass('all_style').addClass('all_add_sty');
+	//							citySearchText = cityId;
+	//						}
+	//					}
+	//				}
+	//				$($('tbody').children('tr').eq(1)).show();
+	//				singleSearch();
+	//			}
+	//		}
+
+	function branchIfo(branchId) {
+		var branchId = $(branchId).attr('branchId');
+		window.location.href = '/order/pages/homepage/branchInfo.shtml?branchId=' + branchId + '';
+	}
+	minHeight();
+</script>

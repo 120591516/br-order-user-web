@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>预约平台</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="particles.js is a lightweight JavaScript library for creating particles.">
+        <meta name="author" content="Vincent Garreau" />
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<!-- CSS -->
+		<link rel="icon" href="/order/assets/ico/favicon.ico" type="image/x-icon" sizes="16x16">
+		<link rel="shortcut icon" href="/order/assets/ico/favicon.ico">
+		<link rel="stylesheet" href="/order/assets/bootstrap/css/bootstrap.min.css">
+		<!--<link rel="stylesheet" href="/order/assets/prettyPhoto/css/prettyPhoto.css">-->
+		<link rel="stylesheet" href="/order/assets/font-awesome/css/font-awesome.css">
+		<link rel="stylesheet" href="/order/assets/css/social-icons.css">
+		<link rel="stylesheet" href="/order/assets/css/ebook-style.css">
+		<link rel="stylesheet" href="/order/assets/css/creat/common.css">
+		<link rel="stylesheet" href="/order/assets/css/creat/package.css">
+		<link rel="stylesheet" href="/order/assets/css/styleCSSwn.css">
+		<link rel="stylesheet" href="/order/assets/css/creat/replace.css">
+		<!--<link rel="stylesheet" href="/order/assets/css/style.css">-->
+		<script src="/order/assets/js/plugin/jQuery-2.2.0.min.js"></script>
+		<script src="/order/assets/bootstrap/js/bootstrap.js"></script>
+		<script src="/order/assets/js/plugin/jquery-1.11.1.min.js"></script>
+		<script src="/order/assets/js/jquery-1.8.2.min.js"></script>
+		<script src="/order/assets/js/create/public.js"></script>
+		
+		
+		<!--清除缓存-->
+		<script src="/order/assets/js/plugin/web-storage-cache.js"></script>
+	</head>
+
+	<body onkeydown="keyLogin(event)">
+
+		<!-- Header -->
+		<div class="container minHeightJS" id='minHeight'>
+			<div class="header row">
+				<div class="logo span4 ">
+					<p class="logoS">
+						<a href="/order/index.shtml">Produkta</a>欢迎登陆</p>
+				</div>
+				<!--<div class="logo userDeg span2">用户登录</div>-->
+			</div>
+
+			<div class="bg-out">
+				<div class="bg-inner">
+					<div class="row register">
+						<div class="reg-container">
+							<!--<p class="reg-form-title">用户登录</p>-->
+							<div id="loginForm" class="reg_form">
+								<div></div>
+								<input class="hidden" name="type" value="0">
+								<div class="form-group">
+									<label class="sr-only" for="form-username">手机号...</label>
+									<input type="text" name="username" placeholder="手机号..." class="tel form-username" id="form-username">
+								</div>
+								<div class="form-group">
+									<label class="sr-only" for="form-password">密码</label>
+									<input type="password" name="password" placeholder="密码..." class="reg_pwd form-password" id="form-password">
+								</div>
+								<div class="form-group input-group">
+									<div>
+										<input type="text" name="validCode" class="reg_code form-control" placeholder="验证码" aria-describedby="basic-addon2" id="yzm">
+										<span class="input-group-addon" id="basic-addon2">
+									<img id="imgId" style="height:38px;margin-top:-10px;" onclick="getCode(this)"/>
+								</span>
+									</div>
+								</div>
+								<button class="reg_botton" id="login" onclick="logg()">登录</button>
+								<p style="margin:10px 0 0 0;"><input style="margin:0 10px 0 10px;" type="checkbox" id="autoSave">自动登录</p>
+								<p class="reg_p">返回
+									<a class="reg_a" href="/order/pages/system/userRegister.html">注册</a>页面
+								</p>
+							</div>
+						</div>
+					</div>
+				    <div class="img-person"></div>
+				</div>
+
+			</div>
+
+		</div>
+		<!--<script src="/order/assets/js/create/Ajax.js"></script>-->
+		<!--<script src="/order/assets/js/create/public.js"></script>-->
+		<!--#include file="/order/pages/system/footer.html"-->
+		<script>
+			minHeight();
+			var formName;
+			var formPass;
+			var yzm;
+			var yzming;
+			var oo;
+			var login;
+			var bo = false;
+			window.onload = function() {
+					var topH = $('.header').height();
+					var minHeight = $('.minHeightJS').height();
+					var height = minHeight - topH;
+					$('.bg-out').css({
+						'height': height + 'px'
+					});
+
+					$('#imgId').attr('src', orderIp + '/br-order-user-controller/authImageController/verifyCode');
+					formName = document.getElementById('form-username');
+					formPass = document.getElementById('form-password');
+					yzm = document.getElementById('yzm');
+					yzming = document.getElementById('basic-addon2');
+					oo = document.getElementsByTagName('span');
+					login = document.getElementById('login');
+					//手机号校验
+					formName.onfocus = function() {
+						delError(this, 'user');
+					}
+					formName.onblur = function() {
+							//					var reg = /^[1]([0-9]){10}/;
+							var telz = /^[1]([0-9]){10}/;
+							if(!this.value) {
+								insertError(this, '手机号不能为空！', 'user');
+								bo = true;
+								return;
+							}
+							if(!telz.test(this.value)) {
+								insertError(this, '手机号格式不对！', 'user');
+								bo = true;
+								return;
+							}
+							if(this.value.length > 11) {
+								insertError(this, '手机号格式不对！', 'user');
+								bo = true;
+								return;
+							}
+							bo = false;
+						}
+						//密码校验
+					formPass.onfocus = function() {
+						delError(this, 'pass');
+					}
+					formPass.onblur = function() {
+							if(!this.value) {
+								insertError(this, '密码不能为空！', 'pass');
+								bo = true;
+								return;
+							}
+							if(this.value.length < 6 || this.value.length > 12) {
+								insertError(this, '密码长度为6-12位之间!', 'pass');
+								bo = true;
+								return;
+							}
+							bo = false;
+						}
+						//验证码校验
+					yzm.onfocus = function() {
+						if(document.getElementById('code')) {
+							//						this.parentNode.parentNode.removeChild(document.getElementById('yzmadd'));
+							$("#code").remove();
+							$("#yzmadd").remove();
+						}
+					}
+					yzm.onblur = function() {
+						$("#yzmadd").remove();
+						if(!this.value) {
+							var oS = document.createElement('span');
+							oS.innerHTML = '验证码不能为空！';
+							oS.style.fontSize = "13px";
+							oS.style.color = "#900909";
+							oS.style.marginLeft = "10px";
+							oS.id = 'yzmadd';
+							this.parentNode.parentNode.appendChild(oS);
+							bo = true;
+							return;
+						}
+						bo = false;
+					}
+
+				}
+				//登入
+			function logg() {
+				$("#yzmadd").remove();
+				$("#code").remove();
+				subCheck(formName, '用户名不能为空！', 'user');
+				subCheck(formPass, '密码不能为空！', 'pass');
+				subCheck(yzm, '验证码不能为空！', 'code');
+				//		var oSpan = document.getElementsByTagName('span');
+				var oSpan = $('span');
+				if(oSpan.length == 1) {
+					var username = $.trim($("input#form-username").val());
+					var password = $.trim($("input#form-password").val());
+					var validCode = $.trim($("input#yzm").val());
+					if(username == '') {
+						console.log('手机号不能为空');
+						return false;
+					}
+					if(password == '') {
+						console.log('密码不能为空');
+						return false;
+					}
+					if(validCode == '') {
+						console.log('验证码不能为空');
+						return false;
+					}
+					var auto = '';
+					if($('#autoSave').is(':checked')) {
+						auto = 0;
+					} else {
+						auto = 1;
+					}
+					var param = {
+						"type": 0,
+						"username": username,
+						"password": password,
+						"validCode": validCode,
+						"auto": auto
+					}
+					var otype = "get";
+					var osync = false;
+					var reqResult = httpRequest(customerInfoLoginUrl, param, otype, osync);
+					localStorage.clear();
+					if(reqResult.result == 0) {
+						var storageVal = reqResult.value;
+						//存储用户信息
+						var userValue = '{"userphone":"' + storageVal.customerInfoPhone + '","userid":"' + storageVal.customerPersonId + '","auto":"' + auto + '"}';
+						set('userInformation', userValue);
+						console.log("用户登录成功");
+						//type 1套餐预定页面  2登记页面  
+						var type = getParamValue("type");
+						if(type == 1) {
+							window.location.href = '/order/pages/homepage/suiteInfo.shtml?suiteId=' + getParamValue("suiteId") + '&data=' + getParamValue("data");
+						} else if(type == 2) {
+							//window.location.href = '/order/pages/editUserMessage/mine/personalRelatives.shtml';
+						} else {
+							window.location.href = '/order/pages/appointment/orderList.shtml';
+						}
+						return false;
+					} else if(reqResult.result == 3) {
+						alert(reqResult.message);
+						window.location.reload();
+					} else {
+						alert(reqResult.data);
+						window.location.reload();
+					}
+				}
+			}
+
+			function subCheck(obj, errorText, id) {
+				if(!obj.value) {
+					if(document.getElementById(id)) {
+						obj.parentNode.removeChild(document.getElementById(id));
+					}
+					insertError(obj, errorText, id);
+					bo = false;
+				} else if(document.getElementById(id)) {
+					bo = false;
+				}
+			}
+
+			function insertError(obj, errorStr, id) {
+				var oS = document.createElement('span');
+				oS.innerHTML = errorStr;
+				oS.style.fontSize = "13px";
+				oS.style.color = "#900909";
+				oS.style.marginLeft = "10px";
+				oS.id = id;
+				obj.parentNode.appendChild(oS);
+			}
+
+			function delError(obj, id) {
+				if(document.getElementById(id)) {
+					obj.parentNode.removeChild(document.getElementById(id));
+				}
+			}
+			//回车提交事件
+			function keyLogin(event) {
+				e = event ? event : (window.event ? window.event : null);
+				if(e.keyCode == 13) { //回车键的键值为13
+					logg(); //调用登录按钮的登录事件
+				}
+			}
+		</script>

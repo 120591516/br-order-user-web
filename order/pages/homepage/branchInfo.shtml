@@ -1,0 +1,167 @@
+<!--#include file="/order/pages/system/header.html"-->
+<div class="container minHeightJS">
+	<div>
+			<!-- 流程 -->
+		<div class="steps"></div>
+		<!--门店展示  -->
+		<div class="detailsHead">
+			<div>
+				<div class="detailImgFrist bc01">
+					<img id="imgFirst" src="/upload/2016/11/21/201611211658270271824.jpg">		
+				</div>
+				<div class="detailIntro" id="branchTboby">
+				</div> 
+			</div>
+		</div>
+		<!--套餐列表  -->
+		<div class="suiteList">
+			<table id="suiteAll" class="suiteAll">
+				<tbody id="suiteTboby">
+				</tbody>
+			</table>
+		</div>  
+		<!--门店图片详情  -->
+		<div class="detailsInfo">
+			<div class="title01">
+				<span>门店介绍</span>
+			</div> 
+			<div class="info"> 
+				<div class="summary"></div>
+				<div id="branchImgInfo" class='logo'></div>
+			</div>
+		</div>
+	</div> 
+</div>
+<!-- end container  -->
+<!--#include file="/order/pages/system/footer.html"-->
+<script src="/order/assets/js/plugin/extendPagination.js"></script>
+<link rel="stylesheet" href="/order/assets/css/creat/info.css">
+<script> 
+	var thisURL = document.URL;
+	if(thisURL != orderIp+'/order/index.shtml') {
+		$('#branchNavId').addClass('active');
+		$('#branchNavId').siblings('li').removeClass('active');
+	} 
+	getSteps(1);
+	branchSearch();
+	//套餐分页 
+	function branchSearch() { 
+		var param = {
+			"page": page_curr,
+			"rows": count_curr,
+			"branchId":getParamValue("branchId")
+		};
+		var reqResult = httpRequest(getBranchInfo, param, "get", false);
+		if(reqResult.result == 0) {
+			total_count = reqResult.data.total;
+			createTable(reqResult);
+			return false;
+		}
+	}
+	function createTable(dataBack) { 
+		var suiteStr ='',
+		    branchStr='',
+		    branchInfo=dataBack.data!=null?dataBack.data:null,
+		    suiteList =dataBack.data!=null&&dataBack.data.suiteList!=null?dataBack.data.suiteList:null,
+			branchRest='',
+			branchImgStr='',
+			branchArea='';
+		if(branchInfo!=null){ 
+			if(branchInfo.branchName==null){
+				$('#branchTboby').html('无此门店信息');
+				return;
+			}
+			if(branchInfo.dictArea!=null){
+				branchArea=branchInfo.dictArea.cityName+'  '+branchInfo.dictArea.districtName;
+			}
+			$('#branchTboby').html(''); 
+			branchStr+="<span>"+branchInfo.branchName+"</span>";
+			branchStr+="<table><tbody>" ;
+			branchStr+="<tr><td>所属地区:</td> <td>"+branchArea+"<td></tr><tr>";
+			branchStr+="<tr><td>详细地址:</td> <td>"+branchInfo.branchAddress+"<td></tr><tr>"; 
+			branchStr+="<tr><td>休息时间:</td><td>"+ getRestStr(branchInfo) +"<td></tr>";
+			branchStr+="<tr><td>体检时间:</td><td>"+branchInfo.examStartTime+"-"+branchInfo.examEndTime+"<td></tr>";
+			if(branchInfo.note!=''&&branchInfo.note.length>50){
+				branchStr+="<tr><td>说  明:</td><td>"+branchInfo.note.substring(0,49)+"...<td></tr>"; 
+			}else{
+				branchStr+="<tr><td>说  明:</td><td>"+branchInfo.note+"<td></tr>"; 
+			}
+			branchStr+="</tbody></table>" ;
+			$('#branchTboby').append(branchStr);
+			$('.summary').append(branchInfo.summary);
+			//图片 
+			if(branchInfo.imgList.length>0){ 
+				document.getElementById('imgFirst').src = branchInfo.imgList[0].imgLocation;
+				document.getElementById('selectBranch').src = branchInfo.imgList[0].imgLocation; 
+				for(var i=0;i<branchInfo.imgList.length;i++){
+					branchImgStr+="<img src="+branchInfo.imgList[i].imgLocation+">";
+					if(branchInfo.imgList.imgType=='0'){
+						document.getElementById('imgFirst').src = branchInfo.imgList[0].imgLocation;
+						document.getElementById('selectBranch').src = branchInfo.imgList[0].imgLocation; 
+					}
+				}
+				$('#branchImgInfo').append(branchImgStr);
+			}
+			//休息日 
+		} 
+		//套餐列表
+		if(suiteList.length>0){
+			$("#suiteTboby").html('');
+			for(var i = 0; i < suiteList.length; i++) {
+				var suiteType=suiteList[i].typeNameList!=null?suiteList[i].typeNameList:'无适应套餐类型';
+				var suiteId='"'+suiteList[i].examSuiteId+'"';
+				suiteStr += "<tr><th class='suiteth'><a onClick='openSuiteInfo("+suiteId+")'>"+suiteList[i].examSuiteName+"</a></th>";
+				suiteStr += "<th class='suiteth'>"+suiteType+"</th>";
+				suiteStr += "<th class='suiteth'>￥"+suiteList[i].examSuitePrice+"</th>";
+				suiteStr += "<th class='suiteth'><a onClick='openSuiteInfo("+suiteId+")'>预约</a></th>";
+				suiteStr += "<tr>";
+			}
+			$("#suiteTboby").append(suiteStr);
+		} 
+	}
+	function getRestStr(branchInfo){
+		var restStr=''; 
+		if(branchInfo!=null&&branchInfo.restList!=null&&branchInfo.restList.length>0){
+			for(var i=0;i<branchInfo.restList.length;i++){
+				branchRest=branchInfo.restList[i];
+				if(branchRest.branchRestType==1){
+					 weekList=branchRest.branchRestValue.split(",");
+				    for(var i=0;i<weekList.length;i++){
+					   switch(parseInt(weekList[i])){    
+					   case 1:
+						   restStr+=' 星期一  ';
+					     break;
+					   case 2:
+						   restStr+=' 星期二  ';
+					     break;
+					   case 3:
+						   restStr+=' 星期三  ';
+					     break;
+					   case 4:
+						   restStr+=' 星期四  ';
+					     break;
+					   case 5:
+						   restStr+=' 星期五  ';
+					     break;
+					   case 6:
+						   restStr+=' 星期六  ';
+					     break;
+					   case 7:
+						   restStr+=' 星期日  ';
+					     break;
+					   } 
+				   } 
+				}
+			}
+		}
+		if(restStr!=null){
+			return restStr;
+		}else{
+			return '无休息时间';
+		}
+	}
+	function openSuiteInfo(suiteId){
+		 window.location.href ='/order/pages/homepage/suiteInfo.shtml?suiteId='+suiteId;
+	}
+	minHeight();
+</script>

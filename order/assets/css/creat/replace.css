@@ -1,0 +1,38 @@
+.logoS{
+	height: 80px;
+    line-height: 60px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #0f69ab;
+}
+.bg-out{
+	/*height: 475px;*/
+    left: 0;
+    position: absolute;
+    width: 100%;
+    background: url(/order/assets/img/bg.jpg);
+}
+.bg-inner{
+	height: 600px;
+    margin: 20px auto;
+    /*border: 1px solid #ff0;*/
+    width: 1230px;
+}
+.register {
+    float: left;
+    width: 600px;
+    /*border: 1px solid #999999;*/
+    height: 600px;
+    margin: 0;
+    position: relative;
+    color: #000;
+    padding:40px;
+    }
+.img-person{
+    float: right;
+    width: 300px;
+    /*background: #f00;*/
+    height: 400px;
+    margin: 40px 40px 0 0;
+    background:url(/order/assets/img/tj.jpg no-repeat);
+}

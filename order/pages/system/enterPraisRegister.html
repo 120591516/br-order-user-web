@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>预约平台</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<!-- CSS -->
+		<link rel="icon" href="/order/assets/ico/favicon.ico" type="image/x-icon" sizes="16x16">
+		<link rel="shortcut icon" href="/order/assets/ico/favicon.ico">
+		<link rel="stylesheet" href="/order/assets/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/order/assets/prettyPhoto/css/prettyPhoto.css">
+		<link rel="stylesheet" href="/order/assets/font-awesome/css/font-awesome.css">
+		<link rel="stylesheet" href="/order/assets/css/social-icons.css">
+		<link rel="stylesheet" href="/order/assets/css/ebook-style.css">
+		<link rel="stylesheet" href="/order/assets/css/creat/common.css">
+		<link rel="stylesheet" href="/order/assets/css/creat/package.css">
+		<link rel="stylesheet" href="/order/assets/css/creat/replace.css">
+		<script src="/order/assets/js/plugin/jQuery-2.2.0.min.js"></script>
+		<script src="/order/assets/bootstrap/js/bootstrap.js"></script>
+		<script src="/order/assets/js/plugin/jquery-1.11.1.min.js"></script>
+		<script src="/order/assets/js/jquery-1.8.2.min.js"></script>
+		<script src="/order/assets/js/create/Ajax.js"></script>
+		<script src="/order/assets/js/create/public.js"></script>
+	</head>
+
+	<body>
+
+		<!-- Header -->
+		<div class="container minHeightJS">
+			<div class="header row">
+				<div class="logo span4">
+					<p class="logoS">
+						<a href="/order/index.shtml">Produkta</a>欢迎注册</p>
+				</div>
+				<!--<div class="logo userDeg span2">企业注册</div>-->
+			</div>
+
+			<!--content-->
+			<div class="bg-out">
+				<div class="bg-inner">
+					<div class="row register">
+
+						<div class="reg-container">
+							<!--<p class="reg-form-title">新企业注册</p>-->
+							<form id="enterPriseRegisterForm" class="reg_form" method="post" action="/order/pages/system/enterPriseLogin.html" onsubmit="return false;">
+								<input type="text" name="enterpriseFullName" placeholder="企业全称" class="tel" id="registerFullName" aria-required="true" aria-invalid="true" autofocus="">
+								<span fors="registerFullName"></span>
+
+								<input type="text" name="enterpriseSimpleName" placeholder="企业简称" class="reg_pwd" id="registerShortName" aria-required="true" aria-invalid="true" autofocus="">
+								<span fors="registerShortName"></span>
+
+								<input type="text" name="customerInfoName" placeholder="联系人" class="reg_pwd" id="customerName" aria-required="true" aria-invalid="true" autofocus="">
+								<span fors="customerName"></span>
+
+								<input type="text" name="customerInfoEmail" placeholder="联系人邮箱" class="reg_pwd" id="customerMail" aria-required="true" aria-invalid="true" autofocus="">
+								<span fors="customerMail"></span>
+
+								<input type="text" name="customerInfoPhone" placeholder="联系人电话" class="reg_pwd" id="customerPhone" aria-required="true" aria-invalid="true" autofocus="">
+								<span fors="customerPhone" id="blur_tel_reg"></span>
+
+								<input type="text" name="ind_code" placeholder="验证码" class="reg_code" id="registerCode" aria-required="true" aria-invalid="true">
+								<input type="button" name="send_code" value="发送验证码" class="reg_send_code" id="registerSendCode">
+								<input type="button" name="count" id="resgiterCount" class="reg_count" value>
+								<span fors="registerCode"></span>
+								<span id="registerErrorCode"></span>
+
+								<input type="password" name="customerRegistPassword" placeholder="输入6-12位数字或字母" class="reg_pwd" id="registerPwd" aria-required="true" aria-invalid="true">
+								<span fors="registerPwd"></span>
+								<input type="password" name="password_confirm" placeholder="确认密码" class="reg_pwd" id="regsiterPwdConf" aria-required="true" aria-invalid="true">
+								<span fors="regsiterPwdConf"></span>
+
+								<button class="reg_botton" onclick="postenterPriseRegisterData()">注册</button>
+								<p class="reg_p">如果没您已有账号，请在此
+									<a class="reg_a" href="/order/pages/system/enterPriseLogin.html">登录</a>
+								</p>
+							</form>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--content end-->
+		</div>
+		<!--#include file="/order/pages/system/footer.html"-->
+		<script src="/order/assets/js/plugin/jquery.validate.min.js"></script>
+		<script src="/order/assets/js/plugin/messages_zh.js"></script>
+		<script>
+			minHeight();
+			$(document).ready(function() {
+				var topH = $('.header').height();
+				var minHeight = $('.minHeightJS').height();
+				var height = minHeight - topH;
+				$('.bg-out').css({
+					'height': height + 'px'
+				});
+				var validator = $("#enterPriseRegisterForm").validate({
+					rules: {
+						enterpriseFullName: {
+							required: true,
+						},
+						enterpriseSimpleName: {
+							required: true,
+						},
+						customerInfoName: {
+							required: true,
+							minlength: 2,
+						},
+						customerInfoEmail: {
+							required: true,
+							email: true,
+						},
+						customerInfoPhone: {
+							required: true,
+							tel: true,
+						},
+						ind_code: {
+							required: true,
+							number: true,
+							minlength: 6,
+							maxlength: 6,
+						},
+						customerRegistPassword: {
+							required: true,
+							customerRegistPassword: true,
+							minlength: 6,
+							maxlength: 12
+						},
+						password_confirm: {
+							required: true,
+							equalTo: "#registerPwd"
+						},
+					},
+					messages: {
+						enterpriseFullName: {
+							required: "请输入公司全称",
+						},
+						enterpriseSimpleName: {
+							required: "请输入公司简称",
+						},
+						customerInfoName: {
+							required: "请输入用户名",
+							minlength: "用户名不能少于两个字母",
+						},
+						customerInfoEmail: "请输入一个正确的邮箱",
+						customerInfoPhone: {
+							required: "请输入正确的手机号",
+							tel: "请输入正确的手机号",
+						},
+						ind_code: "请输入正确的验证码",
+						customerRegistPassword: "请输入6-12位数字或字母",
+						password_confirm: "两次输入的密码不一致",
+					},
+					errorPlacement: function(error, element) {
+						$(element).closest("form").find("span[fors='" + element.attr("id") + "']").append(error);
+					}
+				})
+				$.validator.addMethod("tel", function(value, element, params) {
+					var telz = /^(13|14|15|17|18|19)([0-9]){9}/;
+					return this.optional(element) || (telz.test(value));
+				}, "请输入正确的手机号");
+				$.validator.addMethod("password", function(value, element, params) {
+					var pwdz = /([0-9 a-z A-Z]){6,12}/;
+					return this.optional(element) || (pwdz.test(value));
+				}, "请输入6-12位数字或字母");
+
+			})
+
+			//发送验证码倒计时
+			var sendCodeTime = 10;
+
+			function CountZero() {
+				if(sendCodeTime <= 0) {
+					$("#registerSendCode").show().removeAttr("disabled").val("重新发送").removeClass("reg_send_code_again").addClass("reg_send_code");
+					$(".reg_count").hide();
+					sendCodeTime = 10;
+					clearTimeout(CountZeros);
+					return;
+				} else {
+					sendCodeTime--;
+					$("#registerSendCode").show().attr("disabled", true).val("重新发送").removeClass("reg_send_code").addClass("reg_send_code_again");
+					$(".reg_count").val(sendCodeTime).show();
+				}
+				var CountZeros = setTimeout(function() {
+					CountZero()
+				}, 1000)
+			}
+			// 发送验证码
+			$("#registerSendCode").click(function() {
+				var phoneCheck = $.trim($("input#customerPhone").val());
+				var telz = /^(13|14|15|17|18|19)([0-9]){9}/;
+				if(phoneCheck && telz.test(phoneCheck)) {
+					sendCodeForResetPassword()
+				}
+				//CountZero();//调用倒计时函数
+			});
+			//失去焦点验证手机号是否注册
+			$("#customerPhone").blur(function() {
+				var phoneCheck = $.trim($("input#customerPhone").val());
+				var telz = /^(13|14|15|17|18|19)([0-9]){9}/;
+				if(phoneCheck != "" && telz.test(phoneCheck)) {
+					$('#registerSendCode').removeAttr('disabled');
+					var param = {
+						"customerInfoPhone": phoneCheck
+					}
+					var otype = "get";
+					var osync = false;
+					var reqResult = httpRequest(checkCustomerInfoByInfoUrl, param, otype, osync);
+					if(reqResult.data != 0) {
+						$('#blur_tel_reg').append('<label class="error" id="insetLabel"></label>');
+						$('#insetLabel').html('当前手机号已被注册，请直接登录');
+						$('#registerSendCode').attr('disabled', true);
+					}
+				}
+			});
+
+			$("#customerPhone").focus(function() {
+					if($('#insetLabel')) {
+						$('#insetLabel').html('');
+					}
+				})
+				//发送验证码倒计时
+			function sendCodeForResetPassword() {
+				var phoneNum = $.trim($("input#customerPhone").val());
+				var param = {
+					"customerInfoPhone": phoneNum
+				}
+				console.log(phoneNum);
+				var otype = "get";
+				var osync = false;
+				var reqResult = httpRequest(customerInfondVerifyCodeUrl, param, otype, osync);
+				if(reqResult.result == 0) {
+					$("#registerErrorCode").html('');
+					CountZero(); //调用倒计时函数
+				} else {
+					alert(reqResult.message);
+				}
+			}
+			//提交注册信息
+			function postenterPriseRegisterData() {
+				var telz = /^(13|14|15|17|18|19)([0-9]){9}/;
+				var pwdz = /([0-9 a-z A-Z]){6,12}/;
+				var enterpriseFullName = $.trim($("input#registerFullName").val());
+				var enterpriseSimpleName = $.trim($("input#registerShortName").val());
+				var customerInfoName = $.trim($("input#customerName").val());
+				var customerInfoEmail = $.trim($("input#customerMail").val());
+				var customerInfoPhone = $.trim($("input#customerPhone").val());
+				var registerCode = $.trim($("input#registerCode").val());
+				var customerRegistPassword = $.trim($("input#registerPwd").val());
+				var regsiterPwdConf = $.trim($("input#regsiterPwdConf").val());
+				var param = {
+					"customerInfoPhone": customerInfoPhone,
+					"verifyCode": registerCode
+				}
+				var otype = "get";
+				var osync = false;
+				var reqResult = httpRequest(validateCodeUrl, param, otype, osync);
+				if(reqResult.result == 0) {
+					console.log("验证成功");
+					if(enterpriseFullName == '' || enterpriseSimpleName == '' || customerInfoName == '' ||
+						customerInfoEmail == '' || customerInfoPhone == '' || !telz.test(customerInfoPhone) ||
+						registerCode == '' || !pwdz.test(registerCode) || customerRegistPassword == '' ||
+						!pwdz.test(customerRegistPassword)) {
+						console.log('公司全称不能为空');
+						return false;
+					}
+					var param = $('#enterPriseRegisterForm').serialize();
+					var otype = "post";
+					var osync = false;
+					var reqResult = httpRequest(insertEnterpriseUrl, param, otype, osync);
+					if(reqResult.result == 0) {
+						alert('企业注册成功，欢迎登陆！');
+						window.location.href = orderIp + "/order/pages/system/enterPriseLogin.html";
+						//						return false;
+						console.log('操作成功');
+					} else {
+						alert(reqResult.message);
+						return false;
+					}
+				} else {
+					console.log("请求出错");
+					alert(reqResult.message);
+				}
+
+			}
+		</script>

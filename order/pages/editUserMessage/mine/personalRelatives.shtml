@@ -1,0 +1,529 @@
+<!--#include file="/order/pages/system/personalMsgHeader.html"-->
+<!--二级导航end-->
+<div class="container minHeightJS">
+	<div class="row">
+		<div class="span1 offset11" style="margin-bottom:10px;">
+			<button href="#addRelationship" id="addRelationshipInfo" data-toggle="modal" type="button" class="btn btn-primary">添加</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span12">
+			<div class="box">
+				<div class="box-body">
+					<table class="table table-bordered table-striped">
+						<thead>
+							<tr> 
+								<th>操作</th>
+								<th>姓名</th>
+								<th>性别</th>
+								<th>关系</th>
+								<th>身份证号</th>
+								<th>手机号码</th>
+								<th>邮箱</th>
+								<th>状态</th>
+							</tr>
+						</thead>
+						<tbody id="relative_tbody">
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="row">
+						<div class="span12" id="callBackPager" style="padding-left:10px;"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--模态框查看-->
+<div class="modal hide fade" id="checkRelationship" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">查看信息</h4>
+			</div>
+			<div class="modal-body">
+				<form class="bs-example bs-example-form" role="form" id="checkUserForm">
+					<div class="input-group">
+						<span class="input-group-addon">姓 名</span>
+						<input type="text" id="checkCustomerInfoName" class="form-control check_userloginname_validate" name="customerInfoName" aria-describedby="basic-addon1" disabled="disabled">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">关 系</span>
+						<input type="text" id="checkRelation" class="form-control relationship" name="relation" aria-describedby="basic-addon1" disabled="disabled">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">身份证号</span>
+						<input type="text" id="checkCustomerInfoIdentityNumber" class="form-control" name="customerInfoIdentityNumber" aria-describedby="basic-addon1" disabled="disabled">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">手机号码</span>
+						<input type="text" id="checkCustomerInfoPhone" class="form-control" name="customerInfoPhone" aria-describedby="basic-addon1" disabled="disabled">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">邮 箱</span>
+						<input type="text" id="checkCustomerInfoEmail" class="form-control" name="customerInfoEmail" aria-describedby="basic-addon1" disabled="disabled">
+					</div>
+					<div class="input-group" id="checkSex">
+						<span class="input-group-addon">性 别</span>
+						<input type="radio" name='sex' value="0" class="userlist_statusinput_vertical" disabled="disabled" />男
+						<input type="radio" name='sex' value="1" class="userlist_statusinput_vertical" disabled="disabled" />女
+					</div>
+					<div class="input-group" id='checkStatus'>
+						<span class="input-group-addon userlist_status_right_border">状 态</span>
+						<input type="radio" name='status' value="0" class="userlist_statusinput_vertical" disabled="disabled" />启用
+						<input type="radio" name='status' value="1" class="userlist_statusinput_vertical" disabled="disabled" />禁用
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--模态框编辑-->
+<div class="modal hide fade" id="editRelationship" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">编辑信息</h4>
+			</div>
+			<div class="modal-body">
+				<form class="bs-example bs-example-form" role="form" id="editRelationshipForm">
+					<input type="hidden" name="relationshipId" id="relationshipId" />
+					<input type="hidden" name="dictRelationId" id="dictRelationId" />
+					<input type="hidden" name="customerInfoId" id="customerInfoId" />
+					<div class="input-group">
+						<span class="input-group-addon">姓 名</span>
+						<input type="text" id="editCustomerInfoName" class="form-control check_userloginname_validate" name="customerInfoName" aria-describedby="basic-addon1">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">关 系</span>
+						<select id="editRelation" class="relationship" name="relation"></select>
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">身份证号</span>
+						<input type="text" id="editCustomerInfoIdentityNumber" class="form-control" name="customerInfoIdentityNumber" aria-describedby="basic-addon1"><em></em>
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">手机号码</span>
+						<input type="text" id="editCustomerInfoPhone" class="form-control" name="customerInfoPhone" aria-describedby="basic-addon1"><em></em>
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">邮 箱</span>
+						<input type="text" id="editCustomerInfoEmail" class="form-control" name="customerInfoEmail" aria-describedby="basic-addon1"><em></em>
+					</div>
+					<div class="input-group" id="editSex">
+						<span class="input-group-addon">性 别</span>
+						<input type="radio" name='customerInfoSex' value="0" class="userlist_statusinput_vertical" />男
+						<input type="radio" name='customerInfoSex' value="1" class="userlist_statusinput_vertical" />女
+					</div>
+					<div class="input-group" id="editStatus">
+						<span class="input-group-addon">状 态</span>
+						<input type="radio" name='status' value="0" class="userlist_statusinput_vertical" />启用
+						<input type="radio" name='status' value="1" class="userlist_statusinput_vertical" />禁用
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" id='editRelationshipSave'>保存</button>
+			</div> 
+		</div>
+	</div>
+</div>
+<!--模态框添加-->
+<div class="modal hide fade" id="addRelationship" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">编辑信息</h4>
+			</div>
+			<div class="modal-body">
+				<form class="bs-example bs-example-form" role="form" id="addRelationshipForm">
+					<div class="input-group">
+						<span class="input-group-addon">姓 名</span>
+						<input type="text" id="addCustomerInfoName" class="form-control check_userloginname_validate" name="customerInfoName" aria-describedby="basic-addon1">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">关 系</span>
+						<select name="relationId" id="addRelation" class="relationship"></select>
+						<!--<input type="text" id="addRelation" class="form-control" name="relation" aria-describedby="basic-addon1">-->
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">身份证号</span>
+						<input type="text" id="addCustomerInfoIdentityNumber" class="form-control" name="customerInfoIdentityNumber" aria-describedby="basic-addon1"><em></em>
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">手机号码</span>
+						<input type="text" id="addCustomerInfoPhone" class="form-control" name="customerInfoPhone" aria-describedby="basic-addon1"><em></em>
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">邮 箱</span>
+						<input type="text" id="addCustomerInfoEmail" class="form-control" name="customerInfoEmail" aria-describedby="basic-addon1"><em></em>
+					</div>
+					<div class="input-group" id="addSex">
+						<span class="input-group-addon">性 别</span>
+						<input type="radio" name='customerInfoSex' value="0" class="userlist_statusinput_vertical" />男
+						<input type="radio" name='customerInfoSex' value="1" class="userlist_statusinput_vertical" />女
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" id='addRelationshipSave'>保存</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end container -->
+<!--#include file="/order/pages/system/footer.html"-->
+<script src="/order/assets/js/plugin/responsive-menu.min.js"></script>
+<script src="/order/assets/js/plugin/extendPagination.js"></script>
+<script>
+    minHeight();
+	// 二级导航
+	$(function() {
+		$('pre').addClass('prettyprint');
+		relationship_info();
+	})
+	init_page();
+	window.onload = function() {
+		init_page();
+	}
+
+	function init_page() {
+		$('#relative_tbody').empty();
+		//1.请求后端信息并展示
+		page_curr = 1;
+		init_list();
+		init_pager();
+	}
+
+	function init_list() {
+		$('#relative_tbody').empty();
+		var otype = "post";
+		var osync = false;
+		var param = {
+			"page": page_curr,
+			"rows": count_curr
+		};
+		var reqResult = httpRequest(getCustomerInfoByPageUrl, param, otype, osync);
+		if(reqResult.result == 0) {
+			//4.展示数据
+			total_count = reqResult.data.total;
+			createTable(page_curr, limit, total_count, reqResult);
+		}
+		return false;
+	}
+
+	// 初始化分页信息
+	function init_pager() {
+		$('#callBackPager').extendPagination({
+			totalCount: total_count,
+			showCount: count_curr,
+			limit: limit,
+			callback: function(curr, limit, totalCount) {
+				page_curr = curr;
+				total_count = totalCount;
+				init_list();
+			}
+		});
+	}
+
+	function createTable(currPage, limit, total, dataBack) {
+		var showNum = limit;
+		if(total - (currPage * limit) < 0) showNum = total - ((currPage - 1) * limit);
+		var datal = dataBack.data.list;
+		var str = '';
+		for(var i = 0; i < showNum; i++) {
+			str += "<tr><td relationshipId='" + datal[i].relationshipId + "' dictRelationId='" + datal[i].dictRelationId + "' customerInfoId='" + datal[i].customerInfoId + "'>"; //list列表的id名称
+			str += "<a href='#checkRelationship' title='查看信息' data-toggle='modal' onclick='checkRelationship(this)'><i class='fa fa-eye'></i></a> ";
+			str += "<a href='#editRelationship' title='编辑信息' data-toggle='modal' onclick='editRelationship(this)'><i class='fa fa-pencil'></i></a> ";
+			str += "<a href='#' title='禁用信息' style='margin-right:5px' onclick='delRelationship(this)'><i class='fa fa-trash-o'></i></a>";
+			str += "</td>";
+			str += "<td>" + datal[i].customerInfoName + "</td>";
+			if(datal[i].sex == 0) {
+				str += "<td>" + '男' + "</td>";
+			} else {
+				str += "<td>" + '女' + "</td>";
+			}
+			str += "<td>" + datal[i].relation + "</td>";
+			str += "<td>" + datal[i].customerInfoIdentityNumber + "</td>";
+			str += "<td>" + datal[i].customerInfoPhone + "</td>";
+			str += "<td>" + datal[i].customerInfoEmail + "</td>";
+			if(dataBack.data.list[i].status == 0) {
+				str += "<td>" + '启用 ' + "</td>";
+			} else {
+				str += "<td>" + '禁用' + "</td>";
+			}
+			str += '</tr>';
+		}
+		$("#relative_tbody").append(str);
+		return false;
+	}
+
+	//	查看回显信息
+	function checkRelationship(check) {
+		var checkRelationshipId = $(check).parent().attr("relationshipId");
+		var param = {
+			"relationshipId": checkRelationshipId
+		};
+		var otype = "get";
+		var osync = false;
+		var reqResult = httpRequest(getRelationshipByIDUrl, param, otype, osync);
+		if(reqResult.result == 0) {
+			$('#checkCustomerInfoName').val(reqResult.data.customerInfoName);
+			$('#checkRelation').val(reqResult.data.relation); 
+			$('#checkCustomerInfoIdentityNumber').val(reqResult.data.customerInfoIdentityNumber);
+			$('#checkCustomerInfoPhone').val(reqResult.data.customerInfoPhone);
+			$('#checkCustomerInfoEmail').val(reqResult.data.customerInfoEmail);
+			if(reqResult.data.sex == 0) {
+				$('#checkSex input')[0].checked = "checked";
+			} else { 
+				$('#checkSex input')[1].checked = "checked";
+			}
+			if(reqResult.data.status == 0) {
+				$('#checkStatus input')[0].checked = "checked";
+			} else {
+				$('#checkStatus input')[1].checked = "checked";
+			}
+		} else {
+			alert(reqResult.message);
+		}
+	}
+	//  删除信息
+	function delRelationship(del_li) {
+		if(confirm("确认禁用该用户信息吗？")) {
+			var delRelationshipId = $(del_li).parent().attr("relationshipId");
+			var param = {
+				"relationshipId": delRelationshipId
+			};
+			var otype = "get";
+			var osync = false;
+			var reqResult = httpRequest(deleteRelationshipUrl, param, otype, osync);
+			if(reqResult.result == 0) {
+				alert("禁用成功！");
+				window.location.reload();
+			} else {
+				alert(reqResult.message);
+			}
+		}
+	}
+	//	编辑回显信息
+	function editRelationship(edit_li) {
+		var editRelationshipId = $(edit_li).parent().attr("relationshipId");
+		var param = {
+			"relationshipId": editRelationshipId
+		};
+		var otype = "get";
+		var osync = false;
+		var reqResult = httpRequest(getRelationshipByIDUrl, param, otype, osync);
+		if(reqResult.result == 0) {
+			$('#customerInfoId').val(reqResult.data.customerInfoRelationId); //回显
+			$('#relationshipId').val(reqResult.data.relationshipId); //回显
+			$('#dictRelationId').val(reqResult.data.dictRelationId); //回显
+			$('#editCustomerInfoName').val(reqResult.data.customerInfoName);
+			relationship_info();
+			$('#editRelation').val(reqResult.data.dictRelationId);
+			$('#editCustomerInfoIdentityNumber').val(reqResult.data.customerInfoIdentityNumber);
+			$('#editCustomerInfoPhone').val(reqResult.data.customerInfoPhone);
+			$('#editCustomerInfoEmail').val(reqResult.data.customerInfoEmail);
+			if(reqResult.data.sex == 0) {
+				$('#editSex input')[0].checked = "checked";
+			} else {
+				$('#editSex input')[1].checked = "checked";
+			}
+			if(reqResult.data.status == 0) {
+				$('#editStatus input')[0].checked = "checked";
+			} else {
+				$('#editStatus input')[1].checked = "checked";
+			}
+		} else {
+			alert(reqResult.message);
+		}
+	}
+	//  编辑保存信息
+	$('#editRelationshipSave').on('click', function() {
+			var relationshipId = $('#relationshipId').val();
+			var dictRelationId = $('#editRelation').val();
+			$('#dictRelationId').val(dictRelationId); //回显
+			var editCustomerInfoName = $('#editCustomerInfoName').val();
+//			var editRelation = $('#editRelation').val();
+			var editCustomerInfoIdentityNumber = $('#editCustomerInfoIdentityNumber').val();
+			var editCustomerInfoPhone = $('#editCustomerInfoPhone').val();
+			var editCustomerInfoEmail = $("#editCustomerInfoEmail").val();
+			var editSex = $('#editSex input').val();
+			var editStatus = $('#editStatus input').val();
+			if(editCustomerInfoName == '' || editRelation == '' || editCustomerInfoIdentityNumber == '' || editCustomerInfoPhone == '' || editCustomerInfoEmail == '' ||
+				editSex == '' || editStatus =='') {
+				alert('请输入完整信息！');
+				return false;
+			} else {
+				var param = $('#editRelationshipForm').serialize();
+				var otype = "post";
+				var osync = false;
+				var reqResult = httpRequest(updateRelationshipUrl, param, otype, osync);
+				if(reqResult.result == 0) {
+					alert('编辑成功!');
+					window.location.reload();
+				} else {
+					alert(reqResult.message);
+				}
+			}
+		})
+//  添加
+	$('#addRelationshipSave').on('click', function() {
+				var addCustomerInfoName = $('#addCustomerInfoName').val();
+				var addRelation = $('#addRelation').val();
+				var addCustomerInfoIdentityNumber = $('#addCustomerInfoIdentityNumber').val();
+				var addCustomerInfoPhone = $('#addCustomerInfoPhone').val();
+				var addCustomerInfoEmail = $('#addCustomerInfoEmail').val();
+//				var addSex = $('#addSex input').val();
+				var addSex = $('#addSex input[name="sex"]:checked ').val();
+				if(addCustomerInfoName == '' || addRelation == '' || addCustomerInfoIdentityNumber == '' || 
+				addCustomerInfoPhone == '' || addCustomerInfoEmail =='' || addSex =='') {
+					alert('请输入完整信息！');
+					return false;
+				} else {
+					var param = $('#addRelationshipForm').serialize();
+					var otype = "post";
+					var osync = false;
+					var reqResult = httpRequest(insertRelationshipUrl, param, otype, osync);
+					if(reqResult.result == 0) {
+						alert("添加成功");
+						window.location.reload();
+					} else {
+						alert(reqResult.message);
+					}
+				}
+			})
+	//	添加手机验证
+        $("#addCustomerInfoPhone").blur(function() {
+        	check_adduserPhone();
+        });
+        function check_adduserPhone() {
+        	var phone = $('#addCustomerInfoPhone');
+        	if(phone.val() == "") {
+        		$('#addCustomerInfoPhone').next().html("<font class='font'>手机号码不能为空，请重新输入！</font>");
+        		phone.focus(function() {
+        			$('#addCustomerInfoPhone').next().html("");
+        		});
+        		return false;
+        	} else if(!phone.val().match(/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/)) {
+        		$('#addCustomerInfoPhone').next().html("<font class='fontphone'>手机号码格式不正确！请重新输入</font>");
+        		return false;
+        	} else {
+        		$('#addCustomerInfoPhone').next().html("");
+        	}
+        }
+        //	编辑手机验证
+        $("#editCustomerInfoPhone").blur(function() {
+        	check_edituserPhone();
+        });
+        function check_edituserPhone() {
+        	var phone = $('#editCustomerInfoPhone');
+        	if(phone.val() == "") {
+        		$('#editCustomerInfoPhone').next().html("<font class='font'>手机号码不能为空，请重新输入！</font>");
+        		phone.focus(function() {
+        			$('#editCustomerInfoPhone').next().html("");
+        		});
+        		return false;
+        	} else if(!phone.val().match(/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/)) {
+        		$('#editCustomerInfoPhone').next().html("<font class='fontphone'>手机号码格式不正确！请重新输入</font>");
+        		return false;
+        	} else {
+        		$('#editCustomerInfoPhone').next().html("");
+        	}
+        }
+//   添加邮箱校验
+        $("#addCustomerInfoEmail").blur(function() {
+        	check_adduserEmail();
+        });
+        function check_adduserEmail() {
+        	var email = $("#addCustomerInfoEmail");
+        	if(email.val() == "") {
+        		$("#addCustomerInfoEmail").next().html("<font class='font'>邮箱不能为空，请重新输入！</font>");
+        		return false;
+        	} else if(!email.val().match(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/)) {
+        		$("#addCustomerInfoEmail").next().html("<font class='fontmail'>邮箱格式不正确，请重新输入！</font>");
+        		email.focus(function() {
+        			$("#addCustomerInfoEmail").next().html("");
+        		});
+        		return false;
+        	} else {
+        		$("#addCustomerInfoEmail").next().html("");
+        	}
+        }
+        //   编辑邮箱校验
+        $("#editCustomerInfoEmail").blur(function() {
+        	check_edituserEmail();
+        });
+        function check_edituserEmail() {
+        	var email = $("#editCustomerInfoEmail");
+        	if(email.val() == "") {
+        		$("#editCustomerInfoEmail").next().html("<font class='font'>邮箱不能为空，请重新输入！</font>");
+        		return false;
+        	} else if(!email.val().match(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/)) {
+        		$("#editCustomerInfoEmail").next().html("<font class='fontmail'>邮箱格式不正确，请重新输入！</font>");
+        		email.focus(function() {
+        			$("#editCustomerInfoEmail").next().html("");
+        		});
+        		return false;
+        	} else {
+        		$("#editCustomerInfoEmail").next().html("");
+        	}
+        }
+        //   添加身份证号校验
+        $("#addCustomerInfoIdentityNumber").blur(function() {
+        	check_adduserCard();
+        });
+        function check_adduserCard() {
+        	var email = $("#addCustomerInfoIdentityNumber");
+        	if(email.val() == "") {
+        		$("#addCustomerInfoIdentityNumber").next().html("<font class='font'>身份证号不能为空，请重新输入！</font>");
+        		return false;
+        	} else if(!email.val().match(/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/)) {
+        		$("#addCustomerInfoIdentityNumber").next().html("<font class='fontmail'>身份证号格式不正确，请重新输入！</font>");
+        		email.focus(function() {
+        			$("#addCustomerInfoIdentityNumber").next().html("");
+        		});
+        		return false;
+        	} else {
+        		$("#addCustomerInfoIdentityNumber").next().html("");
+        	}
+        }
+        //   编辑身份证号校验
+        $("#editCustomerInfoIdentityNumber").blur(function() {
+        	check_edituserCard();
+        });
+        function check_edituserCard() {
+        	var email = $("#editCustomerInfoIdentityNumber");
+        	if(email.val() == "") {
+        		$("#editCustomerInfoIdentityNumber").next().html("<font class='font'>身份证号不能为空，请重新输入！</font>");
+        		return false;
+        	} else if(!email.val().match(/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/)) {
+        		$("#editCustomerInfoIdentityNumber").next().html("<font class='fontmail'>身份证号格式不正确，请重新输入！</font>");
+        		email.focus(function() {
+        			$("#editCustomerInfoIdentityNumber").next().html("");
+        		});
+        		return false;
+        	} else {
+        		$("#editCustomerInfoIdentityNumber").next().html("");
+        	}
+        }
+</script>

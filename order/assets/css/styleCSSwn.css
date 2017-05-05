@@ -1,0 +1,135 @@
+
+/*背景颜色*/
+
+.backgroundColor_beige {
+	background-color: #f4f4f4;
+}
+
+
+/*字体颜色*/
+
+.fontColor_black {
+	color: #000!important;
+}
+
+.fontColor_gray {
+	color: #aaa!important;
+}
+
+.fontColor_red {
+	color: red;
+}
+.font_weight_bold{
+	font-weight: bold;
+}
+
+/*居中设置*/
+
+.textCenter {
+	text-align: center;
+}
+
+/*定位*/
+
+/*高度设置*/
+
+.minHeight {
+	min-height: 770px;
+}
+/*相对定位*/
+.position_relative{
+ 	position: relative;
+}
+/*清除浮动*/
+.clear{
+	clear:both;
+}
+/*外边距*/
+
+.margin_10px {
+	margin: 10px 0;
+}
+/*字符间距*/
+.letter_3px{
+	letter-spacing: 3px;
+}
+/*显隐*/
+
+.displayCssNo {
+	display: none;
+}
+
+
+/*部门div样式*/
+
+.contanerInfo {
+	border: 3px solid rgba( 255, 255, 255, 0.4);
+	border-right: 3px inset;
+	border-top: 3px inset;
+	border-left: 3px inset;
+	border-bottom: 3px inset;
+	float: left;
+	width: 100%;
+	background: #fff;
+	margin: 10px 0;
+	padding: 10px;
+	min-height: 555px;
+	box-shadow: 0 0 3px #000;
+	position: relative;
+}
+
+.listInfo {
+	position: absolute;
+	top: 10%;
+	left: 64%;
+	box-shadow: 0 0 3px #000;
+	padding: 10px;
+}
+
+
+/*员工样式*/
+
+.staffInfo {
+	border: 3px solid rgba( 255, 255, 255, 0.4);
+	border-right: 3px inset;
+	border-top: 3px inset;
+	border-left: 3px inset;
+	border-bottom: 3px inset;
+	width: 100%;
+	background: #fff;
+	margin: 10px 0;
+	padding: 10px;
+	box-shadow: 0 0 3px #000;
+}
+
+.staffModal {
+	box-shadow: 0 0 3px #000;
+	padding: 10px;
+}
+
+.deptModalInfo {
+	box-shadow: 0 0 3px #000;
+	padding: 10px;
+	position: absolute;
+	top: 10%;
+	left: 38%;
+}
+/*订单列表*/
+#searchOrderListInfo{
+	float:left;
+}
+#searchOrderListInfo ul li{
+	list-style: none;
+	float:left;
+	margin-right: 70px;
+}
+/*消费记录*/
+#checkRecordsFormInfo{
+	float:left;
+	margin-left:50px;
+}
+#search_recordsInfo li{
+	list-style: none;
+	float:left;
+	margin-right: 50px;
+}

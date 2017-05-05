@@ -1,0 +1,167 @@
+<!--#include file="/order/pages/system/companyBusinessHeader.html"-->
+
+<div class="container minHeightCom" style="margin-top:20px">
+	<div class="row">
+		<div class="span12">
+			<div class="span6 offset3 msg-span">
+				<h4 class="title">企业资料</h4>
+				<img src="/order/assets/img/gallery/3.jpg" class="msg-img">
+				<form class="bs-example bs-example-form" role="form" id="editComForm">
+					<input id="enterpriceConnEmpIdHidden" class="hide">
+					<input id="enterpriseIdHidden" class="hide">
+					<div class="input-group">
+						<span class="input-group-addon">公司全称：</span>
+						<input type="text" id="enterpriseFullName" class="form-control" name="enterpriseFullName">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">公司简称：</span>
+						<input type="text" id="enterpriseSimpleName" class="form-control" name="enterpriseSimpleName">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">公司代码：</span>
+						<input type="text" id="enterpriseCode" class="form-control" name="enterpriseCode">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">公司营业执照号：</span>
+						<input type="text" id="enterpriceLicenseNo" class="form-control" name="enterpriceLicenseNo">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">联系人：</span>
+						<input type="text" id="customerInfoName" class="form-control" name="customerInfoName">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">企业法人：</span>
+						<input type="text" id="enterpriceLicensePerson" class="form-control" name="enterpriceLicensePerson">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">企业联系人电话：</span>
+						<input type="text" id="customerInfoPhone" class="form-control" disabled="disabled" name="customerInfoPhone" disabled="true">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">企业联系人邮箱：</span>
+						<input type="text" id="customerInfoEmail" class="form-control" disabled="disabled" name="customerInfoEmail" disabled="true">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">公司详细地址：</span>
+						<input type="text" id="enterpriseAddress" class="form-control" name="enterpriseAddress">
+					</div>
+					<div class="footer">
+						<button type="button" class="btn btn-primary" id="saveMsg">保存</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end container -->
+<script src="/order/assets/js/plugin/responsive-menu.min.js"></script>
+<script src="/order/assets/js/plugin/jquery.validate.min.js"></script>
+<script src="/order/assets/js/plugin/responsive-menu.min.js"></script>
+<!--<script src="/order/assets/js/plugin/card.js"></script>-->
+<!--<script src="/order/assets/js/plugin/validate.js"></script>-->
+
+<script>
+	// 二级导航
+	$(function() {
+		$('pre').addClass('prettyprint');
+	})
+	$(document).ready(function() {
+		editComMsg();
+		$('#editComForm').validate({
+			rules: {
+				customerInfoName: {
+					required: true,
+					minlength: 2,			
+				},
+				customerInfoIdentityNumber: {
+					required: true,
+					isIdCardNo: true
+				},
+			},
+			messages: {
+				customerInfoName: {
+					required: "请填写用户名",
+					minlength: "用户名不少于两字符"
+				},
+				customerInfoIdentityNumber: {
+					required: "请输入身份证号",
+					isIdCardNo: "请输入正确的身份证号"
+				},
+			},
+		});
+		// 身份证号码验证
+		jQuery.validator.addMethod("isIdCardNo", function(value, element) {
+			var cardz = /^[0-9]{17}[0-9|xX]{1}$/;
+			return this.optional(element) || cardz.test(value);
+		}, "请正确输入您的身份证号码");
+	})
+
+	//信息回显
+	function editComMsg() {
+		var otype = "get";
+		var osync = false;
+		var reqResult = httpRequest(getEnterpriseListUrl, null, otype, osync);
+		if(reqResult.result == 0) {
+			$('#enterpriceConnEmpIdHidden').val(reqResult.data.enterpriceConnEmpId);
+			$('#enterpriseIdHidden').val(reqResult.data.enterpriseId);
+			var checkEnterpriseFullName = $('#enterpriseFullName');
+				var checkEnterpriseSimpleName = $('#enterpriseSimpleName');
+				var checkEnterpriseCode = $('#enterpriseCode');
+				var checkEnterpriceLicenseNo = $('#enterpriceLicenseNo');
+				var checkCustomerInfoName = $('#customerInfoName');
+				var checkCustomerInfoPhone = $('#customerInfoPhone');
+				var checkCustomerInfoEmail = $('#customerInfoEmail');
+				var checkEnterpriceLicensePerson = $('#enterpriceLicensePerson');
+				var checkEnterpriseAddress = $('#enterpriseAddress');
+				checkEnterpriseFullName.val(reqResult.data.enterpriseFullName);
+				checkEnterpriseSimpleName.val(reqResult.data.enterpriseSimpleName);
+				checkEnterpriseCode.val(reqResult.data.enterpriseCode);
+				checkEnterpriceLicenseNo.val(reqResult.data.enterpriceLicenseNo);
+				checkCustomerInfoName.val(reqResult.data.customerInfoName);
+				checkCustomerInfoPhone.val(reqResult.data.customerInfoPhone);
+				checkCustomerInfoEmail.val(reqResult.data.customerInfoEmail);
+				checkEnterpriceLicensePerson.val(reqResult.data.enterpriceLicensePerson);
+				checkEnterpriseAddress.val(reqResult.data.enterpriseAddress);
+		} else {
+			alert(reqResult.message);
+		}
+	}
+	//提交修改信息
+	$('#saveMsg').on('click', function() {
+		var editEnterpriseFullName = $('#enterpriseFullName').val();
+		var editEnterpriseSimpleName = $('#enterpriseSimpleName').val();
+		var editEnterpriseCode = $('#enterpriseCode').val();
+		var editEnterpriceLicenseNo = $('#enterpriceLicenseNo').val();
+		var editCustomerInfoName = $('#customerInfoName').val();
+		var editEnterpriceLicensePerson = $('#enterpriceLicensePerson').val();
+		var editEnterpriseAddress = $('#enterpriseAddress').val();
+		if(editEnterpriseFullName == '' || editEnterpriseSimpleName == '' || 
+		editEnterpriseCode =='' || editEnterpriceLicenseNo =='' || editCustomerInfoName == ''||
+		editEnterpriceLicensePerson ==''|| editEnterpriseAddress=='' ) {
+				alert('请输入完整信息！');
+				return false;
+			} else {
+				var param ={
+					"enterpriceConnEmpId":$('#enterpriceConnEmpIdHidden').val(),
+					"enterpriseId":$('#enterpriseIdHidden').val(),
+					"enterpriseFullName":editEnterpriseFullName,
+					"enterpriseSimpleName":editEnterpriseSimpleName,
+					"enterpriseCode":editEnterpriseCode,
+					"enterpriceLicenseNo":editEnterpriceLicenseNo,
+					"customerInfoName":editCustomerInfoName,
+					"enterpriceLicensePerson":editEnterpriceLicensePerson,
+					"enterpriseAddress":editEnterpriseAddress
+				}
+				var otype = "post";
+				var osync = false;
+				var reqResult = httpRequest(updateEnterpriseUrl, param, otype, osync);
+				if(reqResult.result == 0) {
+					alert('编辑成功!');
+					window.location.href="/order/pages/companyBusiness/companyBusinessInfo.shtml";
+				} else {
+					alert(reqResult.message);
+				}
+			}
+	})
+</script>
+<!--#include file="/order/pages/system/footer.html"-->

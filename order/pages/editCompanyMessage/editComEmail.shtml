@@ -1,0 +1,162 @@
+<!--#include file="/order/pages/system/companyBusinessHeader.html"-->
+
+<div class="container minHeightJS">
+	<div class="row">
+		<div class="span12">
+			<div class="span4 offset4 msg-span">
+				<h4 class="title">修改邮箱</h4>
+				<form class="bs-example bs-example-form" role="form" id="editEmailForm">
+					<div class="input-group">
+						<span class="input-group-addon">新邮箱：</span>
+						<input type="text" id="editCustomerInfoEmail" class="form-control borders" name="customerInfoEmail">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">验证码：</span>
+						<input type="text" id="editCode" class="form-control phone-code" name="code">
+						<input type="button" name="send_code" value="发送验证码" class="phone-send-code" id="sendCode">
+						<input type="button" name="count" id="resendCount" class="count" value>
+						<span id="phoneErrorCode"></span>
+					</div>
+					<div class="footer">
+						<button type="button" class="btn btn-primary" id="submitEmail">提交</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end container -->
+<!--#include file="/order/pages/system/footer.html"-->
+<script src="/order/assets/js/plugin/responsive-menu.min.js"></script>
+<script src="/order/assets/js/plugin/responsive-menu.min.js"></script>
+<script>
+    minHeight();
+	// 二级导航
+	$(function() {
+			$('pre').addClass('prettyprint');
+	})
+		//发送验证码倒计时
+	var sendCodeTime = 60;
+
+	function CountZero() {
+		if(sendCodeTime <= 0) {
+			$("#sendCode").show().removeAttr("disabled").val("重新发送").removeClass("resent-code").addClass("phone-send-code");
+			$(".count").hide();
+			sendCodeTime = 60;
+			clearTimeout(CountZeros);
+			return;
+		} else {
+			sendCodeTime--;
+			$("#sendCode").show().attr("disabled", true).val("重新发送").removeClass("phone-send-code").addClass("resent-code");
+			$(".count").val(sendCodeTime).show();
+		}
+		var CountZeros = setTimeout(function() {
+			CountZero()
+		}, 1000)
+	}
+	// 发送验证码
+	$("#sendCode").click(function() {
+		var phoneCheck = $.trim($("input#editCustomerInfoEmail").val());
+		var mailz = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+		if(phoneCheck && mailz.test(phoneCheck)) {
+			sendCodeForResetPassword()
+		}
+	});
+	//发送验证码倒计时
+	function sendCodeForResetPassword() {
+		var phoneNum = $.trim($("input#editCustomerInfoEmail").val());
+		var param = {
+			"customerInfoEmail": phoneNum
+		}
+		console.log(phoneNum);
+		var otype = "get";
+		var osync = false;
+		var reqResult = httpRequest(customerInfondVerifyCodeUrl, param, otype, osync);
+		if(reqResult.result == 0) {
+			$("#phoneErrorCode").html('');
+			CountZero(); //调用倒计时函数
+		} else {
+			alert(reqResult.message);
+		}
+	}
+	//失去焦点验证邮箱是否注册
+	$("#editCustomerInfoEmail").blur(function() {
+		var editCustomerInfoEmail = $('#editCustomerInfoEmail').val();
+		var param = {
+			"customerInfoEmail": editCustomerInfoEmail
+		}
+		var otype = "get";
+		var osync = false;
+//		var reqResult = httpRequest(checkPhoneByInfo, param, otype, osync);
+//		if(reqResult.data == 0) {
+//			$('#editCustomerInfoEmail').next().empty();
+//		} else 
+		if(editCustomerInfoEmail ==''){
+			$('#editCustomerInfoEmail').next().empty().end().after('<br><span class="error">邮箱不能为空！</span>');
+			$('#editCustomerInfoEmail').focus(function() {
+        		$("#editCustomerInfoEmail").nextAll().remove();
+        	});
+		}else if(!editCustomerInfoEmail.match(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/)){
+			$('#editCustomerInfoEmail').next().empty().end().after('<br><span class="error">请输入正确邮箱！</span>');
+            $('#editCustomerInfoEmail').focus(function() {
+        		$("#editCustomerInfoEmail").nextAll().remove();
+        	});
+		}else{
+			var reqResult = httpRequest(checkPhoneByInfo, param, otype, osync);
+			if(reqResult.data == 0) {
+            	$('#editCustomerInfoEmail').next().empty();
+            	$('#sendCode').removeAttr('disabled');
+            }else{
+            	$('#sendCode').attr('disabled', true);
+            	$('#editCustomerInfoEmail').next().empty().end().after('<br><span class="error">与原邮箱相同，请更改邮箱！</span>');
+                $('#editCustomerInfoEmail').focus(function() {
+        		    $("#editCustomerInfoEmail").nextAll().remove();
+        	    });
+            }
+		}
+	});
+	//提交修改邮箱
+	$('#submitEmail').on('click', function() {
+		submitEmailMsg();
+	})
+	function submitEmailMsg(){
+		var mailz = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+		var customerInfoEmail = $.trim($("input#editCustomerInfoEmail").val());
+		var code = $.trim($("input#editCode").val());
+		var param = {
+			"customerInfoEmail": customerInfoEmail,
+			"verifyCode": code
+		}
+		var otype = "get";
+		var osync = false;
+		var reqResult = httpRequest(validateCodeUrl, param, otype, osync);
+		if(reqResult.result == 0) {
+			console.log("验证码正确");
+			if(customerInfoEmail == '' || !mailz.test(customerInfoEmail)) {
+				console.log('邮箱不为空,格式错误');
+				return false;
+			}
+			if(code == '') {
+				console.log('验证码为空');
+				return false;
+			}
+			var param = {
+				"customerInfoEmail": customerInfoEmail
+			}
+			var otype = "post";
+			var osync = false;
+			var reqResult = httpRequest(updateCustomerInfoEmailUrl, param, otype, osync);
+			if(reqResult.result == 0) {
+				alert("邮箱修改成功");
+				window.location.href = "/order/pages/companyBusiness/businessSector/bussinessOrder.shtml";
+			} else {
+				alert(reqResult.message);
+				return false;
+			}
+		} else {
+			console.log("请求出错");
+			alert(reqResult.message);
+		}
+	}
+</script>

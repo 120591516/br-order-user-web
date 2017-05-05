@@ -1,0 +1,222 @@
+<!--#include file="/order/pages/system/header.html"-->
+<div class="container minHeightJS">
+	<div class="suiteBoby">
+	
+	<!--套餐简介 	 -->
+	<div class="detailsHead head01">
+			<div>
+				<div class="detailImgFrist bc02" >
+					<img id="imgFirst" src="/upload/2016/11/21/201611211658270271824.jpg">		
+				</div>
+				<div class="detailSuite" id="suiteTboby"></div> 
+			</div>
+		</div>
+		<!-- 流程 -->
+		<div class="steps"> </div>
+		<!--选择门店  -->
+		<div  >
+			<div class="selectBranch" id="getHeight">
+				<div><span>体检日期：</span><div><input class="inline cursor laydate-icon" type="text"  id="selectDate"  placeholder="体检日期"></div></div>
+				<div><div class="reserve cursor" onClick="getBranchBySuite()">查看门店</div></div>
+				<div><span class="branchSum margin-L10">查看所属门店信息</span></div>
+				<div>	
+					<table id="branchBoby" class="branchBoby"></table>	
+				</div>
+			</div>
+		</div>
+		<!--门店图片详情  -->
+		<div class="detailsInfo">
+			<div class="title01">
+				<span>套餐介绍</span>
+			</div> 
+			<div class="info"> 
+				<div class="summary"></div>
+				<div id="branchImgInfo" class='logo'></div>
+			</div>
+		</div>
+	    <!--套餐详情页  -->
+	     <div>
+	    	<div class="detailsAll">
+	    		<table class="detailsTable">
+	    			<tr>
+	    				<td colspan="2">项目详情</td> 
+	    				<td>检查项目内容及意义</td> 
+	    				<td>适用性别</td>  
+	    			</tr>
+	    		</table>
+	    	</div>
+	    </div>  
+	</div> 
+</div>
+<!-- end container  --> 
+<!--日期控件-->
+<!--#include file="/order/pages/system/footer.html"-->
+<script src="/order/assets/laydate/laydate.js"></script> 
+<link rel="stylesheet" href="/order/assets/css/creat/info.css">
+<script> 
+	var thisURL = document.URL;
+	if(thisURL != orderIp+'/order/index.shtml') {
+		$('#suiteNavId').addClass('active');
+		$('#suiteNavId').siblings('li').removeClass('active');
+	} 
+	!function() {
+		laydate.skin('yalan'); 
+		laydate({
+			elem: 'input'
+		}); 
+	}(); 
+	laydate({
+		elem: '#selectDate',
+		format: 'YYYY-MM-DD',
+		istime: false,
+		istoday: true,
+		min: laydate.now() 
+	}); 
+	getSteps(2);
+	suiteSearch();
+	//套餐分页 
+	var suiteTbobyStr='',
+		suite,
+		branchBysuiteId,
+		getBranchBySuiteSum=0, 
+	 	sexName='',
+		examItem,
+		feeItem;
+	function suiteSearch() {
+		//登入成功后赋值
+		if(getParamValue("data")!=null){
+			$('#selectDate').val(getParamValue("data"));
+		}
+		var reqResult = httpRequest(getSuiteInfo, {
+			"suiteId":getParamValue("suiteId")
+		}, "get", false);
+		if(reqResult.result == 0) {
+			createTable(reqResult);
+			return false;
+		}
+	} 
+	function createTable(dataBack) { 
+		$('#suiteTboby').html(''); 
+		suite=dataBack!=null?dataBack.data:null;
+		if(suite!=null){
+			suiteTbobyStr="<div class='h2 c1'>"+suite.examSuiteName +"</div>"; 
+			suiteTbobyStr+="<div class='c2'>"+suite.examSuiteNote +"</div>";
+			if(suite.typeNameList!=null){
+				suiteTbobyStr+="<div class='c2'>适用："+suite.typeNameList+"</div>";
+			} 
+			if(suite.sale_account_sum!=null){
+				suiteTbobyStr+="<div class='c2'>已售："+suite.sale_account_sum +" </div>";
+			} 
+			suiteTbobyStr+="<div><span class='f03 c3'><i class='c3 f02'>￥</i>"+suite.examSuiteDiscountPrice+"元</span>";
+			suiteTbobyStr+="<span class='margin-L10 c2'><i class='f02'>￥</i><del class='f06'>"+suite.examSuitePrice+"元</del></span></div>";
+			suiteTbobyStr+="<div><div class='reserve'><a class='c5' href='#' onClick='openBranchPage()'>我要预约</a></div></div>";
+			$('#suiteTboby').html(suiteTbobyStr); 
+			//图片 
+			if(suite.imgList.length>0){
+				document.getElementById('imgFirst').src = suite.imgList[0].imgLocation;
+				document.getElementById('selectSuite').src = suite.imgList[0].imgLocation; 
+			}
+			//套餐收费项信息
+			if(suite.orgExamFeeItems!=null&&suite.orgExamFeeItems.length>0){
+				var feeItemStr='<tr>';
+				for(feeItemCount in suite.orgExamFeeItems){
+					feeItem=suite.orgExamFeeItems[feeItemCount];
+					feeItemStr+="<td rowspan='"+feeItem.examItems.length +"'>"+feeItem.examFeeItemName+"</td>"; 
+					if(feeItem.examItems!=null&&feeItem.examItems.length>0){  
+						for(examItemCount in feeItem.examItems){
+							examItem=feeItem.examItems[examItemCount]; 
+							if(examItem.fFemale==0&&examItem.fMale==0){
+								sexName='通用';
+							}else if(examItem.fFemale==0&&examItem.fMale!=0){
+								sexName='女';
+							}else if(examItem.fFemale!=0&&examItem.fMale==0){
+								sexName='男';
+							}  
+							if(examItemCount>0){
+								feeItemStr+="<tr>";	
+							}
+							feeItemStr+="<td>"+examItem.examItemName+"</td>";
+							feeItemStr+="<td>"+examItem.examItemNote+"</td>";  
+							feeItemStr+="<td>"+sexName+"</td>";
+							if(examItemCount>0){
+								feeItemStr+="</tr>"	
+							}
+						}
+					}else{
+						feeItemStr+="<td colspan='4'></td>";
+					} 
+					feeItemStr+="</tr>";
+				}	
+				$('.detailsTable').append(feeItemStr);
+			}
+		}else{
+			$('#suiteTboby').html('无次套餐信息');
+		}
+	}
+	//我要预约
+	function openBranchPage(){ 
+		document.getElementById('selectDate').focus();
+	}
+	//查看门店
+	function getBranchBySuite(){ 
+		var $selectBranch=document.getElementById("getHeight"),
+		    wold=$selectBranch.offsetHeight,
+		    branchBysuiteId,
+		    branchBoby='',
+		    $branchBoby=$('#branchBoby'),
+			branch,
+			branchArea='',
+			$branchSum=$('.branchSum');
+		$branchSum.html('');
+		if(getBranchBySuiteSum==0){
+			getBranchBySuiteSum=1;
+			var reqResult = httpRequest(getBranchBySuiteId, {
+				'examSuiteId':getParamValue("suiteId")
+				}, "get", false);
+			if(reqResult!=null&&reqResult.data!=null&&reqResult.data.length>0){
+				$selectBranch.style.height=wold+100+((reqResult.data.length)*37)+'px';//设置宽度 */
+				branchBoby="<tr><th>门店名称</th><th>地址</th><th></th></tr>";
+				for(var i=0;i<reqResult.data.length>0;i++){
+					branch=reqResult.data[i];
+					var branchId='"'+reqResult.data[i].branchId+'"';
+					if(branch.dictArea!=null){
+						branchArea=branch.dictArea.cityName+' '+branch.dictArea.districtName+' '+ branch.branchAddress;
+					}
+					branchBoby+="<tr><th><a onClick='openBranchIdInfo("+branchId+")'>"+branch.branchName+"</a></th>";
+					branchBoby+="<th>"+branchArea +"</th>";
+					branchBoby+="<th><div><div  id='"+branch.branchId+"' name='"+branch.branchName+"'  class='reserve font-nol cursor' onClick='hrefPayPag(this)'>预约</div></div></th></tr>";
+					$branchBoby.html(branchBoby); 
+				}
+			}else{
+				$branchSum.html('*无可选门店,敬请期待');
+			}
+		}else{
+			getBranchBySuiteSum=0;
+			$selectBranch.style.height='54px';//设置宽度 */
+			$branchBoby.html('');
+		}
+	}
+	//跳转购买页面
+	function hrefPayPag(id){ 
+		if($('#selectDate').val()!=""||$('#selectDate').val()!=''){
+			$('.branchSum').empty();
+			if(isLogin()=='3'){ 
+				if (confirm("您好，登录后方可进行预约操作。谢谢！"))  { 
+				  window.location.href = "/order/pages/system/userLogin.html?suiteId="+getParamValue("suiteId")+"&data="+$('#selectDate').val()+"&type=1";
+				}
+			}else{ 
+				window.location.href = "/order/pages/homepage/record.shtml?suiteId="+getParamValue("suiteId")
+					+"&branchId="+id.getAttribute('id')+"&branchName="+ id.getAttribute('name')
+					+"&data="+$('#selectDate').val(); 
+			}
+		}
+		document.getElementById('selectDate').focus();
+		$('.branchSum').empty().html('预约门店请先选择体检时间!');
+		
+	} 
+	//跳转门店页面
+	function openBranchIdInfo(branchId){
+		 window.location.href ='/order/pages/homepage/branchInfo.shtml?branchId='+branchId;
+	}
+	minHeight();
+</script>

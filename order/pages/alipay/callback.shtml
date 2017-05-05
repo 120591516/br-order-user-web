@@ -1,0 +1,22 @@
+<!--#include file="/order/pages/system/cartHearder.html"-->
+	<div class="container  c-background">
+		<div class="row">
+			支付宝正在支付中，请稍候······
+		</div>
+	</div>
+	<script>
+		var param = {
+			"orderNo": getParamValue('out_trade_no'),
+			"orderPayCallback":document.URL.split('?')[1]
+		};
+		var otype = "get";
+		var osync = false;
+		var reqResult = httpRequest(getPayResultUrl, param, otype, osync);
+		if(reqResult.data == 0) {
+			window.location.href='/order/pages/payResult/paySuccess.shtml?orderNo='+getParamValue('out_trade_no');
+		} else {
+			window.location.href='/order/pages/payResult/payFail.shtml';
+		}
+		
+	</script>
+<!--#include file="/order/pages/system/footer.html"-->

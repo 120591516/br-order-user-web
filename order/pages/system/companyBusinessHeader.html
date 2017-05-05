@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>预约平台</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<!--日历插件-->
+		<link rel="stylesheet" href="/order/assets/laydate/need/laydate.css">
+		<!-- CSS -->
+		<link rel="stylesheet" href="/order/assets/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/order/assets/prettyPhoto/css/prettyPhoto.css">
+		<link rel="stylesheet" href="/order/assets/css/social-icons.css">
+		<link rel="stylesheet" href="/order/assets/css/ebook-style.css">
+		<link rel="stylesheet" href="/order/assets/css/creat/common.css">
+		<link rel="stylesheet" href="/order/assets/css/creat/package.css">
+		<!--z-tree插件样式-->
+		<link rel="stylesheet" type="text/css" href="/order/assets/css/plugins/zTreeStyle.css" />
+		<!--自定义样式-->
+		<link rel="stylesheet" type="text/css" href="/order/assets/css/styleCSSwn.css" />
+		<!--二级导航-->
+		<link rel="stylesheet" href="/order/assets/css/responsive-menu.css">
+		<link rel="stylesheet" href="/order/assets/font-awesome/css/font-awesome.css">
+		<link rel="stylesheet" href="/order/assets/css/styles.css">
+
+		<!--二级导航-->
+		<script src="/order/assets/js/plugin/jQuery-2.2.0.min.js"></script>
+		<script src="/order/assets/js/plugin/modernizr.min.js"></script>
+		<script src="/order/assets/js/plugin/modernizr-custom.js"></script>
+		<script src="/order/assets/js/plugin/responsive-menu.min.js"></script>
+		<!--日历插件-->
+		<script src="/order/assets/laydate/laydate.js"></script>
+
+		<script src="/order/assets/bootstrap/js/bootstrap.js"></script>
+		<script src="/order/assets/js/create/public.js"></script>
+		<script src="/order/assets/js/create/Ajax.js"></script>
+		<script>
+			jQuery(function($) {
+				var menu = $('.rm-nav').rMenu({
+					minWidth: '960px',
+				});
+			});
+		</script>
+
+	</head>
+
+	<body>
+		<!-- Header -->
+		<div class="headerHJS">
+			<div class="container">
+			<div class="header row">
+				<div class="logo span4">
+					<h2><a href="/order/index.shtml">Produkta</a></h2>
+				</div>
+				<!--<div class="tel-skype span5 offset6">
+					<p><i class="icon-phone-sign"></i> Phone: 400-728-7289 <span class="pipe">|</span> <i class="icon-user"></i> Skype: hello@domain.com</p>
+				</div>-->
+				<div class="span3 offset9">
+					<a href="/order/index.shtml"><i class="fa fa-home"></i>首页</a>|
+					<a onclick="exit()">退出</a>
+					<a href="/order/pages/shopping/shoppingCart.shtml" style="margin-left:10px;"><i class="fa fa-shopping-cart"></i>购物车</a>
+				</div>
+			</div>
+
+		</div>
+		<!--二级导航-->
+		<header>
+			<div class="wrapper">
+				<div class="rm-container">
+					<nav class="rm-nav rm-nojs rm-lighten">
+						<ul>
+							<li>
+								<a href="/order/pages/companyBusiness/businessSector/bussinessOrder.shtml">订单中心</a>
+							</li>
+							<li>
+								<a href="/order/pages/companyBusiness/businessSector/consumeRecord.shtml">消费记录</a>
+							</li>
+							<li>
+								<a href="#">我的</a>
+								<ul class="ulWidth">
+									<li>
+										<a href="/order/pages/companyBusiness/companyBusinessInfo.shtml">企业资料</a>
+									</li>
+									<li>
+										<a href="/order/pages/editCompanyMessage/editComPassward.shtml">修改密码</a>
+									</li>
+									<li>
+										<a href="/order/pages/editCompanyMessage/editComEmail.shtml">修改邮箱</a>
+									</li>
+									<li>
+										<a href="/order/pages/editCompanyMessage/editComPhone.shtml">修改手机号</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="#">团体</a>
+								<ul class="ulWidth">
+									<li>
+										<a href="#">公司</a>
+									</li>
+									<li>
+										<a href="/order/pages/companyBusiness/businessSector/departmentInfo.shtml">部门</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</header>
+		</div>
+		
+		<script>
+		$(document).ready(function(){
+			if(isLogin() == 3) {
+				confirm("您好，您的账号已过期，请重新登录。谢谢!");
+				window.location.href = "/order/pages/system/enterPriseLogin.html";
+			}
+		})
+		</script>

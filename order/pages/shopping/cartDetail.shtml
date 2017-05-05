@@ -1,0 +1,55 @@
+<!--#include file="/order/pages/system/cartHearder.html"-->
+		<div class="container minHeightJS">
+			<div class="row">
+				<div class="span12 cart-det-til">
+					<span class="cart-det-til-span"><a href="/order/pages/shopping/shoppingCart.shtml">购物车</a>>><b>购物车详情</b></span>
+				</div>
+			</div>
+			<div class="row content">
+				<div class="span12">
+					<table class="posi" id="detailList">
+						
+					</table>
+				</div>
+				<div class="span12" id="itemList">
+					
+				
+				</div>
+			</div>
+			
+		</div>
+				<!--#include file="/order/pages/system/footer.html"-->
+		<script>
+		    minHeight();
+			createTable();
+			function createTable() {
+				$('#detailList').empty();
+				var param ={
+					"cartId":getParamValue("cartId")
+				}
+				var otype = "get";
+				var osync = false;
+				var reqResult = httpRequest(getCustomerCartByIdUrl, param, otype, osync);
+				var str = '';
+				if(reqResult.result == 0);
+				var datal = reqResult.data;
+					str += "<tr><td colspan="+ '2' +"><img src='"+orderIp+"/" + nullformat(datal.customerCartImgUrl) + "'></td></tr>";
+					str += "<tr><td>"+ '套餐名称' +"</td><td>"+ nullformat(datal.examSuiteName) +"</td></tr>";
+					str += "<tr><td>"+ '体检时间' +"</td><td>"+ nullformat(getLocalTime(datal.examTime)) +"</td></tr>";
+					str += "<tr><td>"+ '机构名称' +"</td><td>"+ nullformat(datal.orgName) +"</td></tr>";
+					str += "<tr><td>"+ '体检人' +"</td><td>"+ nullformat(datal.customerPatientName) +"</td></tr>";
+					str += "<tr><td>"+ '性别' +"</td><td>"+ nullformat(datal.sex) +"</td></tr>";
+					str += "<tr><td>"+ '联系方式' +"</td><td>"+ nullformat(datal.customerPatientPhone) +"</td></tr>";
+					str += "<tr><td>"+ '身份证号' +"</td><td>"+ nullformat(datal.IdCard) +"</td></tr>";
+					str += "<tr><td>"+ '单价' +"</td><td>"+ nullformat(datal.singlePrice) +"</td></tr>";
+					str += "<tr><td>"+ '数量' +"</td><td>"+ nullformat(datal.cartNumber) +"</td></tr>";
+					str += "<tr><td>"+ '总金额' +"</td><td>"+ nullformat(datal.price) +"</td></tr>";
+					str += "<tr><td>"+ '创建时间' +"</td><td>"+ nullformat(getLocalTime(datal.cartCreateTime)) +"</td></tr>";
+					
+					
+				$("#detailList").append(str);
+				return false;
+			}
+		
+
+		</script>

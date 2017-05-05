@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+		<meta name="renderer" content="webkit">
+		<title>预约平台</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<!-- CSS -->
+		<link rel="stylesheet" href="/order/assets/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/order/assets/prettyPhoto/css/prettyPhoto.css">
+		<link rel="stylesheet" href="/order/assets/font-awesome/css/font-awesome.css">
+		<link rel="stylesheet" href="/order/assets/css/social-icons.css">
+		<link rel="stylesheet" href="/order/assets/css/ebook-style.css">
+		<link rel="stylesheet" href="/order/assets/css/creat/common.css">
+		<link rel="stylesheet" href="/order/assets/css/creat/package.css">
+		<link rel="stylesheet" href="/order/assets/css/creat/cart.css">
+		<!--自创-->
+		<link rel="stylesheet" type="text/css" href="/order/assets/css/styleCSSwn.css" />
+		<link rel="icon" href="/order/assets/ico/favicon.ico" type="image/x-icon" sizes="16x16">
+		<link rel="shortcut icon" href="/order/assets/ico/favicon.ico">
+		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/order/assets/ico/apple-touch-icon-114-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/order/assets/ico/apple-touch-icon-72-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" href="/order/assets/ico/apple-touch-icon-57-precomposed.png">
+		<script src="/order/assets/js/jquery-1.8.2.min.js"></script>
+		<script src="/order/assets/js/plugin/bootstrap-tab.js"></script>
+		<script src="/order/assets/bootstrap/js/bootstrap.js"></script>
+		<script src="/order/assets/js/create/Ajax.js"></script>
+		<script src="/order/assets/js/create/public.js"></script>
+
+		<!--清除缓存-->
+		<script src="/order/assets/js/plugin/web-storage-cache.js"></script>
+	</head>
+
+	<body>
+
+		<!-- Header -->
+		<div class="container headerHJS">
+			<div class="container bg-login">
+				<div class="row">
+				<div class="span2 offset7 index-align font-sty" id="loginMsg">
+						<a class="marR" onclick="personCenterLink()">个人中心</a>|<a class="marL" onclick="exit()">退出</a>
+				</div>
+				<div class="span3 pull-right" id="loginAndDegisterDivId">
+					<span class="user-LR lr" id="userSpanId">
+				    	<a class="lr-font" href="/order/pages/system/userLogin.html">用户登录</a>/<a class="lr-font" href="/order/pages/system/userRegister.html">注册</a>
+				    </span>
+					<span class="lr" id="enterpriseSpanId">
+					    <a class="lr-font" href="/order/pages/system/enterPriseLogin.html">企业登录</a>/<a class="lr-font" href="/order/pages/system/enterPraisRegister.html">注册</a>
+				    </span>
+				</div>
+				<div class="span2 pull-right" id="userLoginId" class="hides index-login">
+					<span>用户名:</span><span id="userName"></span>
+				</div>
+			</div>
+			</div>
+			
+			<div class="container">
+				<div class="header row" style="width:1200px">
+				<div class="logo span3">
+					<h2><a href="">Produkta</a></h2>
+				</div>
+				<!--当前定位-->
+				<div class="span2 offset2 index-align index-margin">
+					<p class="margin-left"><i class="fa fa-map-marker"></i><span id="currentCity"></span></p>
+					<ul class="margin-left tab-city" id="switchCity">
+						<li id="switchCityLi">切换城市<i class='fa fa-angle-down'></i>
+							<ul id="cityLi"></ul>
+						</li>
+					</ul>
+				</div>
+
+				<div class="span2 pull-right">
+					<p class="index-margin"><span class="index-imgspan"><img src="/order/assets/img/pay/gwc.png"></span>
+						<a class="index-guc font-sty" href="/order/pages/shopping/shoppingCart.shtml">购物车</a>
+					</p>
+				</div>
+				<div class="span3 pull-right" style="width:210px;">
+					<p class="index-margin"><span class="index-imgspan"><img src="/order/assets/img/pay/tel.png"></span><span class="index-block index-align font-sty"><b>400-728-7289</b><br>咨询热线</span></p>
+				</div>
+			</div>
+			</div>
+			<!--<div class="header row" style="width:1200px">
+				<div class="logo span3">
+					<h2><a href="">Produkta</a></h2>
+				</div>-->
+				<!--当前定位-->
+				<!--<div class="span2 offset2 index-align index-margin">
+					<p class="margin-left"><i class="fa fa-map-marker"></i><span id="currentCity"></span></p>
+					<ul class="margin-left tab-city" id="switchCity">
+						<li id="switchCityLi">切换城市<i class='fa fa-angle-down'></i>
+							<ul id="cityLi"></ul>
+						</li>
+					</ul>
+				</div>-->
+
+				<!--登陆后个人中心和购物车入口-->
+				<!--<div class="span2 index-align font-sty" id="loginMsg">
+					<p class="index-margin">
+						<a onclick="personCenterLink()">个人中心</a>
+					</p>
+					<p class="index-margin">
+						<a onclick="exit()">退出</a>
+					</p>
+				</div>-->
+
+				<!--<div class="span2 pull-right">
+					<p class="index-margin"><span class="index-imgspan"><img src="/order/assets/img/pay/gwc.png"></span>
+						<a class="index-guc font-sty" href="/order/pages/shopping/shoppingCart.shtml">购物车</a>
+					</p>
+				</div>
+				<div class="span3 pull-right" style="width:210px;">
+					<p class="index-margin"><span class="index-imgspan"><img src="/order/assets/img/pay/tel.png"></span><span class="index-block index-align font-sty"><b>400-728-7289</b><br>咨询热线</span></p>
+				</div>
+			</div>-->
+			<!--用户或企业登录入口部分-->
+			<!--<div id="loginAndDegisterDivId">
+				<span class="user-LR lr" id="userSpanId">
+				    	<a class="lr-font" href="/order/pages/system/userLogin.html">用户登录</a>/<a class="lr-font" href="/order/pages/system/userRegister.html">注册</a>
+				    </span>
+				<span class="lr" id="enterpriseSpanId">
+					    <a class="lr-font" href="/order/pages/system/enterPriseLogin.html">企业登录</a>/<a class="lr-font" href="/order/pages/system/enterPraisRegister.html">注册</a>
+				    </span>
+			</div>-->
+			<!--登陆后用户或企业名显示部分-->
+			<!--<div id="userLoginId" class="hides index-login">
+				<span>用户名:</span><span id="userName"></span>
+			</div>-->
+			<!--导航-->
+			<div class="navbar">
+				<div class="navbar-inner">
+					<div class="container">
+						<ul class="nav">
+							<li class="active">
+								<a onclick="homePage()">首页</a>
+							</li>
+							<li id="branchNavId">
+								<a onclick="branchPage()">门店</a>
+							</li>
+							<li id="suiteNavId">
+								<a onclick="suitePage()">套 餐</a>
+							</li>
+							<li id="reservation">
+								<a href="#">预 约</a>
+							</li>
+							<li>
+								<a href="#">帮 助</a>
+							</li>
+							<!--<li>
+								<a href="#">团 检</a>
+							</li>-->
+							<li>
+								<a href="#">联系我们</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- /.navbar -->
+		</div>
+		<script>
+			//是否登陆判断 1.个人登入 2.企业登入 3未登入
+			//		storageVal = JSON.parse(sessionStorage.getItem("storageVal"));
+			//		storageRegisterVal=JSON.parse(sessionStorage.getItem("storageRegisterVal"));
+			if(isLogin() == 1) {
+				$('#loginAndDegisterDivId').hide();
+				$('#userLoginId').removeClass('hides');
+				//      	$('#userName').html(storageVal.customerInfoPhone);
+				$('#userName').html(userLoginName);
+				$('#loginMsg').removeClass('hides');
+//				$('#loginMsg').removeClass('hides').next().removeClass('offset2');
+			} else if(isLogin() == 2) {
+				$('#loginAndDegisterDivId').hide();
+				$('#userLoginId').removeClass('hides');
+				$('#userLoginId').children(':first').html('企业名:');
+				//      	$('#userName').html(storageRegisterVal.customerInfoPhone);
+				$('#userName').html(companyLoginName);
+//				$('#loginMsg').removeClass('hides').next().removeClass('offset2');
+				$('#loginMsg').removeClass('hides');
+			} else if(isLogin() == 3) {
+				$('#userLoginId').addClass('hides');
+				$('#loginMsg').addClass('hides').next().addClass('offset2');
+			}
+
+			$('#switchCityLi').hover(function() {
+					$('#switchCityLi i').removeClass('fa-angle-down').addClass('fa-angle-up');
+				}, function() {
+					$('#switchCityLi i').removeClass('fa-angle-up').addClass('fa-angle-down');
+				})
+				//个人中心链接
+			function personCenterLink() {
+				if(userLoginName == null && companyLoginName != null) {
+					window.location.href = "/order/pages/companyBusiness/businessSector/bussinessOrder.shtml";
+				} else {
+					window.location.href = "/order/pages/appointment/orderList.shtml";
+				}
+			}
+			getAllCity();
+			//城市定位
+			function getAllCity() {
+				$("#cityLi").empty();
+				$("#currentCity").empty();
+				var otype = "get";
+				var osync = false;
+				var reqResult = httpRequest(positioncityUrl, null, otype, osync);
+				if(reqResult) {
+					if(getParamValue('name') == '' || getParamValue('name') == null) {
+						$('#currentCity').text(reqResult.city.name);
+					}
+					var cityListData = reqResult.cityList;
+					var str = '';
+					for(var i = 0; i < cityListData.length; i++) {
+						str += "<li name='" + cityListData[i].name + "' province_id='" + cityListData[i].province_id + "' city_id='" + cityListData[i].city_id + "' onclick='positionJump(this)'>" + cityListData[i].name + "</li>";
+					}
+					$("#cityLi").append(str);
+					return false;
+				} else {
+					alert(reqResult.data);
+				}
+			}
+
+			function positionJump(param) {
+				var name = $(param).attr("name");
+				var provinceId = $(param).attr("province_id");
+				var cityId = $(param).attr("city_id");
+				console.log(name);
+				window.location.href = '/order/pages/homepage/branch.shtml?provinceId=' + provinceId + '&name=' + name + '&cityId=' + cityId + '';
+			}
+			//导航页面切换
+			function homePage() {
+				window.location.href = "/order/index.shtml";
+				return false;
+			}
+
+			function branchPage() {
+				window.location.href = "/order/pages/homepage/branch.shtml";
+				return false;
+			}
+
+			function suitePage() {
+				window.location.href = "/order/pages/homepage/package.shtml";
+				return false;
+			}
+
+			function reservation() {
+				window.location.href = "/order/pages/homepage/branchInfo.shtml";
+				return false;
+			}
+		</script>

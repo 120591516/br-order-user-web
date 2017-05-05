@@ -1,0 +1,276 @@
+<!--#include file="/order/pages/system/personalMsgHeader.html"-->
+<!-- Content Header (Page header) -->
+<div class="container-fluid backgroundColor_beige minHeightJS">
+	<div class="container">
+		<section>
+			<!-- general form elements -->
+			<div class="box box-primary staffInfo row">
+				<div class="box-header with-border">
+					<div class="span4">
+						<h4 class="box-title">
+							<span class="fontColor_black">
+								<i class="fa fa-circle-o"></i>预约&rArr;
+							</span>
+							<span>
+								<small><i class="fa fa-leaf fontColor_gray"></i>个人订单信息</small>
+							</span>
+									</h4>
+					</div>
+				</div>
+				<div class="box-body">
+					<form action="" id="searchOrderListInfo" class="staffModal" role="form" novalidate="novalidate">
+						<span>
+						<i class="fa fa-paperclip"></i>
+							订单搜索
+					    </span>
+						<div class="row margin-bottom">
+							<div class="span5 offset1">
+								<div class="input-group">
+									<span class="input-group-addon letter_3px">订单号：</span>
+									<input type="text" id='search_orderNo' name="orderNo" class="form-control" />
+								</div>
+							</div>
+							<div class="span5">
+								<div class="input-group">
+									<span class="input-group-addon">体检机构：</span>
+									<select class="form-control orderOrg" name="orgId" id="search_orgId"></select>
+								</div>
+							</div>
+						</div>
+						<div class="row margin-bottom">
+							<div class="span5 offset1">
+								<div class="input-group">
+									<span class="input-group-addon">体检门店：</span>
+									<select class="form-control orderBranch" name="branchId" id="serBranchId"></select>
+								</div>
+							</div>
+							<div class="span5">
+								<div class="input-group">
+									<span class="input-group-addon">体检套餐：</span>
+									<select class="form-control orderSuite" name="examSuiteId" id="search_examSuiteName"></select>
+								</div>
+							</div>
+						</div>
+						<div class="row margin-bottom">
+							<div class="span5 offset1">
+								<div class="input-group">
+									<span class="input-group-addon">开始日期：</span>
+									<input type="text" class="laydate-icon form-control" name="StartExamTime" id="start" value="" />
+								</div>
+							</div>
+							<div class="span5">
+								<div class="input-group">
+									<span class="input-group-addon">结束日期：</span>
+									<input type="text" class="laydate-icon form-control" name="EndExamTime" id="end" value="" />
+								</div>
+							</div>
+						</div>
+						<div class="row margin-bottom">
+							<div class="span5 offset1">
+								<div class="input-group">
+									<span class="input-group-addon">支付状态：</span>
+									<select class="form-control payForStatus" name="orderStatus" id="search_orderStatus"></select>
+								</div>
+							</div>
+							<div class="span2 offset2">
+								<div class="input-group">
+									<input type="submit" class="btn btn-default pull-right" id="search_orderList_btn" value="搜索" />
+								</div>
+							</div>
+						</div>
+					</form>
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>操作</th>
+								<th>订单号</th>
+								<th>体检机构</th>
+								<th>体检套餐</th>
+								<th>体检时间</th>
+								<th>支付状态</th>
+								<th>是否退款</th>
+							</tr>
+						</thead>
+						<tbody id="orderListInfoTbody"></tbody>
+					</table>
+					<div class="row">
+						<div class="col-md-12 pull-right">
+							<div id="callBackPager"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /.box -->
+			<!-- /.row -->
+		</section>
+
+	</div>
+</div>
+<!--#include file="/order/pages/system/footer.html"-->
+<script src="/order/assets/js/create/public.js"></script>
+<!--分页插件-->
+<script src="/order/assets/js/plugin/extendPagination.js"></script>
+<!--日期控件-->
+<script src="/order/assets/laydate/laydate.js"></script>
+<script type="text/javascript">
+	//日历控件皮肤
+	minHeight();
+	! function() {
+		laydate.skin('yalan'); //切换皮肤，请查看skins下面皮肤库
+		laydate({
+			elem: 'input'
+		}); //绑定元素
+	}();
+	//				//列表日期范围限制
+	var start = {
+		elem: '#start',
+		format: 'YYYY-MM-DD hh:mm:ss',
+		istime: false,
+		istoday: true,
+		choose: function(datas) {
+			end.min = datas; //开始日选好后，重置结束日的最小日期
+			end.start = datas //将结束日的初始值设定为开始日
+		}
+	};
+	var end = {
+		elem: '#end',
+		format: 'YYYY-MM-DD hh:mm:ss',
+		max: '2099-06-16 23:59:59',
+		istime: false,
+		istoday: true,
+		choose: function(datas) {
+			start.max = datas; //结束日选好后，充值开始日的最大日期
+		}
+	};
+	laydate(start);
+	laydate(end);
+	//分页展示员工信息
+	//  分页
+	init_page();
+	payForStatus();
+	orderListByCustomerId(); //机构、门店、套餐下拉框回显
+
+	function init_page() {
+		page_curr = 1;
+		$('#orderListInfoTbody').empty();
+		//1.请求后端信息并展示
+		orderListInfoSearch();
+		//2.初始化分页信息
+		init_pager();
+	}
+	// 初始化分页信息
+	function init_pager() {
+		$('#callBackPager').extendPagination({
+			totalCount: total_count,
+			showCount: count_curr,
+			limit: limit,
+			callback: function(curr, limit, totalCount) {
+				page_curr = curr;
+				total_count = totalCount;
+				orderListInfoSearch();
+			}
+		});
+		return false;
+	}
+	//消费记录信息搜索
+	function orderListInfoSearch() {
+		var param = initParam();
+		var otype = "POST";
+		var osync = false;
+		var reqResult = httpRequest(orderList_getCustomerOrderByPage_url, param, otype, osync);
+		if(reqResult.result == 0) {
+			//4.展示数据
+			total_count = reqResult.data.total;
+			createTable(page_curr, limit, total_count, reqResult);
+		}
+		return false;
+	}
+
+	//初始化参数信息
+	function initParam() {
+		var orderNo = $('#search_orderNo').val();
+		var examSuiteId = $("#search_examSuiteName").val();
+		var branchId = $("#serBranchId").val();
+		var orgId = $("#search_orgId").val();
+		var startExamTime = $("#start").val();
+		var endExamTime = $("#end").val();
+		var orderStatus = $("#search_orderStatus").val();
+		$('#orderListInfoTbody').empty();
+		//抓取分页信息
+		var param = {
+			"page": page_curr,
+			"rows": count_curr
+		};
+		if(orderNo) {
+			param.orderNo = orderNo;
+		}
+		if(branchId) {
+			param.branchId = branchId;
+		}
+		if(examSuiteId) {
+			param.examSuiteId = examSuiteId;
+		}
+		if(orgId) {
+			param.orgId = orgId;
+		}
+		if(startExamTime) {
+			param.startExamTime = startExamTime;
+		}
+		if(endExamTime) {
+			param.endExamTime = endExamTime;
+		}
+		if(orderStatus) {
+			param.orderStatus = orderStatus;
+		}
+		return param;
+	}
+	$('#search_orderList_btn').on('click', function() {
+			orderListInfoSearch();
+			init_pager();
+			return false;
+		})
+		//		个人订单信息列表展示
+	function createTable(currPage, limit, total, dataBack) {
+		var showNum = limit;
+		if(total - (currPage * limit) < 0) showNum = total - ((currPage - 1) * limit);
+		var datal = dataBack.data.list;
+		var str = '';
+		for(var i = 0; i < showNum; i++) {
+			str += "<tr><td examSuiteId='" + nullformat(datal[i].examSuiteId) + "' customerPatientName='" + nullformat(datal[i].customerPatientName) + "' examTime='" + datal[i].examTime + "'>";
+			str += "<a href='/order/pages/appointment/orderDetail.shtml?orderNo=" + datal[i].orderNo + "&cartId=" + datal[i].cartId + "&patientId=" + datal[i].customerPatientId + " 'title='查看信息' data-toggle='modal'><i class='fa fa-eye'></i></a> ";
+			str += "</td>";
+			str += "<td>" + nullformat(datal[i].orderNo) + "</td>";
+			str += "<td>" + nullformat(datal[i].orgName) + "</td>";
+			if(datal[i].examSuiteName.length > 10) {
+				str += "<td>" + datal[i].examSuiteName.substring(0, 9) + "...</td>";
+			} else {
+				str += "<td>" + nullformat(datal[i].examSuiteName) + "</td>";
+			}
+			str += "<td>" + nullformat(datal[i].examTime) + "</td>";
+			str += "<td>" + nullformat(datal[i].customerOrderStatusName) + "</td>";
+			if(datal[i].orderStatus == 40) {
+				str += "<td orderNo='" + nullformat(datal[i].orderNo) + "'><a href='#' class='btn font_weight_bold' onclick='refund(this)'>申请退款</a></td>";
+			} else {
+				str += "<td orderNo='" + nullformat(datal[i].orderNo) + "'>" + '无' + "</td>";
+			}
+			str += '</tr>';
+		}
+		$('#orderListInfoTbody').empty().append(str);
+		return false;
+	}
+
+	function refund(orderNum) {
+		var orderNo = $(orderNum).parent().attr("orderNo");
+		var param = {
+			"orderNo": orderNo
+		};
+		var otype = "get";
+		var osync = false;
+		var reqResult = httpRequest(weixinRefundUrl, param, otype, osync);
+		if(reqResult.status == 1) {
+			alert('您好，您的退款已申请成功。微信支付即时发起退款，支付宝支付需管理员审核，请等候管理员操作。谢谢！');
+		} else {
+			alert('退款操作失败');
+		}
+	}
+</script>

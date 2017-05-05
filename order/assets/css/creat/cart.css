@@ -1,0 +1,663 @@
+.container .header .title {
+	margin-top: 40px;
+	font-size: 24px;
+	font-weight:600;
+	float:left;
+}
+.borderB{
+	border-bottom: 1px solid #615a5a;
+}
+.container .warnMsg .notice {
+	border: 1px solid #edd28b;
+	background: #fffdee;
+	padding: 10px 20px;
+	line-height: 25px;
+	margin-bottom: 20px;
+	color: #f70;
+	font-size: 18px;
+	margin-top:40px;
+}
+
+.container .warnMsg {
+	/*display: none;*/
+}
+
+.container .content {
+	display: block;
+}
+.font-14{
+	font-size:14px;
+}
+.container .warnMsg .notice .btn-login {
+	margin-left: 10px;
+	border-radius: 3px;
+	color: #fff;
+	font-size: 12px;
+	font-weight: 400;
+	padding: 0 10px;
+	vertical-align: middle;
+	cursor: pointer;
+	border: 0;
+	float: none;
+	height: 25px;
+	line-height: 25px;
+	background-color: #466be7;
+	display: inline-block;
+}
+
+.container .row .span12 .cart-heard {
+	display: block;
+	height: 32px;
+	line-height: 32px;
+	padding: 5px 0px;
+	background: rgb(228, 222, 222) none repeat scroll 0% 0%;
+	border-width: 0px 1px 1px;
+	border-style: none solid solid;
+	border-color: -moz-use-text-color rgb(233, 233, 233) rgb(233, 233, 233);
+	-moz-border-top-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-bottom-colors: none;
+	-moz-border-left-colors: none;
+	border: none;
+	margin: 20px 0px;
+}
+
+.container .row .span12 .cart-heard .column {
+	float: left;
+	text-align: center;
+}
+
+.container .row .span12 .cart-heard .cart-checkbox {
+	height: 18px;
+	line-height: 18px;
+	padding-top: 7px;
+	width: 50px;
+	padding-left: 11px;
+}
+
+.container .row .span12 .cart-heard .cart-checkbox .allcheck {
+	float: none;
+	position: relative;
+	z-index: 5;
+	vertical-align: middle;
+	margin: 0px 3px 0px 0px;
+	padding: 0px;
+}
+
+.container .row .span12 .cart-heard .cart-operation {
+	width: 90px;
+}
+
+.container .row .span12 .cart-heard .cart-img {
+	width: 160px;
+}
+
+.container .row .span12 .cart-heard .cart-org {
+	width: 160px;
+}
+
+.container .row .span12 .cart-heard .cart-suite {
+	width: 160px;
+}
+
+.container .row .span12 .cart-heard .cart-total {
+	width: 90px;
+}
+
+.container .row .span12 .cart-heard .cart-time {
+	width: 120px;
+}
+
+.container .row .span12 .cart-heard .cart-price {
+	width: 80px;
+}
+
+.container .row .span12 .cart-heard .cart-num {
+	width: 100px;
+}
+
+.container .row .span12 .cart-heard .cart-exam {
+	width: 120px;
+}
+
+.container .row .span12 .cart-item {
+	height: 120px;
+	border: 1px solid #b39f9f;
+	margin-bottom: 10px;
+}
+
+.container .row .span12 .cart-item .cell {
+	float: left;
+	text-align: center;
+}
+
+.container .row .span12 .cart-item .top {
+	margin-top: 20px;
+}
+
+.container .row .span12 .cart-item .item-checkbox {
+	height: 18px;
+	line-height: 18px;
+	width: 50px;
+	padding-left: 11px;
+}
+
+.container .row .span12 .cart-item .item-operation {
+	width: 90px;
+}
+
+.container .row .span12 .cart-item .item-operation .space {
+	margin: 5px;
+}
+
+.container .row .span12 .cart-item .item-img {
+	width: 160px;
+}
+
+.container .row .span12 .cart-item .imgs {
+	width: 150px;
+	height: 110px;
+	margin: 10px 5px;
+	vertical-align: middle;
+	border: 0;
+}
+
+.container .row .span12 .cart-item .item-org {
+	width: 160px;
+}
+
+.container .row .span12 .cart-item .item-suite {
+	width: 160px;
+}
+
+.container .row .span12 .cart-item .item-total {
+	width: 90px;
+}
+
+.container .row .span12 .cart-item .item-time {
+	width: 120px;
+}
+
+.container .row .span12 .cart-item .item-price {
+	width: 80px;
+}
+
+.container .row .span12 .cart-item .item-num {
+	width: 100px;
+}
+
+.container .row .span12 .cart-item .item-exam {
+	width: 120px;
+}
+
+.row .back {
+	height: 60px;
+	line-height: 60px;
+	background: #e4dede;
+	margin-bottom: 10px;
+	font-size: 16px;
+	position: relative;
+}
+
+.container .row .del {
+	margin-left: 10px;
+	cursor: pointer;
+	width: 160px;
+	float: left;
+}
+
+.container .row .order {
+	margin: 10px 20px;
+	border-radius: 3px;
+	color: #fff;
+	font-size: 16px;
+	font-weight: 400;
+	padding: 0 10px;
+	cursor: pointer;
+	border: 0;
+	height: 40px;
+	line-height: 40px;
+	background-color: #0088cc;
+	display: inline-block;
+}
+
+.container .back .fd {
+	float: right;
+}
+
+.container .back .del:hover {
+	color: #f00;
+}
+.c-note-he{
+	height:98px;
+}
+.c-note-p{
+	/*font-weight:700;*/
+	margin-top:30px;
+}
+
+/*购物车详情*/
+
+.container .span12 .posi {
+	width: 600px;
+	margin: auto;
+	border: 1px solid #e6dfdf;
+	margin: 20px auto;
+	border-collapse: collapse;
+}
+.cart-det-til{
+	height: 40px;
+    line-height: 40px;
+    background: #EAEAEA;
+}
+.cart-det-til-span{
+	margin:0 0 0 20px;
+	cursor: pointer;
+}
+.container .span12 .posi tr td {
+	height: 30px;
+	border: 1px solid #dadada;
+	font-size: 16px;
+	text-align: center;
+}
+
+.container .span12 .posi tr td img {
+	width: 300px;
+	height: 200px;
+	margin: 10px auto;
+}
+
+.container .span12 .posi tr td:first-child {
+	width: 220px;
+}
+
+
+/*购物车商品数量样式*/
+
+.container .back .choice {
+	float: right;
+	color: #999;
+	height: 44px;
+	line-height: 60px;
+	margin: 0 20px;
+	cursor: pointer;
+}
+
+.container .back .choice em {
+	color: #e4393c;
+	font-family: verdana;
+	font-weight: 700;
+	margin: 0 3px;
+}
+
+.container .back .totals {
+	width: 120px;
+	cursor: pointer;
+}
+
+.container .back .totals b{
+	font-size: 16px;
+	font-family: verdana;
+	font-weight: 700;
+	color: #e4393c;
+	font-weight: 700;
+}
+/*支付*/
+.order-result{
+	background: #eae7e7;
+	position:relative;
+	height:80px;
+	line-height:80px;
+}
+.order-result .row .o-com span{
+	
+}
+.order-result .row .o-price{
+	text-align: right;
+	
+}
+.order-result .row .o-price span{
+	font-size:14px;
+}
+.order-result .row .o-price span b{
+	color:#e4393c;
+	font-weight:700;
+	font-size:18px;
+	margin-left:5px;
+}
+.order-result .row .o-com{
+	line-height: 40px;
+    height: 40px;
+    font-weight:700;
+    padding: 0 20px;
+}
+.order-result .row .o-warn{
+	line-height: 40px;
+    height: 40px;
+    padding: 0 20px;
+    font-size: 14px;
+    color: #716969;
+}
+.order-result .row .o-warn b{
+	color:#e4393c;
+}
+.order-code{
+	height: 400px;
+    border: 1px solid #ffe9e9;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px #e3e6e8;
+}
+/*微信支付*/
+.container .row .wx ul{
+	list-style: none;
+    text-align: center;
+    padding: 40px;
+}
+.container .row .wx ul li:nth-child(1){
+	height: 80px;
+    line-height: 80px;
+}
+.container .row .wx ul li:nth-child(1) span img{
+	width:50px;
+	height:auto;
+}
+.container .row .wx ul li:nth-child(2) img{
+	width:240px;
+	height:240px;
+}
+.container .row .wx ul li:nth-child(3) img{
+	width: 240px;
+    height: 80px;
+    margin-top: 20px;
+}
+/*支付宝支付*/
+.container .row .zfb ul{
+	list-style: none;
+    text-align: center;
+    padding: 40px;
+}
+.container .row .zfb ul li:nth-child(1){
+	height: 80px;
+    line-height: 80px;
+}
+.container .row .zfb ul li:nth-child(1) span img{
+	width:50px;
+	height:auto;
+}
+.container .row .zfb ul li:nth-child(2) div{
+	width: 244px;
+    text-align: center;
+    height: 310px;
+    border: 1px solid #b7b7b7;
+    margin: 0 auto;
+}
+.container .row .zfb ul li:nth-child(2) div img{
+	width:240px;
+	height:240px;
+	margin-bottom:10px;
+}
+.container .row .zfb ul li:nth-child(2) div p{
+	height: 24px;
+    line-height: 24px;
+    font-size: 14px;
+
+}
+.container .row .zfb ul li:nth-child(3) img{
+	width: 240px;
+    height: 80px;
+    margin-top: 20px;
+}
+/*支付成功*/
+.container .s-title{
+    text-align: center;
+    height: 60px;
+    line-height: 60px;
+    font-size: 30px;
+}
+.container .s-title .fa-check{
+	display: inline-block;
+    background: #30d830;
+    border-radius: 15px;
+    color: #fff;
+}
+.container .s-code{
+	height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+    font-weight: 600;
+}
+.container .s-code .s-pre{
+	color: #0ab710;
+}
+.container .s-wran{
+	font-weight: 600;
+	height: 40px;
+    line-height: 40px;
+    color: #f00;
+    font-size: 18px;
+}
+.container .s-detail{
+	height: 100px;
+    margin-top: 10px;
+    background: #e8e3e3;
+}
+.container .s-detail .s-detail-one{
+	height: 40px;
+    line-height: 40px;
+    padding: 10px 20px;
+    font-weight: 600;
+}
+.container .s-detail .s-detail-two{
+	height: 40px;
+    line-height: 40px;
+    padding: 0 20px;
+    font-weight: 600;
+}
+.container .s-detail .s-detail-two .s-int{
+	margin-left:30px;
+}
+.container .s-detail .s-detail-two ins{
+	color:#f00;
+}
+.container .row .s-warn2{
+	height: 40px;
+    line-height: 40px;
+}
+.container .row .s-warn2 span{
+	color: #30d830;
+}
+.container .s-msg{
+	border: 1px solid #e8e3e3;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.container .s-msg p{
+	height: 35px;
+    line-height: 35px;
+    font-size:14px;
+    color:#000;
+    padding-left: 10px;
+}
+.container .s-msg .s-msg1{
+	margin: 10px 10px 0 10px;
+    border: 1px solid #e8e3e3;
+    border-bottom: none;
+}
+.container .s-msg .s-msg2{
+	margin: 0 10px 10px 10px;
+    border: 1px solid #e8e3e3;
+}
+/*支付失败*/
+.container .f-title{
+    text-align: center;
+    height: 60px;
+    line-height: 60px;
+    font-size: 30px;
+}
+.container .row .f-title .fa-close{
+	width: 30px;
+    height: 30px;
+    background: #fb5c1e;
+    border-radius: 15px;
+    color: #fff;
+}
+.container .f-msg{
+	height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+/*购物车头部返回信息样式*/
+.cart-reback{
+	text-align: right;
+}
+.cart-margin{
+	margin: 0 20px 0 0;
+}
+/*购物车发票类型*/
+.c-retype{
+	margin: 10px 20px;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 400;
+    padding: 0 10px;
+    cursor: pointer;
+    border: 0;
+    height: 30px;
+    line-height: 30px;
+    background-color: #0088cc;
+    display: inline-block;
+}
+.c-retype-sty{
+	margin-bottom: 20px;
+    border: 1px solid #B39F9F;
+}
+.c-ul{
+	padding: 20px 10px;
+    list-style: none;
+}
+.c-li{
+	height: 40px;
+    line-height: 40px;
+}
+.c-typeselect{
+	margin-left: 10px;
+}
+.c-active{
+    background: #08C;
+    color: #fff;
+    border-right: solid 2px #046CA0;
+    border-top: solid 2px #046CA0;
+    border-left: solid 2px #3AB7F5;
+    border-bottom: solid 2px #3AB7F5;
+}
+.c-typebtn{
+    background: #dddddd;
+    color: #000000;
+    border-right: solid 2px #898989;
+    border-top: solid 2px #dddddd;
+    border-left: solid 2px #dddddd;
+    border-bottom: solid 2px #898989;
+}
+.c-type{
+	display: inline-block;
+	width: 60px;
+    height: 26px;
+    line-height: 30px;
+    font-size:14px;
+    text-align: center;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.c-text{
+	margin-left: 10px;
+    padding: 0;
+    height: 30px;
+    border: 1px solid #CCC;
+}
+.c-content{
+	border-radius: 4px;
+	height:30px;
+}
+.c-ts{
+	font-weight:700;
+	font-size:14px;
+}
+.c-header-con{
+	background: #08c;
+    color: #fff;
+}
+/*购物车选择支付方式*/
+.c-payway{
+    border: 1px solid #eae7e7;
+    margin-top: 20px;
+    height: 150px;
+}
+.c-p{
+	padding: 20px 40px;
+    font-size: 14px;
+    color: #676666;
+}
+.c-pay-method{
+	width: 200px;
+    height: 45px;
+    cursor: pointer;
+}
+.c-border{
+    border: 1px solid #eae7e7;
+}
+.c-margin{
+	margin-left:20px;
+}
+.c-img{
+	width: 30px;
+    height: auto;
+}
+.c-payway-bj{
+	text-align: center;
+    height: 45px;
+    line-height: 45px;
+}
+.c-next{
+	margin-top: 20px;
+    height: 80px;
+    text-align:center;
+}
+.c-next-span{
+	width: 120px;
+    background: #eae7e7;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 4px;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+.c-shadow{
+	box-shadow: 0 0 10px rgb(0, 170, 238);
+	border:1px solid #0ae;
+}
+/*微信支付页面*/
+.c-background{
+	background: #eae7e7;
+}
+.c-height{
+	height:60px;
+}
+.c-wx-ts{
+	display: inline-block;
+    margin: 10px 20px 10px 20px;
+    font-weight: 700;
+}
+.c-color{
+	color:#f00;
+}
+em{
+	color: #f00;
+    font-size: 16px;
+    font-weight: 600;
+}

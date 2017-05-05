@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit">
+		<title>预约平台</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<!-- CSS -->
+		<link rel="stylesheet" href="/order/assets/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/order/assets/prettyPhoto/css/prettyPhoto.css">
+		<link rel="stylesheet" href="/order/assets/font-awesome/css/font-awesome.css">
+		<link rel="stylesheet" href="/order/assets/css/social-icons.css">
+		<link rel="stylesheet" href="/order/assets/css/ebook-style.css">
+		<link rel="stylesheet" href="/order/assets/css/creat/common.css">
+		<link rel="stylesheet" href="/order/assets/css/creat/package.css">
+		<link rel="stylesheet" href="/order/assets/css/creat/cart.css">
+		<link rel="stylesheet" href="/order/assets/css/styleCSSwn.css">
+		<link rel="icon" href="/order/assets/ico/favicon.ico" type="image/x-icon" sizes="16x16">
+		<link rel="shortcut icon" href="assets/ico/favicon.ico">
+		<script src="/order/assets/js/plugin/jQuery-2.2.0.min.js"></script>
+		<script src="/order/assets/bootstrap/js/bootstrap.js"></script>
+		<script src="/order/assets/js/plugin/jquery-1.11.1.min.js"></script>
+		<script src="/order/assets/js/jquery-1.8.2.min.js"></script>
+		<script src="/order/assets/js/create/Ajax.js"></script>
+		<script src="/order/assets/js/create/public.js"></script>
+	</head>
+
+	<body>
+		<div class="container headerHJS borderB">
+			<div class="container">
+				<div class="header row">
+					<div class="logo span4">
+						<h2><a href="/order/index.shtml">Produkta</a></h2>
+					</div>
+					<span class="title">
+						购物车
+					</span>
+					<div class="tel-skype span2 offset6">
+						<span class="" id='cartReturnIndex'><a class="cart-margin color" href="/order/index.shtml"><b><i class="fa fa-home"></i>首页</b></a><a onclick="personCenterLink()" class="marL font-14"><b>个人中心</b></a></span>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<script>
+			$(document).ready(function() {
+				if(isLogin() == 3) {
+					$('#cartReturnIndex').hide();
+				} else {
+					$('#cartReturnIndex').show();
+				}
+			})
+
+			function personCenterLink() {
+				if(userLoginName == null && companyLoginName != null) {
+					window.location.href = "/order/pages/companyBusiness/businessSector/bussinessOrder.shtml";
+				} else {
+					window.location.href = "/order/pages/appointment/orderList.shtml";
+				}
+			}
+		</script>

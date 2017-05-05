@@ -1,0 +1,98 @@
+<!--#include file="/order/pages/system/cartHearder.html"-->
+		<div class="container minHeightJS order-result">
+			<div class="row">
+				<div class="span7 o-com ">
+				    订单提交成功，请您尽快付款！ 订单编号：<span id="orderNo"></span> 
+			    </div>
+			    <div class="span4 o-price o-com">
+				    <span>应付金额：<b id="orderMoney"></b>元</span>
+			    </div>
+			</div>
+			<div class="row">
+				<div class="span10 o-warn">
+					请您在<b>30分钟</b>内完成支付，否则系统会自动取消订单！
+				</div>
+			</div>
+		</div>
+		
+		<div class="container c-payway">
+			<div class="row">
+				<div class="span12">
+					<p class="c-p">其他支付方式</p>
+				</div>
+			</div>
+			<div class="row" id="payWay">
+				<div class="span2 offset1 c-pay-method">
+					<div class="c-payway-bj wx c-border" onclick="payMethod(this)"><span><img class="c-img" src="/order/assets/img/pay/wx.png"></span><span>微信支付</span></div>
+				</div>
+				<div class="span2 c-pay-method c-margin">
+					<div class="c-payway-bj zfb c-border" onclick="payMethod(this)"><span><img class="c-img" src="/order/assets/img/pay/zfb.png"></span><span>支付宝支付</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="container min-height">
+			<div class="row">
+				<div class="span2 offset5 c-next">
+					<span class="c-next-span" id="nextStep">下一步</span>
+				</div>
+			</div>
+		</div>
+		<!--<div class="container order-code">
+			<div class="row">
+				<div class="span12">
+					<div class="row">
+						<div class="span1"></div>
+						<div class="span5 zfb">
+							<ul>
+								<li>
+									<span></span><b>支付宝支付</b>
+								</li>
+								<li>
+									<img src="/order/assets/img/pay/ewm.png">
+								</li>
+								<li>
+									<p>打开手机支付宝，扫码立即支付</p>
+								</li>
+							</ul>
+						</div>
+						<div class="span5 wx">
+							<ul>
+								<li>
+									<span></span><b>微信支付</b>
+								</li>
+								<li>
+									<img src="/order/assets/img/pay/ewm.png">
+								</li>
+								<li>
+									<p>打开手机微信，扫码立即支付</p>
+								</li>
+							</ul>
+						</div>
+						<div class="span1"></div>
+					</div>
+			    </div>
+			</div>
+		</div>-->
+
+<!--#include file="/order/pages/system/footer.html"-->
+<script type="text/javascript">
+minHeight();
+	$(document).ready(function(){
+		$('#orderNo').html(getParamValue('orderNo'));
+		$('#orderMoney').html(getParamValue('orderMoney'));
+	})
+	function payMethod(payway){
+		$(payway).removeClass('c-border').addClass('c-shadow');
+		$(payway).parent().siblings().children(':first').removeClass('c-shadow').addClass('c-border');
+		$('#nextStep').css('background','#0ae');
+	}
+	//支付
+	$('#nextStep').on('click',function(){
+		if($('#payWay').children(':first').children().hasClass('c-shadow')){
+			window.location.href='/order/pages/payWay/weixin.shtml?'+'orderNo='+getParamValue('orderNo')+'&orderMoney='+getParamValue('orderMoney');
+//			window.open('/order/pages/payWay/weixin.shtml?'+'orderNO='+getParamValue('orderNo')+'&orderMoney='+getParamValue('orderMoney'));
+		}else{
+		    window.location.href=gwIp+'/br-order-user-controller/alipay/payOrder?'+'orderNO='+getParamValue('orderNo');
+		}
+	})
+</script>

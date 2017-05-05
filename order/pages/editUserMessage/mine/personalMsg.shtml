@@ -1,0 +1,63 @@
+<!--#include file="/order/pages/system/personalMsgHeader.html"-->
+
+<div class="container minHeightJS">
+	<div class="row">
+		<div class="span12">
+			<div class="span4 offset4 msg-span">
+				<h4 class="title">个人资料</h4>
+				<img src="/order/assets/img/gallery/3.jpg" class="msg-img">
+				<form class="bs-example bs-example-form" role="form" id="checkDeptForm">
+					<div class="input-group">
+						<span class="input-group-addon">姓名：</span>
+						<input type="text" id="checkCustomerInfoName" class="form-control" name="customerInfoName" disabled="disabled">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">身份证号：</span>
+						<input type="text" id="checkCustomerInfoIdentityNumber" class="form-control" name="customerInfoIdentityNumber" disabled="disabled">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">手机号：</span>
+						<input type="text" id="checkCustomerInfoPhone" class="form-control" name="customerInfoPhone" disabled="disabled">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">邮箱：</span>
+						<input type="text" id="checkCustomerInfoEmail" class="form-control" name="customerInfoEmail" disabled="true">
+					</div>
+					<div class="footer">
+					<a type="button" class="btn btn-primary" href="/order/pages/editUserMessage/mine/editPersonalMsg.shtml">编辑</a>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end container -->
+<!--#include file="/order/pages/system/footer.html"-->
+<script src="/order/assets/js/plugin/responsive-menu.min.js"></script>
+<script>
+    minHeight();
+	// 二级导航
+	$(function() {
+		$('pre').addClass('prettyprint');
+	})
+	$(document).ready(function(){
+		checkPersonalMsg();
+	})
+	function checkPersonalMsg(){
+			var otype = "get";
+			var osync = false;
+			var reqResult = httpRequest(getCustomerInfoByIdUrl, null, otype, osync);
+			if(reqResult.result == 0) {
+				var checkCustomerInfoName = $('#checkCustomerInfoName');
+				var checkCustomerInfoIdentityNumber = $('#checkCustomerInfoIdentityNumber');
+				var checkCustomerInfoPhone = $('#checkCustomerInfoPhone');
+				var checkCustomerInfoEmail = $('#checkCustomerInfoEmail');
+				checkCustomerInfoName.val(reqResult.data.customerInfoName);
+				checkCustomerInfoIdentityNumber.val(reqResult.data.customerInfoIdentityNumber);
+				checkCustomerInfoPhone.val(reqResult.data.customerInfoPhone);
+				checkCustomerInfoEmail.val(reqResult.data.customerInfoEmail);
+			} else {
+				alert(reqResult.message);
+			}
+		}
+</script>

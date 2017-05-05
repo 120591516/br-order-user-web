@@ -1,0 +1,728 @@
+<!--#include file="/order/pages/system/header.html"-->
+<div class="container suiteBoby minHeightJS">
+	<div>
+		<!-- 流程 -->
+		<div class="steps"></div>
+		<!--所选择机构门店  -->
+		<div class="selectOrgBranch">
+			<div>
+				<div><span class="c1 f07">所选中心：</span><span class="orgName con"></span></div>
+				<div><span class="c1 f07">所选门店：</span><span class="branchName con"></span></div>
+			</div>
+			<div>
+				<span class="c6"><i class="fa fa-tag"></i>预约支付成功后客服人员会与您联系确认预约信息，一个工作日后预约信息会在<b class="branchName f05"></b>自动备案成功。</span>
+			</div>
+		</div>
+		<!--所选择套餐  -->
+		<div class="selectOrgSuite">
+			<div>
+				<div><span class="c1 f07">所选套餐：</span><span class="suiteName con"></span></div>
+				<div><span class="c1 f07">市场价：<del class="price con"></del>
+					</span><span class="inPrice f07">优惠价：<span class="discountPrice f07"></span>元</span>
+				</div>
+			</div>
+			<div>
+				<span class="c6"><i class="fa fa-tag"></i>请注意非儿童套餐只适用于成年人（18周岁以上），如果需要更换套餐，请点击浏览器的返回按钮或者使用键盘的回退键跳转回选择列表</span>
+			</div>
+		</div>
+		<!-- 预约日期  -->
+		<div class="selectDate">
+			<div>
+				<div><span class="c1 f07">预约日期：</span><span class="selectData con"></span><i class="margin-L10 fa fa-warning c4">预约当天仅剩<b class="remainCount"></b>位名额</i></div>
+			</div>
+		</div>
+		<!--预约信息 -->
+		<div class="recordInfo">
+			<div>
+				<!-- 个人/ 团检 -->
+				<div class="examType">
+					<ul class="nav nav-tabs" id="examTypeTab"></ul>
+				</div>
+				<!--登记人体检人信息-->
+				<div class="addRecord">
+				</div>
+				<!--登记人体检人列表 -->
+				<div class="recordList">
+					<div class="recordList01">
+						<div><span class="c1 f07">当前预约时间：</span><span class="selectData con"></span></div>
+						<div>
+							<table class="recordListToby" id="submitMsg">
+								<thead>
+									<tr>
+										<input class="hidden" value="" id="cardId">
+										<th>姓名</th>
+										<th>性别</th>
+										<th>电话</th>
+										<th>证件类型</th>
+										<th>证件号码</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody id="recordToby"></tbody>
+							</table>
+						</div>
+						<div class="selectPersonnel tab-content">
+							<div class="tab-pane" id="personalExam"></div>
+							<div class="tab-pane" id="groupExam"></div>
+							<div>
+								<div>
+									<a href="#" class="button zcolor" onClick="addPersonnel()">添加</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="invoice">
+			<!--发票信息 -->
+			<div class="invoice01">
+				<div class="addInvoice"></div>
+			</div>
+			<!--价格  -->
+			<div class="priceTotal">
+			</div>
+		</div>
+		<!--提交购物车 -->
+		<div class="submitOrder">
+			<div>
+				<div>
+					<a href="#" class="button zcolor" onClick="addCart()">添加购物车</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 从亲友添加  -->
+<div class="modal hide fade" id="personalExamModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">查看信息</h4>
+			</div>
+			<div class="modal-body">
+				<table class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th>操作</th>
+							<th>姓名</th>
+							<th>性别</th>
+							<th>关系</th>
+							<th>身份证号</th>
+							<th>手机号码</th>
+							<th>邮箱</th>
+							<th>状态</th>
+						</tr>
+					</thead>
+					<tbody id="relative_tbody"></tbody>
+				</table>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" onClick="addPersonalByFriends()">添加</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 从员工添加  -->
+<div class="modal hide fade" id="groupExamModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">查看信息</h4>
+			</div>
+			<div class="modal-body">
+				<div class="bobyLeft">
+					<div class="box-body">
+						<ul id="treeDemo" class="ztree"></ul>
+					</div>
+				</div>
+				<div class="bobyRigth">
+					<table id="employeesList">
+						<tr>
+							<th>操作</th>
+							<th>姓名</th>
+							<th>性别</th>
+							<th>联系电话</th>
+							<th>身份证号</th>
+							<th>部门名称</th>
+						</tr>
+						<tbody id="staffInfoTbody">
+						</tbody>
+					</table>
+				</div>
+				<div></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" onClick="addRecordByemployeesSubmit()">添加</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- end container  -->
+<!--#include file="/order/pages/system/footer.html"-->
+<script src="/order/assets/js/plugin/extendPagination.js"></script>
+<script src="/order/assets/js/plugin/jquery.ztree.core.js"></script>
+<link rel="stylesheet" href="/order/assets/css/creat/info.css">
+<link rel="stylesheet" type="text/css" href="/order/assets/css/plugins/zTreeStyle.css" />
+<script>
+	var thisURL = document.URL;
+	if(thisURL != orderIp + '/order/index.shtml') {
+		$('#reservation').addClass('active');
+		$('#reservation').siblings('li').removeClass('active');
+	}
+	//流程
+	getSteps(3);
+	//体检类型tab,根据登录信息
+	$(function() {
+		var isLoginTypeStr = '',
+			groupPageStr = '',
+			personalPageStr = '';
+		if(isLogin() == '3') {
+			window.location.href = "/order/pages/system/userLogin.html";
+		} else if(isLogin() == '2') {
+			isLoginTypeStr = "<li><a href='#groupExam'>团体体检</a></li>";
+			groupPageStr = "<div><a href='#groupExamModel'  data-toggle='modal' onClick='addRecordByemployees()'> 从员工添加</a></div>";
+		} else if(isLogin() == '1') {
+			isLoginTypeStr = "<li><a href='#personalExam'>个人体检</a></li>";
+			personalPageStr = "<div><a href='#personalExamModel' data-toggle='modal' onClick='addRecordByFriends()'> 从亲友添加</a></div>";
+		}
+		$('#examTypeTab').html(isLoginTypeStr);
+		$('#personalExam').html(personalPageStr);
+		$('#groupExam').html(groupPageStr);
+		$('#examTypeTab a:last').tab('show');
+		//tab 页面切换
+		$('#examTypeTab a').click(function(e) {
+			e.preventDefault();
+			$(this).tab('show');
+		});
+	});
+	//套餐信息
+	var suiteId = getParamValue("suiteId"),
+		branchId = getParamValue("branchId"),
+		dataParam = getParamValue("data"),
+		discountPrice,
+		threshold,
+		price;
+	$('.selectData').html(dataParam);
+	if(suiteId != null) {
+		var reqResult = httpRequest(getSuiteInfo, {
+				"suiteId": suiteId
+			}, "get", false),
+			orgName;
+		if(reqResult.result == 0 && reqResult.data != null) {
+			orgName = reqResult.data.organization != null ? reqResult.data.organization.orgShortName : null;
+			$('.orgName').html(orgName);
+			$('.branchName').html(getParamValue("branchName"));
+			$('.suiteName').html(reqResult.data.examSuiteName);
+			$('.price').html(reqResult.data.examSuitePrice +'元');
+			$('.discountPrice').html(reqResult.data.examSuiteDiscountPrice);
+			discountPrice = reqResult.data.examSuiteDiscountPrice;
+			price = reqResult.data.examSuitePrice;
+		}
+		//套餐剩余信息
+		if(branchId != null && dataParam != null) {
+			var threshold = httpRequest(getThreshold, {
+				"suiteId": suiteId,
+				"branchId": branchId,
+				"date": dataParam
+			}, "get", false);
+			if(threshold.result == 0 && threshold.data != null) {
+				if(threshold.data > 0) {
+					$('.remainCount').html(threshold.data);
+				}
+				threshold = threshold.data;
+			}
+		}
+	}
+	var $addRecord = $('.addRecord'),
+		$name = $('#name'),
+		addPersonnelModelContent = "<div><div>登记体检人信息:</div><div><form id='personnelFrom'>" +
+		"<table class='addRecordTable'>" +
+		"<input type='hidden' id='index'>" +
+		"<tr><th class='f07'>姓名：</th><th><input type='text' id='customerPatientName'></th></tr>" +
+		"<tr><th class='f07'>性别：</th><th class='radioSexId'></th></tr>" +
+		"<tr><th class='f07'>联系电话：</th>	<th><input type='text' id='phone' ></th></tr>" +
+		"<tr><th class='f07'>证件类型：</th>	<th><input type='radio' name='certificate' checked='checked'  value='1'>身份证<input name='certificate' type='radio'  value='2'>护照</th></tr>" +
+		"<tr><th class='f07'>证件号码：</th>	<th><input type='text' id='customerPatientIdCard'></th></tr>" +
+		"<tr><th></th><th><div class='addRecordSubmit'  ><div onClick='addRecordSubmit(this)'>提交</div><div><a href='#' onClick='addPersonnelCancel()'>取消</a></div></div></th></tr>" +
+		"</table></form></div></div>",
+		addPersonnelModelStr = '',
+		addPersonnelModelCount = 0,
+		addInvoiceUlStr = '',
+		addInvoiceUlCount = 0,
+		reqResult = httpRequest(dictSexListByStatus_url, null, "get", false),
+		radioSexIdStr = '';
+	if(reqResult.result == 0 && reqResult.data != null) {
+		for(var i = 0; i < reqResult.data.length; i++) {
+			if(i == 0) {
+				radioSexIdStr += "<input type='radio' name='sexId'  value='" + reqResult.data[i].idSex + "' checked='checked' sexName='" + reqResult.data[i].sexName + "' >" + reqResult.data[i].sexName;
+			} else {
+				radioSexIdStr += "<input type='radio' name='sexId'  value='" + reqResult.data[i].idSex + "' sexName='" + reqResult.data[i].sexName + "' > " + reqResult.data[i].sexName;
+			}
+		}
+
+	}
+	//添加人员
+	function addPersonnel() {
+		addPersonnelModelStr = addPersonnelModelContent;
+		$addRecord.html(addPersonnelModelStr);
+		$('.radioSexId').html(radioSexIdStr);
+		$name.focus();
+		addPersonnelModelStr = '';
+	}
+	//取消编辑 
+	function addPersonnelCancel() {
+		$addRecord.html('');
+	}
+	//提交表单信息 
+	//	function addRecordSubmit() {
+	//		console.log($('#customerPatientIdCard').val());
+	//		if(!validationFrom()) {
+	//			var addtr,
+	//				index = $('#index').val(),
+	//				customerCertificateType = $('input[name="certificate"]:checked').val() == '1' ? '身份证' : '护照';
+	//
+	//			addtr = "<tr><th>" + $('#customerPatientName').val() + "</th><th>" + $('input[name="sexId"]:checked').attr('sexName') +
+	//				"</th><th>" + $('#phone').val() + "</th>" +
+	//				"<th>" + customerCertificateType + "</th>" +
+	//				"<th>" + $('#customerPatientIdCard').val() + "</th>" +
+	//				"<th class='edit'><a sexId='" + $('input[name="sexId"]:checked').val() + "' customerCertificateType='" +
+	//				$('input[name="certificate"]:checked').val() + "'   onClick='editRecord(this)'>编辑</a><a onClick='delRecord(this)'>删除</a></th> </tr>";
+	//			if(index == "" || index == '0') {
+	//				$('#recordToby').append(addtr);
+	//			} else {
+	//				$('#recordToby tr').eq(index).after(addtr);
+	//			}
+	//			if(index != "") {
+	//				$('#recordToby').find('tr')[parseInt(index)].remove();
+	//			}
+	//			$('#index').val('');
+	//			$addRecord.html('');
+	//			countTotalAmount(1);
+	//		}
+	//	}
+	//提交表单信息 
+	function addRecordSubmit() {
+		$('#cardId').val('');
+		$('#cardId').val($('#customerPatientIdCard').val());
+		console.log($('#customerPatientIdCard').val());
+		if(!validationFrom()) {
+			var trLength = $("#recordToby tr").length;
+			if(trLength == 0) {
+				console.log('0');
+				var addtr,
+					index = $('#index').val(),
+					customerCertificateType = $('input[name="certificate"]:checked').val() == '1' ? '身份证' : '护照';
+
+				addtr = "<tr><th>" + $('#customerPatientName').val() + "</th><th>" + $('input[name="sexId"]:checked').attr('sexName') +
+					"</th><th>" + $('#phone').val() + "</th>" +
+					"<th>" + customerCertificateType + "</th>" +
+					"<th>" + $('#customerPatientIdCard').val() + "</th>" +
+					"<th class='edit'><a sexId='" + $('input[name="sexId"]:checked').val() + "' customerCertificateType='" +
+					$('input[name="certificate"]:checked').val() + "'   onClick='editRecord(this)'>编辑</a><a onClick='delRecord(this)'>删除</a></th> </tr>";
+				if(index == "" || index == '0') {
+					$('#recordToby').append(addtr);
+				} else {
+					$('#recordToby tr').eq(index).after(addtr);
+				}
+				if(index != "") {
+					$('#recordToby').find('tr')[parseInt(index)].remove();
+				}
+				$('#index').val('');
+				$addRecord.html('');
+				countTotalAmount(1);
+			} else {
+				var fourth_numbs = [];
+				for(var i = 0; i < trLength; i++) {
+					fourth_numbs += $("#recordToby tr").eq(i).children(':eq(4)').html() + ',';
+				}
+				console.log(fourth_numbs);
+				var idCardNum = fourth_numbs.split(',');
+				for(var j = 0; j <= idCardNum.length; j++) {
+					var idCardCon = $('#cardId').val();
+					if(idCardCon == idCardNum[j]) {
+						alert('该身份证号已添加，请重新输入!');
+						return false;
+					} else {
+						console.log('win');
+						var addtr,
+							index = $('#index').val(),
+							customerCertificateType = $('input[name="certificate"]:checked').val() == '1' ? '身份证' : '护照';
+
+						addtr = "<tr><th>" + $('#customerPatientName').val() + "</th><th>" + $('input[name="sexId"]:checked').attr('sexName') +
+							"</th><th>" + $('#phone').val() + "</th>" +
+							"<th>" + customerCertificateType + "</th>" +
+							"<th>" + $('#customerPatientIdCard').val() + "</th>" +
+							"<th class='edit'><a sexId='" + $('input[name="sexId"]:checked').val() + "' customerCertificateType='" +
+							$('input[name="certificate"]:checked').val() + "'   onClick='editRecord(this)'>编辑</a><a onClick='delRecord(this)'>删除</a></th> </tr>";
+						if(index == "" || index == '0') {
+							$('#recordToby').append(addtr);
+						} else {
+							$('#recordToby tr').eq(index).after(addtr);
+						}
+						if(index != "") {
+							$('#recordToby').find('tr')[parseInt(index)].remove();
+						}
+						$('#index').val('');
+						$addRecord.html('');
+						countTotalAmount(1);
+					}
+				}
+			}
+		}
+	}
+	function validationFrom() {
+		var $customerPatientName = $('#customerPatientName'),
+			$phone = $('#phone'),
+			$customerPatientIdCard = $('#customerPatientIdCard');
+		if($customerPatientName.val() == '') {
+			alert('请输入体检者名称');
+			return true;
+		}
+		if($phone.val() == '') {
+			alert('请输入联系电话');
+			return true;
+		}
+		if($customerPatientIdCard.val() == '') {
+			alert('请输入证件信息');
+			return true;
+		}
+		if(($phone.val() != null && /^1[34578]\d{9}$/.test($phone.val())) == false) {
+			alert('请输入正确的联系电话');
+			return true;
+		}
+		if($customerPatientIdCard.val() != null &&IdentityCodeValid($customerPatientIdCard.val()) == false) {
+			return true;
+		}
+		return false;
+	}
+	//删除登记人信息
+	function delRecord(people) {
+		$(people).parent('th').parent('tr').remove();
+		$addRecord.html('');
+		countTotalAmount(2);
+	}
+	//修改登记人信息
+	function editRecord(people) {
+		var peopleTr = $(people).parent('th').parent('tr');
+		if(people != null) {
+			addPersonnelModelCount = 1;
+			addPersonnelModelStr = addPersonnelModelContent;
+			$addRecord.html(addPersonnelModelStr);
+			$('.radioSexId').html(radioSexIdStr);
+			var sexIdList = $("input[name='sexId']"),
+				peopleThList = peopleTr.find('th');
+			$('#index').val(peopleTr.index());
+			//性别
+			for(var i = 0; i < sexIdList.length; i++) {
+				if($(people).attr('sexId') == sexIdList[i].value) {
+					sexIdList.eq(i).attr("checked", "checked");
+				}
+			}
+			//证件类型
+			if($(people).attr('customerCertificateType') == '1') {
+				$("input[name='certificate']").eq(0).attr("checked", "checked");
+			} else {
+				$("input[name='certificate']").eq(1).attr("checked", "checked");
+			}
+			$('#customerPatientName').val(peopleThList[0].innerHTML);
+			$('#customerPatientIdCard').val(peopleThList[4].innerHTML);
+			$('#phone').val(peopleThList[2].innerHTML);
+			addPersonnelModelStr = '';
+		}
+
+	}
+	//从亲友添加列表
+	function addRecordByFriends() {
+		init_page();
+
+		function init_page() {
+			$('#relative_tbody').empty();
+			//1.请求后端信息并展示
+			page_curr = 1;
+			init_list();
+			init_pager();
+		}
+
+		function init_list() {
+			$('#relative_tbody').empty();
+			var reqResult = httpRequest(getCustomerInfoByPageUrl, {
+				"page": page_curr,
+				"rows": count_curr
+			}, "post", false);
+			if(reqResult.result == 0) {
+				//4.展示数据
+				total_count = reqResult.data.total;
+				createTable(page_curr, limit, total_count, reqResult);
+			}
+			return false;
+		}
+
+		// 初始化分页信息
+		function init_pager() {
+			$('#callBackPager').extendPagination({
+				totalCount: total_count,
+				showCount: count_curr,
+				limit: limit,
+				callback: function(curr, limit, totalCount) {
+					page_curr = curr;
+					total_count = totalCount;
+					init_list();
+				}
+			});
+		}
+
+		function createTable(currPage, limit, total, dataBack) {
+			var showNum = limit;
+			if(total - (currPage * limit) < 0) showNum = total - ((currPage - 1) * limit);
+			var datal = dataBack.data.list;
+			var str = '';
+			for(var i = 0; i < showNum; i++) {
+				str += "<tr><td>"; //list列表的id名称
+				str += "<input type='checkbox' phone='" + datal[i].customerInfoPhone + "'  sexId='" + datal[i].sex + "' sexName='女' name='" + datal[i].customerInfoName + "' customerInfoIdentityNumber='" + datal[i].customerInfoIdentityNumber + "' >";
+				str += "</td>";
+				str += "<td>" + datal[i].customerInfoName + "</td>";
+				if(datal[i].sex == 0) {
+					str += "<td>" + '男' + "</td>";
+				} else {
+					str += "<td>" + '女' + "</td>";
+				}
+				str += "<td>" + datal[i].relation + "</td>";
+				str += "<td>" + datal[i].customerInfoIdentityNumber + "</td>";
+				str += "<td>" + datal[i].customerInfoPhone + "</td>";
+				str += "<td>" + datal[i].customerInfoEmail + "</td>";
+				if(dataBack.data.list[i].status == 0) {
+					str += "<td>" + '启用 ' + "</td>";
+				} else {
+					str += "<td>" + '禁用' + "</td>";
+				}
+				str += '</tr>';
+			}
+			$('#relative_tbody').html('');
+			$("#relative_tbody").append(str);
+			return false;
+		}
+	}
+
+	//从亲友添加提交
+	function addPersonalByFriends() {
+		var selectFriends = $('#relative_tbody tr td:first-child input:checked'),
+			addTr = '';
+		for(var i = 0; selectFriends.length > i; i++) {
+			addTr += "<tr><th>" + selectFriends[i].getAttribute('name') + "</th><th>" + selectFriends[i].getAttribute('sexName') +
+				"</th><th>" + selectFriends[i].getAttribute('phone') + "</th><th>身份证</th>" +
+				"<th>" + selectFriends[i].getAttribute('customerInfoIdentityNumber') + "</th>" +
+				"<th class='edit'><a  sexId='" + selectFriends[i].getAttribute('sexId') + "'  customerCertificateType='1' onClick='editRecord(this)'>编辑</a>" +
+				"<a onClick='delRecord(this)'>删除</a></th></tr>";
+		}
+		$('#recordToby').append(addTr);
+		countTotalAmount(1);
+	}
+	//从员工添加
+	function addRecordByemployees() {
+		var setting = {
+			view: {
+				selectedMulti: false
+			},
+			data: {
+				key: {
+					title: "t"
+				},
+				simpleData: {
+					enable: true
+				}
+			},
+			callback: {
+				beforeClick: beforeClick
+			}
+		};
+
+		var reqResult = httpRequest(departmentInfo_getEnterpriseDepTree_url, null, "post", false);
+		if(reqResult.result == 0) {
+			var zNodes = jQuery.parseJSON(reqResult.data);
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+		} else {
+			alert(reqResult.message);
+		}
+
+	}
+	//点击权限树
+	function beforeClick(treeId, treeNode) {
+		init_page();
+
+		function init_page() {
+			page_curr = 1;
+			staffInfo();
+		}
+		$('#callBackPager').extendPagination({
+			totalCount: total_count,
+			showCount: count_curr,
+			limit: limit,
+			callback: function(curr, limit, totalCount) {
+				page_curr = curr;
+				total_count = totalCount;
+				staffInfo();
+			}
+		});
+
+		function staffInfo() {
+			var reqResult = httpRequest(staffInfo_getAllEnterpriseEmpByPage_url, {
+				"page": page_curr,
+				"rows": count_curr,
+				'enterpriseDeptId': treeNode.id
+			}, "get", false);
+			if(reqResult.result == 0) {
+				total_count = reqResult.data.total;
+				createTable(page_curr, limit, total_count, reqResult);
+			}
+
+			//		员工信息列表展示
+			function createTable(currPage, limit, total, dataBack) {
+				var showNum = limit;
+				if(total - (currPage * limit) < 0) showNum = total - ((currPage - 1) * limit);
+				var datal = dataBack.data.list;
+				var str = '';
+				for(var i = 0; i < showNum; i++) {
+					var sexName = '';
+					if(datal[i].customerInfoSex == 0) {
+						sexName = '通用';
+					} else if(datal[i].customerInfoSex == 1) {
+						sexName = '男';
+					} else {
+						sexName = '女';
+					}
+					//			企业id加入隐士表单
+					$('#add_enterpriseId').val(datal[i].enterpriseId);
+					//			部门id加入表单
+					$('#add_enterpriseDepId').val(datal[i].enterpriseDepId);
+					str += "<tr class='eTr'><td enterpriseEmpId='" + datal[i].enterpriseEmpId + "' enterpriseId='" + datal[i].enterpriseId + "' enterpriseDepId='" + datal[i].enterpriseDepId + "' enterpriseDepParentId='" + datal[i].enterpriseDepParentId + "'>";
+					str += "<input type='checkbox'  phone='" + datal[i].customerInfoPhone + "' sexId='" + datal[i].customerInfoSex + "' name='" + datal[i].customerInfoName + "' sexName='" + sexName + "' customerInfoIdentityNumber='" + datal[i].customerInfoIdentityNumber + "'> ";
+					str += "</td>";
+					str += "<td>" + nullformat(datal[i].customerInfoName) + "</td>";
+					str += "<td>" + sexName + "</td>";
+					str += "<td>" + datal[i].customerInfoPhone + "</td>";
+					str += "<td>" + nullformat(datal[i].customerInfoIdentityNumber) + "</td>";
+					str += "<td>" + nullformat(datal[i].enterpriseDepName) + "</td>";
+					str += '</tr>';
+				}
+				$('#staffInfoTbody').html('');
+				$('#staffInfoTbody').append(str);
+				return false;
+			}
+		}
+	}
+
+	//从员工添加提交
+	function addRecordByemployeesSubmit() {
+		var selectFriends = $('#staffInfoTbody tr td:first-child input:checked'),
+			addTr = '';
+		for(var i = 0; selectFriends.length > i; i++) {
+			addTr += "<tr><th>" + selectFriends[i].getAttribute('name') + "</th><th>" + selectFriends[i].getAttribute('sexName') + "</th><th>" + selectFriends[i].getAttribute('phone') + "</th><th>身份证</th>" +
+				"<th>" + selectFriends[i].getAttribute('customerInfoIdentityNumber') + "</th>" +
+				"<th class='edit'><a  sexId='" + selectFriends[i].getAttribute('sexId') + "'  customerCertificateType='1' onClick='editRecord(this)'>编辑</a>" +
+				"<a onClick='delRecord(this)'>删除</a></th></tr>";
+		}
+		$('#recordToby').append(addTr);
+		countTotalAmount(1);
+	}
+	//价格统计
+	function countTotalAmount(type) {
+		var count = $('#recordToby tr').length,
+			priceTotalStr = '',
+			$priceTotal = $('.priceTotal'),
+			$count = $('.count'),
+			$countAmount = $('.countAmount'),
+			$payAmount = $('.payAmount');
+		if(type == 1) {
+			if((/^\s*$/).test($priceTotal.html())) {
+				//添加 
+				priceTotalStr = "<div><ul>" +
+					"<li><span>市场价：</span><span>" + price + " 元</span></li>" +
+					"<li><span>优惠价：</span><span>" + discountPrice + "元</span></li>" +
+					"<li><span>已为您节省：</span><span>" + getResult(price, discountPrice) + "元</span></li>" +
+					"<li><span>总计数量：</span><span class='count'>" + count + " 件</span></li>" +
+					"<li></li>" +
+					"<li><span>总计金额：</span><span class='countAmount'>" + (price * 100 * count / 100) + " 元</span></li>" +
+					"<li><span>实付金额：</span><span class='f04 payAmount'>" + (discountPrice * 100 * count / 100) + "元</span></li>" +
+					"</ul></div>";
+				$priceTotal.html(priceTotalStr);
+			} else {
+				//修改
+				$count.html(count + '件');
+				$countAmount.html((price * 100 * count / 100) + '元');
+				$payAmount.html((discountPrice * 100 * count / 100) + '元');
+			}
+		} else {
+			if(count == 0) {
+				$priceTotal.html('');
+			} else {
+				$count.html(count + '件');
+				$countAmount.html((price * count) + '元');
+				$payAmount.html((discountPrice * count) + '元');
+			}
+		}
+	}
+	//购物车添加
+	function addCart() {
+		var count = $('#recordToby tr').length;
+		if(count == 0) {
+			alert("请添加体检人");
+		} else {
+			if(threshold > 0) {
+				//添加购物车 
+				var reqResult = httpJsonRequest(customer_cart_add, JSON.stringify(getParam()), "POST", false);
+				if(reqResult != null && reqResult.result == 0) {
+					if(reqResult.data > 0) {
+						window.location.href = '/order/pages/shopping/shoppingCart.shtml'
+					} else {
+						if(confirm("您好，登录后方可进行预约操作。谢谢！")) {
+							window.location.href = "/order/pages/system/userLogin.html?suiteId=" + getParamValue("suiteId") + "&data=" + $('#selectDate').val() + "&type=2";
+						}
+					}
+				} else {
+					if(reqResult.data != null && reqResult.data == 0) {
+						if(confirm("您好，登录后方可进行预约操作。谢谢！")) {
+							window.location.href = "/order/pages/system/userLogin.html?suiteId=" + getParamValue("suiteId") + "&data=" + $('#selectDate').val() + "&type=2";
+						}
+					}
+					alert(reqResult.message);
+				}
+			} else {
+				alert('预订人满,请选择其他门店');
+			}
+		}
+	}
+	//获取购物车参数
+	function getParam() {
+		var customerTr = $('#recordToby tr'),
+			customerList = new Array();
+		for(var i = 0; i < customerTr.length; i++) {
+			var str = {
+				sexId: customerTr.eq(i).find('th').eq(5).find('a').eq(0).attr('sexid'),
+				sexName: customerTr.eq(i).find('th').eq(1).html(),
+				customerCertificateType: customerTr.eq(i).find('th').eq(5).find('a').eq(0).attr('customercertificatetype'),
+				customerPatientIdCard: customerTr.eq(i).find('th').eq(4).html(),
+				customerPatientName: customerTr.eq(i).find('th').eq(0).html(),
+				customerPatientPhone: customerTr.eq(i).find('th').eq(2).html()
+			};
+			customerList.push(str)
+		}
+		var param = {
+			branchId: getParamValue("branchId"),
+			examSuiteSplit: 0,
+			examSuiteId: suiteId,
+			examSuiteName: $('.suiteName').html(),
+			cartNumber: $('#recordToby tr').length,
+			examTimeStr: getParamValue("data"),
+			customerList: customerList
+		}
+		return param;
+	}
+	minHeight();
+</script>

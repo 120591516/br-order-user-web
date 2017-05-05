@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>预约平台</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<!-- CSS -->
+		<link rel="icon" href="/order/assets/ico/favicon.ico" type="image/x-icon" sizes="16x16">
+		<link rel="shortcut icon" href="/order/assets/ico/favicon.ico">
+		<link rel="stylesheet" href="/order/assets/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/order/assets/prettyPhoto/css/prettyPhoto.css">
+		<link rel="stylesheet" href="/order/assets/font-awesome/css/font-awesome.css">
+		<link rel="stylesheet" href="/order/assets/css/social-icons.css">
+		<link rel="stylesheet" href="/order/assets/css/ebook-style.css">
+		<link rel="stylesheet" href="/order/assets/css/creat/common.css">
+		<link rel="stylesheet" href="/order/assets/css/creat/package.css">
+		<link rel="stylesheet" href="/order/assets/css/creat/replace.css">
+		<script src="/order/assets/js/jquery-1.8.2.min.js"></script>
+		<script src="/order/assets/bootstrap/js/bootstrap.js"></script>
+		<script src="/order/assets/js/plugin/jquery-1.11.1.min.js"></script>
+		<script src="/order/assets/js/create/Ajax.js"></script>
+		<script src="/order/assets/js/create/public.js"></script>
+	</head>
+
+	<body>
+
+		<!-- Header -->
+		<div class="container minHeightJS">
+			<div class="header row">
+				<div class="logo span4">
+					<p class="logoS">
+						<a href="/order/index.shtml">Produkta</a>欢迎注册</p>
+				</div>
+				<!--<div class="logo userDeg span2">用户注册</div>-->
+			</div>
+
+			<!--content-->
+			<div class="bg-out">
+				<div class="bg-inner">
+					<div class="row register">
+						<div class="reg-container">
+							<!--<p class="reg-form-title">新用户注册</p>-->
+							<form id="registerForm" class="reg_form" method="post" onsubmit="return false;" action="/order/pages/system/userLogin.html">
+								<input type="text" name="customerInfoPhone" placeholder="手机号" class="tel" id="registerTel" aria-required="true" aria-invalid="true" autofocus="">
+								<span fors="registerTel" id="blur_tel_reg"></span>
+
+								<input type="text" name="ind_code" placeholder="验证码" class="reg_code" id="register_code" aria-required="true" aria-invalid="true">
+								<input type="button" name="send_code" value="发送验证码" class="reg_send_code" id="registerSendCode">
+								<input type="button" name="count" id="resgiterCount" class="reg_count" value>
+								<span fors="register_code"></span>
+								<span id="registerErrorCode"></span>
+
+								<input type="password" name="customerRegistPassword" placeholder="输入6-12位数字或字母" class="reg_pwd" id="registerPwd" aria-required="true" aria-invalid="true">
+								<span fors="registerPwd"></span>
+
+								<input type="password" name="password_confirm" placeholder="确认密码" class="reg_pwd" id="regsiterPwdConf" aria-required="true" aria-invalid="true">
+								<span fors="regsiterPwdConf"></span>
+
+								<button class="reg_botton" onclick="postRegisterData()">注册</button>
+								<p class="reg_p">如果没您已有账号，请在此
+									<a class="reg_a" href="/order/pages/system/userLogin.html">登录</a>
+								</p>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--content end-->
+		</div>
+		<!--#include file="/order/pages/system/footer.html"-->
+		<script>
+			minHeight();
+			$(document).ready(function() {
+					var topH = $('.header').height();
+					var minHeight = $('.minHeightJS').height();
+					var height = minHeight - topH;
+					$('.bg-out').css({
+						'height': height + 'px'
+					});
+					var validator = $("#registerForm").validate({
+						rules: {
+							customerInfoPhone: {
+								required: true,
+								tel: true,
+
+							},
+							ind_code: {
+								required: true,
+								number: true,
+								minlength: 6,
+								maxlength: 6,
+							},
+							customerRegistPassword: {
+								required: true,
+								minlength: 6,
+								maxlength: 12
+							},
+							password_confirm: {
+								required: true,
+								equalTo: "#registerPwd"
+							},
+						},
+						messages: {
+							customerInfoPhone: {
+								required: "请输入正确的手机号",
+								tel: "请输入正确的手机号",
+								remote: "该手机号还未注册"
+							},
+							ind_code: "请输入正确的验证码",
+							customerRegistPassword: "请输入6-12位数字或字母密码",
+							password_confirm: "两次输入的密码不一致",
+						},
+						errorPlacement: function(error, element) {
+							$(element).closest("div").find("span[fors='" + element.attr("id") + "']").append(error);
+						}
+					})
+					$.validator.addMethod("tel", function(value, element, params) {
+						//						var telz = /^(13|14|15|17|18|19)([0-9]){9}/;
+						var telz = /^[1][0-9]{10}$/;
+						return this.optional(element) || (telz.test(value));
+					}, "请输入正确的手机号");
+					$.validator.addMethod("password", function(value, element, params) {
+						var pwdz = /([0-9 a-z A-Z]){6,12}/;
+						return this.optional(element) || (pwdz.test(value));
+					}, "请输入6-12位数字或字母");
+
+				})
+				//发送验证码倒计时
+			var sendCodeTime = 60;
+
+			function CountZero() {
+				if(sendCodeTime <= 0) {
+					$("#registerSendCode").show().removeAttr("disabled").val("重新发送").removeClass("reg_send_code_again").addClass("reg_send_code");
+					$(".reg_count").hide();
+					sendCodeTime = 60;
+					clearTimeout(CountZeros);
+					return;
+				} else {
+					sendCodeTime--;
+					$("#registerSendCode").show().attr("disabled", true).val("重新发送").removeClass("reg_send_code").addClass("reg_send_code_again");
+					$(".reg_count").val(sendCodeTime).show();
+				}
+				var CountZeros = setTimeout(function() {
+					CountZero()
+				}, 1000)
+			}
+			// 发送验证码
+			$("#registerSendCode").click(function() {
+				var phoneCheck = $.trim($("input#registerTel").val());
+				var telz = /^[1][0-9]{10}$/;
+				if(phoneCheck && telz.test(phoneCheck)) {
+					sendCodeForResetPassword()
+				}
+			});
+			//手机号失去焦点验证手机号是否注册
+			$("#registerTel").blur(function() {
+				var phoneCheck = $.trim($("input#registerTel").val());
+				var telz = /^[1][0-9]{10}$/;
+				if(phoneCheck != "" && telz.test(phoneCheck)) {
+					$('#registerSendCode').removeAttr('disabled');
+					var param = {
+						"customerInfoPhone": phoneCheck
+					}
+					var otype = "get";
+					var osync = false;
+					var reqResult = httpRequest(checkCustomerInfoByInfoUrl, param, otype, osync);
+					if(reqResult.data != 0) {
+						$('#blur_tel_reg').append('<label class="error" id="insetLabel"></label>');
+						$('#insetLabel').html("当前手机号已被注册，请直接").append('<a href="/order/pages/system/userLogin.html">登录</p>');
+						$('#registerSendCode').attr('disabled', true);
+					}
+				}
+			});
+			$("#registerTel").focus(function() {
+					if($('#insetLabel')) {
+						$('#insetLabel').html('');
+					}
+				})
+				//发送验证码倒计时
+			function sendCodeForResetPassword() {
+				var phoneNum = $.trim($("input#registerTel").val());
+				var param = {
+					"customerInfoPhone": phoneNum
+				}
+				console.log(phoneNum);
+				var otype = "get";
+				var osync = false;
+				var reqResult = httpRequest(customerInfondVerifyCodeUrl, param, otype, osync);
+				if(reqResult.result == 0) {
+					$("#registerErrorCode").html('');
+					CountZero(); //调用倒计时函数
+				} else {
+					alert(reqResult.message);
+				}
+			}
+			//提交注册信息
+			function postRegisterData() {
+				var telz = /^[1][0-9]{10}$/;
+				var pwdz = /([0-9 a-z A-Z]){6,12}/;
+				var phoneNum = $.trim($("input#registerTel").val());
+				var pwdNum = $.trim($("input#registerPwd").val());
+				var codeNum = $.trim($("input#register_code").val());
+				var pwdCofmNum = $.trim($("input#regsiterPwdConf").val());
+				var param = {
+					"customerInfoPhone": phoneNum,
+					"verifyCode": codeNum
+				}
+				var otype = "get";
+				var osync = false;
+				var reqResult = httpRequest(validateCodeUrl, param, otype, osync);
+				if(reqResult.result == 0) {
+					console.log("验证成功");
+					if(phoneNum == '' || !telz.test(phoneNum)) {
+						console.log('手机号不能为空,格式正确');
+						return false;
+					}
+					if(pwdNum == '' || !pwdz.test(pwdNum)) {
+						console.log('密码不能为空,格式正确');
+						return false;
+					}
+					if(codeNum == '') {
+						console.log('验证码不能为空');
+						return false;
+					}
+					if(pwdCofmNum == '' || !pwdz.test(pwdCofmNum)) {
+						console.log('确认密码不能为空，格式正确');
+						return false;
+					}
+					var param = {
+						"customerRegistPassword": pwdNum,
+						"customerInfoPhone": phoneNum
+					}
+					var otype = "post";
+					var osync = false;
+					var reqResult = httpRequest(insertCustomerRegistUrl, param, otype, osync);
+					if(reqResult.result == 0) {
+						alert('用户注册成功，欢迎登陆！');
+						window.location.href = orderIp + "/order/pages/system/userLogin.html";
+						console.log("操作成功");
+						//						return false;
+					} else {
+						alert(reqResult.message);
+						return false;
+					}
+				} else {
+					console.log("请求出错");
+					alert(reqResult.message);
+				}
+			}
+		</script>

@@ -1,0 +1,267 @@
+<!--#include file="/order/pages/system/header.html"-->
+<div id="contentWrapper">
+	<!-- Product Showcase -->
+	<div class="product-showcase">
+		<div class="product-showcase-pattern">
+			<div class="container">
+				<div class="row">
+					<div class="span12 product-background">
+						<div class="row">
+							<div class="span4 product-title">
+								<div class="product-description">
+									<form class="subscribe">
+										<select id="iPriceValue">
+											<option value='null'>---价位---</option>
+											<option>0-100</option>
+											<option>100-200</option>
+											<option>200-300</option>
+											<option>300-400</option>
+										</select>
+										<select id="iSuiteValue">
+										</select>
+										<select id="iSexValue">
+											<option value="null">---性别---</option>
+											<option value="1">男性</option>
+											<option value="2">女性</option>
+											<option value="3">通用</option>
+										</select>
+										<input placeholder="---关键词---" class="input_keyword_style" id="iKeywordValue">
+
+										<div class="col-md-12 text-right">
+											<button type="submit" onclick="searchSuiteMsgFromIndex()">搜索</button>
+										</div>
+
+									</form>
+								</div>
+
+							</div>
+							<div class="span7 product-image position_relative">
+								<!--轮播图-->
+								<div id="bannerBg">
+									<div class="banner">
+										<ul class="pic_list" id="imgAutoSliderInfo"></ul>
+										<ul class="btn_list" id="titleInfo"></ul>
+										<a href="javascript:void(0)" class="next banner_btn"></a>
+										<a href="javascript:void(0)" class="prev banner_btn"></a>
+									</div>
+								</div>
+								<!--/轮播图-->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Content -->
+	<div class="container">
+
+		<div class="row">
+			<div class="span12">
+				<!-- features -->
+				<div class="features_2">
+					<h3>体检套餐<a class="text-muted features_more" href="/order/pages/homepage/package.shtml">更多>></a></h3>
+					<div class="tab-content">
+						<div class="tab-pane active">
+							<ul id="suiteList" class="brands-list"></ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end row -->
+
+		<div class="row">
+			<div class="span12">
+				<!-- features -->
+				<div class="features_2">
+					<h3>门店<a class="text-muted features_more" href="/order/pages/homepage/branch.shtml">更多>></a></h3>
+					<div class="tab-content">
+						<div class="tab-pane active">
+							<ul id="branchList" class="brands-list"></ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end row -->
+	</div>
+	<!-- end container -->
+</div>
+<!--轮播插件-->
+<script src="/order/assets/js/plugin/jquery.1.4.2-min.js"></script>
+<script src="/order/assets/js/create/public.js"></script>
+<script src="/order/assets/js/create/sliderPlugins.js"></script>
+<script>
+	console.log(document.cookie);
+
+	//	加载轮播图
+	imgAutoSlider();
+	//套餐信息展示
+	suiteIdSelect();
+
+	function suiteIdSelect() {
+		$('#iSuiteValue').empty();
+		var otype = "post";
+		var osync = false;
+		var html = '';
+		var reqResult = httpRequest(getsuitetypeUrl, null, otype, osync);
+		if(reqResult.result == 0) {
+			var datal = reqResult.data;
+			var html = "<option selected='selected' value='null'>---全部---</option>";
+			for(var i = 0; i < datal.length; i++) {
+				html += "<option class='search' value='" + datal[i].examTypeId + "'>" + datal[i].examTypeName + "</option>";
+			}
+			$("#iSuiteValue").append(html);
+			return false;
+		}
+	}
+
+	function searchSuiteMsgFromIndex() {
+		var price = $('#iPriceValue').val();
+		var examSuiteSex = $('#iSexValue').val();
+		var Keyword = $('#iKeywordValue').val();
+		var suiteTypeId = $('#iSuiteValue').val();
+		if(price == 'null' && examSuiteSex == 'null' && Keyword == '' && suiteTypeId == 'null') {
+			window.location.reload();
+		} else {
+			if(price != 'null') {
+				priceNum = price.split("-");
+				var priceStart = parseInt(priceNum[0]);
+				var priceEnd = parseInt(priceNum[1]);
+			} else {
+				var priceStart = price;
+				var priceEnd = price;
+			}
+			var examSuiteSex = $('#iSexValue').val();
+			if(Keyword == '') {
+				Keyword = 'null';
+			} else {
+				Keyword = $('#iKeywordValue').val();
+			}
+			var suiteTypeId = $('#iSuiteValue').val();
+			window.location.href = '/order/pages/homepage/package.shtml?priceStart=' + priceStart + '&priceEnd=' + priceEnd + '&examSuiteSex=' + examSuiteSex + '&Keyword=' + Keyword + '&suiteTypeId=' + suiteTypeId + '';
+		}
+	}
+	//创建列表
+	createBranchList();
+
+	function createBranchList() {
+		$('#branchList').empty();
+		$('#suiteList').empty();
+		var otype = "post";
+		var osync = false;
+		var str = '';
+		var strs = '';
+		var reqResult = httpRequest(showUserFirstDataUrl, null, otype, osync);
+		if(reqResult.result == 0) {
+			var dataBranch = reqResult.branch;
+			var dataSuite = reqResult.suite;
+			//门店列表
+			for(var i = 0; i < dataBranch.length; i++) {
+				if(i % 4 == 0) {
+					str += "<div class='" + 'row' + "'> ";
+				} else {
+					str += '';
+				}
+				str += "<div class='span3 single-feature features-left-span' branchId='" + dataBranch[i].firstdatashowDataId + "' onclick='branchIfo(this)'>";
+				str += "<img class='inrow-style img-size'" + "src='" + orderIp + dataBranch[i].imgURL + "'" + ">";
+				str += "<h4 class='inrow-style'>" + dataBranch[i].firstdatashowDataName + "</h4>";
+				str += "<div class='description_height'>";
+				if(dataBranch[i].firstdatashowDataDescribe.length > 30) {
+					str += "<p class='inrow-style'>" + dataBranch[i].firstdatashowDataDescribe.substring(0, 29) + "...</p>";
+				} else {
+					str += "<p class='inrow-style'>" + dataBranch[i].firstdatashowDataDescribe + "</p>";
+				}
+				str += "</div>";
+				str += "<p class='inrow-style'>套餐数" + "<span class='suiteNum_sty'>" + dataBranch[i].suiteCount + "</span></p>";
+				str += "</div>";
+				if((i + 1) % 4 == 0) {
+					str += "</div>";
+				} else {
+					str += '';
+				}
+			}
+			//套餐列表
+			for(var i = 0; i < dataSuite.length; i++) {
+				strs += "<li suiteId='" + dataSuite[i].firstdatashowDataId + "' onclick='suiteInfo(this)'>";
+				strs += "<a href=''>";
+				strs += "<img class='inrow-style img-size'" + "src='" + orderIp + dataSuite[i].imgURL + "'" + ">";
+				strs += "<span class='title'>" + dataSuite[i].firstdatashowDataName + "</span>";
+				strs += "<span class='shine'>" + dataSuite[i].firstdatashowDataName + "</span>";
+				strs += "<h4 class='inrow-style'>" + dataSuite[i].firstdatashowDataDescribe.substring(0, 29) + "</h4>";
+				//				strs += "<div class='description_height'>";
+				//				if(dataSuite[i].firstdatashowDataDescribe.length > 30) {
+				//					strs += "<p class='inrow-style'>" + dataSuite[i].firstdatashowDataDescribe.substring(0, 29) + "...</p>";
+				//				} else {
+				//					strs += "<p class='inrow-style'>" + dataSuite[i].firstdatashowDataDescribe + "</p>";
+				//				}
+				//				strs += "</div>";
+				strs += "<p class='price_p'>";
+				if(dataSuite[i].discountPrice == '' || dataSuite[i].discountPrice == null) {
+					strs += "<span class='discountPrice_span price_top discountSign'>&yen;</span><span class='inrow-style discountPrice discountPrice_span'>" + 0 + "</span>";
+				} else {
+					strs += "<span class='discountPrice_span price_top discountSign'>&yen;</span><span class='inrow-style discountPrice discountPrice_span'>" + dataSuite[i].discountPrice + "</span>";
+				}
+				if(dataSuite[i].price == '' || dataSuite[i].price == null) {
+					strs += "<del class='inrow-style discountPrice_span price_top'>" + 0 + "</del>";
+				} else {
+					strs += "<del class='inrow-style discountPrice_span price_top'>" + dataSuite[i].price + "</del>";
+				}
+				strs += "</p>";
+				strs += "</a>";
+				strs += "</li>";
+			}
+		}
+		$("#branchList").append(str);
+		$("#suiteList").append(strs);
+		return false;
+	}
+
+	function branchIfo(branchId) {
+		var branchId = $(branchId).attr('branchId');
+		window.location.href = '/order/pages/homepage/branchInfo.shtml?branchId=' + branchId + '';
+	}
+
+	function suiteInfo(suiteId) {
+		var suiteId = $(suiteId).attr('suiteId');
+		window.location.href = '/order/pages/homepage/suiteInfo.shtml?suiteId=' + suiteId + '';
+	}
+	//	轮播图部分start
+	function imgAutoSlider() {
+		var otype = "post";
+		var osync = false;
+		var imgStr = '';
+		var titleStr = '<li class="checked"></li>';
+		var reqResult = httpRequest(index_showUserFirstImgData_url, null, otype, osync);
+		if(reqResult.result == 0) {
+			var dataInfo = reqResult.data;
+			for(var i = 0; i < dataInfo.length; i++) {
+				//				循环添加图片
+				imgStr += '<li index="' + dataInfo[i].index + '" dataIdType="' + dataInfo[i].dataIdType + '">';
+				if(dataInfo[i].dataIdType == 2) {
+					imgStr += '<a href="' + orderIp + '/order/pages/homepage/suiteInfo.shtml?shuiteId=' + dataInfo[i].dataId + '&dataIdType=' + dataInfo[i].dataIdType + '">';
+				} else {
+					imgStr += '<a href="' + orderIp + '/order/pages/homepage/branchInfo.shtml?branchId=' + dataInfo[i].dataId + '&dataIdType=' + dataInfo[i].dataIdType + '">';
+				}
+				imgStr += '<img class="imgWidthInfo" src="' + dataInfo[i].imgurl + '" id="' + dataInfo[i].dataId + '" alt="' + dataInfo[i].title + '" title="' + dataInfo[i].title + '"/>';
+				imgStr += '</a>';
+				imgStr += '</li>';
+			}
+			$('#imgAutoSliderInfo').empty().append(imgStr);
+			for(var j = 1; j < dataInfo.length; j++) {
+				//				循环添加点数
+				titleStr += '<li id="' + j + '"></li>';
+			}
+			$('#titleInfo').empty().append(titleStr);
+		}
+
+	}
+	//	点击轮播图跳转链接
+	//	function imgLinkInfo(){
+	//		
+	//	}
+	//	轮播图部分end
+</script>
+<!--#include file="/order/pages/system/footer.html"-->

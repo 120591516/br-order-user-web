@@ -1,0 +1,122 @@
+<!--#include file="/order/pages/system/personalMsgHeader.html"-->
+
+<div class="container minHeightJS">
+	<div class="row">
+		<div class="span12">
+			<div class="span4 offset4 msg-span">
+				<h4 class="title">个人资料</h4>
+				<img src="/order/assets/img/gallery/3.jpg" class="msg-img">
+				<form class="bs-example bs-example-form" role="form" id="checkDeptForm">
+					<input id="infoIdHidden" class="hide">
+					<div class="input-group">
+						<span class="input-group-addon">姓名：</span>
+						<input type="text" id="checkCustomerInfoName" class="form-control borders" name="customerInfoName">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">身份证号：</span>
+						<input type="text" id="checkCustomerInfoIdentityNumber" class="form-control borders" name="customerInfoIdentityNumber">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">手机号：</span>
+						<input type="text" id="checkCustomerInfoPhone" class="form-control" name="customerInfoPhone" disabled="disabled">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">邮箱：</span>
+						<input type="text" id="checkCustomerInfoEmail" class="form-control" name="customerInfoEmail" disabled="true">
+					</div>
+					<div class="footer">
+						<button type="button" class="btn btn-primary" id="saveMsg">保存</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end container -->
+<!--#include file="/order/pages/system/footer.html"-->
+<script src="/order/assets/js/plugin/responsive-menu.min.js"></script>
+<script src="/order/assets/js/plugin/jquery.validate.min.js"></script>
+<script src="/order/assets/js/plugin/responsive-menu.min.js"></script>
+
+<script>
+    minHeight();
+	// 二级导航
+	$(function() {
+		$('pre').addClass('prettyprint');
+	})
+	$(document).ready(function() {
+		checkPersonalMsg();
+		$('#checkDeptForm').validate({
+			rules: {
+				customerInfoName: {
+					required: true,
+					minlength: 2,			
+				},
+				customerInfoIdentityNumber: {
+					required: true,
+					isIdCardNo: true
+				},
+			},
+			messages: {
+				customerInfoName: {
+					required: "请填写用户名",
+					minlength: "用户名不少于两字符"
+				},
+				customerInfoIdentityNumber: {
+					required: "请输入身份证号",
+					isIdCardNo: "请输入正确的身份证号"
+				},
+			},
+		});
+		// 身份证号码验证
+		jQuery.validator.addMethod("isIdCardNo", function(value, element) {
+			var cardz = /^[0-9]{17}[0-9|xX]{1}$/;
+			return this.optional(element) || cardz.test(value);
+		}, "请正确输入您的身份证号码");
+	})
+
+	//信息回显
+	function checkPersonalMsg() {
+		var otype = "get";
+		var osync = false;
+		var reqResult = httpRequest(getCustomerInfoByIdUrl, null, otype, osync);
+		if(reqResult.result == 0) {
+			$('#infoIdHidden').val(reqResult.data.customerInfoId);
+			var checkCustomerInfoName = $('#checkCustomerInfoName');
+			var checkCustomerInfoIdentityNumber = $('#checkCustomerInfoIdentityNumber');
+			var checkCustomerInfoPhone = $('#checkCustomerInfoPhone');
+			var checkCustomerInfoEmail = $('#checkCustomerInfoEmail');
+			checkCustomerInfoName.val(reqResult.data.customerInfoName);
+			checkCustomerInfoIdentityNumber.val(reqResult.data.customerInfoIdentityNumber);
+			checkCustomerInfoPhone.val(reqResult.data.customerInfoPhone);
+			checkCustomerInfoEmail.val(reqResult.data.customerInfoEmail);
+		} else {
+			alert(reqResult.message);
+		}
+	}
+	//提交修改信息
+	$('#saveMsg').on('click', function() {
+		var editCustomerInfoName = $('#checkCustomerInfoName').val();
+		var editCustomerInfoIdentityNumber = $('#checkCustomerInfoIdentityNumber').val();
+		if(editCustomerInfoName == '' || editCustomerInfoIdentityNumber == '') {
+				alert('请输入完整信息！');
+				return false;
+			} else {
+				var param ={
+					"customerInfoId":$('#infoIdHidden').val(),
+					"customerInfoName":editCustomerInfoName,
+					"customerInfoIdentityNumber":editCustomerInfoIdentityNumber
+				}
+				var otype = "post";
+				var osync = false;
+				var reqResult = httpRequest(updateCustomerInfoUrl, param, otype, osync);
+				if(reqResult.result == 0) {
+					alert('编辑成功!');
+					window.location.href="/order/pages/editUserMessage/mine/personalMsg.shtml";
+				} else {
+					alert(reqResult.message);
+				}
+			}
+	})
+</script>
+<!--#include file="/order/pages/system/footer.html"-->

@@ -1,0 +1,261 @@
+<!--#include file="/order/pages/system/personalMsgHeader.html"-->
+<!-- Content Header (Page header) -->
+<div class="container-fluid backgroundColor_beige minHeightJS">
+	<div class="container">
+		<section>
+			<!-- general form elements -->
+			<div class="box box-primary staffInfo">
+				<div class="box-header with-border">
+					<div class="col-md-4">
+						<h4 class="box-title">
+										<span class="fontColor_black">
+											<i class="fa fa-circle-o"></i>
+										预约&rArr;
+										</span>
+										<span>
+											<small><i class="fa fa-leaf fontColor_gray"></i>消费记录</small>
+										</span>
+									</h4>
+					</div>
+				</div>
+				<div class="box-body">
+					<form action="" id="checkRecordsFormInfo" class="staffModal " role="form">
+						<span>
+						<i class="fa fa-paperclip"></i>
+							消费记录搜索
+					</span>
+						<ul id="search_recordsInfo">
+							<li>开始日期：<input type="text" class="inline laydate-icon" name="StartTime" id="start" value="" /></li>
+
+							<li>结束日期：<input type="text" class="inline laydate-icon" name="EndTime" id="end" value="" /></li>
+							<li>
+								订单号：
+								<input type="text" name="orderNo" id="search_orderNo" />
+							</li>
+						</ul>
+						<div class="input-group pull-right">
+							<input type="submit" class="btn btn-default" id="search_recordsOfConsumptionList_btn" value="搜索" />
+						</div>
+					</form>
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>编辑</th>
+								<th>订单号</th>
+								<th>订单金额</th>
+								<th>缴费方式</th>
+								<th>创建时间</th>
+							</tr>
+						</thead>
+						<tbody id="recordsOfConsumptionListInfoTbody"></tbody>
+					</table>
+					<div class="row">
+						<div class="col-md-12 pull-right">
+							<div id="callBackPager"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /.box -->
+			<!-- /.row -->
+		</section>
+		<!--查看详情-->
+		<div class="modal fade displayCssNo" id="checkOrderInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+						<h4 class="modal-title" id="myModalLabel">
+					个人信息
+					<span>
+						消费记录
+						<small><i class="fa fa-paperclip"></i>查看消费记录</small>
+					</span>
+				</h4>
+					</div>
+					<div class="modal-body">
+						<form action="" id="checkOrderFormInfo" class="staffModal" role="form" novalidate="novalidate">
+							<span>
+						<i class="fa fa-paperclip"></i>
+							消费记录基本信息
+					</span>
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">订单号：</span>
+								<input type="text" id='check_orderNo' name="orderNo" disabled="disabled" />
+							</div>
+
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">订单金额：</span>
+								<input type="text" id='check_orderPayAmount' name="orderPayAmount" disabled="disabled" />
+							</div>
+
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">缴费方式：</span>
+								<input type="text" name="payWayName" id="check_payWayName" disabled="disabled">
+							</div>
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">创建时间：</span>
+								<input type="text" id='check_customerOrderPayInfoCreateTime' name="customerOrderPayInfoCreateTime" disabled="disabled" />
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--/查看详情-->
+	</div>
+</div>
+<!--#include file="/order/pages/system/footer.html"-->
+<script src="/order/assets/js/create/public.js"></script>
+<!--分页插件-->
+<script src="/order/assets/js/plugin/extendPagination.js"></script>
+<!--日期控件-->
+<script src="/order/assets/laydate/laydate.js"></script>
+<script type="text/javascript">
+minHeight();
+	//日历控件皮肤
+	! function() {
+		laydate.skin('yalan');
+		laydate({
+			elem: 'input'
+		});
+	}();
+	//				//列表日期范围限制
+	var start = {
+		elem: '#start',
+		format: 'YYYY-MM-DD',
+		istime: false,
+		istoday: true,
+		choose: function(datas) {
+			end.min = datas; //开始日选好后，重置结束日的最小日期
+			end.start = datas //将结束日的初始值设定为开始日
+		}
+	};
+	var end = {
+		elem: '#end',
+		format: 'YYYY-MM-DD',
+		max: '2099-06-16',
+		istime: false,
+		istoday: true,
+		choose: function(datas) {
+			start.max = datas; //结束日选好后，充值开始日的最大日期
+		}
+	};
+	laydate(start);
+	laydate(end);
+	//分页展示员工信息
+	//  分页
+	init_page();
+
+	function init_page() {
+		page_curr = 1;
+		$('#recordsOfConsumptionListInfoTbody').empty();
+		//1.请求后端信息并展示
+		recordsOfConsumptionSearch();
+		//2.初始化分页信息
+		init_pager();
+	}
+	// 初始化分页信息
+	function init_pager() {
+		$('#callBackPager').extendPagination({
+			totalCount: total_count,
+			showCount: count_curr,
+			limit: limit,
+			callback: function(curr, limit, totalCount) {
+				page_curr = curr;
+				total_count = totalCount;
+				recordsOfConsumptionSearch();
+			}
+		});
+	}
+	//消费记录信息搜索
+	function recordsOfConsumptionSearch() {
+		var param = initParam();
+		var otype = "POST";
+		var osync = false;
+		var reqResult = httpRequest(recordsOfConsumption_getCustomerOrderPayInfoByPage_url, param, otype, osync);
+		if(reqResult.result == 0) {
+			//4.展示数据
+			total_count = reqResult.data.total;
+			createTable(page_curr, limit, total_count, reqResult);
+			return false;
+		}
+	}
+
+	//初始化参数信息
+	function initParam() {
+		var StartTime = $("#start").val().trim();
+		var EndTime = $("#end").val().trim();
+		var orderNo = $("#search_orderNo").val().trim();
+		$('#recordsOfConsumptionListInfoTbody').empty();
+		//抓取分页信息
+		var param = {
+			"page": page_curr,
+			"rows": count_curr
+		};
+		if(StartTime) {
+			param.StartTime = StartTime;
+		}
+		if(EndTime) {
+			param.EndTime = EndTime;
+		}
+		if(orderNo) {
+			param.orderNo = orderNo;
+		}
+		return param;
+	}
+	$('#search_recordsOfConsumptionList_btn').on('click', function() {
+			recordsOfConsumptionSearch();
+			init_pager();
+			return false;
+		})
+		//		消费记录信息列表展示
+	function createTable(currPage, limit, total, dataBack) {
+		var showNum = limit;
+		if(total - (currPage * limit) < 0) showNum = total - ((currPage - 1) * limit);
+		var datal = dataBack.data.list;
+		var str = '';
+		for(var i = 0; i < showNum; i++) {
+			$('#payway').val(datal[i].payWayName);
+			str += "<tr><td customerOrderPayInfoId='" + nullformat(datal[i].customerOrderPayInfoId) + "'>";
+			str += "<a href='#checkOrderInfo' data-toggle='modal' class='padding_4px' title='查看消费记录详细信息' onclick='checkRecordsOfConsumptionInfo(this)'><i class='fa fa-eye'></i></a> ";
+			str += "</td>";
+			str += "<td>" + nullformat(datal[i].orderNo) + "</td>";
+			str += "<td>" + nullformat(datal[i].orderPayAmount) + "</td>";
+			str += "<td>" + nullformat(datal[i].payWayName) + "</td>";
+			str += "<td>" + getLocalTime(nullformat(datal[i].customerOrderPayInfoCreateTime)) + "</td>";
+			str += '</tr>';
+		}
+		$('#recordsOfConsumptionListInfoTbody').empty().append(str);
+		return false;
+	}
+
+	//	查看
+	//查看消费记录详细信息
+	function checkRecordsOfConsumptionInfo(id) {
+		var customerOrderPayInfoId = $(id).parent().attr('customerOrderPayInfoId');
+		var otype = "get";
+		var osync = false;
+		var param = {
+			'customerOrderPayInfoId': customerOrderPayInfoId
+
+		};
+		var reqResult = httpRequest(recordsOfConsumption_getCustomerOrderPayInfo_url, param, otype, osync);
+		if(reqResult.result == 0) {
+			var dataInfo = reqResult.data;
+			//			订单号
+			$('#check_orderNo').val(nullformat(dataInfo.orderNo));
+			//			订单金额
+			$('#check_orderPayAmount').val(nullformat(dataInfo.orderPayAmount));
+			//			缴费方式
+			$('#check_payWayName').val(nullformat(dataInfo.payWayName));
+			//				创建时间
+			$('#check_customerOrderPayInfoCreateTime').val(getLocalTime(nullformat(dataInfo.customerOrderPayInfoCreateTime)));
+		}
+	}
+</script>

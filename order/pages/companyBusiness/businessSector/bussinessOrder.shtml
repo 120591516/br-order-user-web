@@ -1,0 +1,256 @@
+<!--#include file="/order/pages/system/companyBusinessHeader.html"-->
+<div class="container minHeightJS">
+
+	<form class="form-group comp-form-style">
+		<div class="row margin-bottom margin-top">
+			<div class="span4">
+				<div class="input-group margin-left">
+					<span class="input-group-addon letter_3px">订单号：</span>
+					<input type="text" id='serOrderNo' name="orderNo" class="form-control" />
+				</div>
+			</div>
+			<div class="span4">
+				<div class="input-group">
+					<span class="input-group-addon">体检机构：</span>
+					<select class="form-control height orderOrg" name="orgId" id="serOrgId"></select>
+				</div>
+			</div>
+			<div class="span4">
+				<div class="input-group">
+					<span class="input-group-addon">体检门店：</span>
+					<select class="form-control height orderBranch" name="branchId" id="serBranchId"></select>
+				</div>
+			</div>
+		</div>
+		<div class="row margin-bottom">
+			<div class="span4">
+				<div class="input-group margin-left">
+					<span class="input-group-addon">体检套餐：</span>
+					<select class="form-control height orderSuite" name="examSuiteId" id="serExamSuiteName"></select>
+				</div>
+			</div>
+			<div class="span4">
+				<div class="input-group">
+					<span class="input-group-addon">开始日期：</span>
+					<input type="text" class="inline laydate-icon" name="StartExamTime" id="serStartExamTime">
+				</div>
+			</div>
+			<div class="span4">
+				<div class="input-group">
+					<span class="input-group-addon">结束日期：</span>
+					<input type="text" class="inline laydate-icon" name="endExamTime" id="serEndExamTime">
+				</div>
+			</div>
+		</div>
+		<div class="row margin-bottom">
+			<div class="span4">
+				<div class="input-group margin-left">
+					<span class="input-group-addon">支付状态：</span>
+					<select class="form-control height payForStatus" name="orderStatus" id="serOrderStatus"></select>
+				</div>
+			</div>
+			<div class="span2 offset6">
+				<div class="input-group">
+					<input type="button" style="margin-bottom:10px;" class="btn btn-primary fa fa-search" id="searOrder" value="搜索" />
+				</div>
+			</div>
+		</div>
+		<!--<div class="row">
+			<div class="span12">
+				<ul>
+					<li>订单编号<input type="text" name="orderNo" id="orderNo"></li>
+					<li>体检机构<select class="orderOrg" name="orgId" id="search_orgId"></select></li>
+					<li>体检门店<select class="orderBranch" name="branchId" id="serBranchId"></select></li>
+					<li>体检套餐<select class="orderSuite" name="examSuiteId" id="search_examSuiteName"></select></li>
+					<li>开始日期<input type="text" class="inline laydate-icon" name="StartExamTime" id="StartExamTime"></li>
+					<li>结束时间<input type="text" class="inline laydate-icon" name="endExamTime" id="endExamTime"></li>
+					<li>支付状态<select class="payForStatus" name="orderStatus" id="search_orderStatus"></select></select></li>
+				</ul>
+			</div>
+		</div>-->
+		<!--<div class="row">
+			<div class="span2 offset10">
+				<div class="input-group">
+					<input type="button" style="margin-bottom:10px;" class="btn btn-primary fa fa-search" id="searOrder" value="搜索" />
+				</div>
+			</div>
+		</div>-->
+	</form>
+
+	<div class="row">
+		<div class="span12">
+			<div class="box">
+				<div class="box-body">
+					<table class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>操作</th>
+								<th>订单号</th>
+								<th>体检机构</th>
+								<th>体检套餐</th>
+								<th>体检时间</th>
+								<th>支付状态</th>
+							</tr>
+						</thead>
+						<tbody id="orderTbody">
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="row">
+						<div class="span12" id="callBackPager" style="padding-left:10px;"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--#include file="/order/pages/system/footer.html"-->
+<script src="/order/assets/js/plugin/extendPagination.js"></script>
+<script type="text/javascript">
+    minHeight();
+	//			页面初始化信息
+	$(document).ready(function() {
+		var date = new Date();
+		var time = '';
+		time += date.getFullYear() + '-';
+		time += date.getMonth() + 1 + '-';
+		time += date.getDate();
+		//		var endInfo = $('#endExamTime').val(time);
+		//		combinationOfPackagesInfo();
+	});
+	//日历控件皮肤
+	! function() {
+		laydate.skin('yalan'); //切换皮肤，请查看skins下面皮肤库
+		laydate({
+			elem: 'input'
+		}); //绑定元素
+	}();
+	//列表日期范围限制
+	var start = {
+		elem: '#serStartExamTime',
+		format: 'YYYY-MM-DD hh:mm:ss',
+		istime: false,
+		istoday: true,
+		choose: function(datas) {
+			end.min = datas; //开始日选好后，重置结束日的最小日期
+			end.start = datas //将结束日的初始值设定为开始日
+		}
+	};
+	var end = {
+		elem: '#serEndExamTime',
+		format: 'YYYY-MM-DD hh:mm:ss',
+		max: '2099-06-16 23:59:59',
+		istime: false,
+		istoday: true,
+		choose: function(datas) {
+			start.max = datas; //结束日选好后，充值开始日的最大日期
+		}
+	};
+	laydate(start);
+	laydate(end);
+
+	//	套餐分页信息展示
+	init_page();
+    payForStatus();
+    orderListByCustomerId();//机构、门店、套餐下拉框回显
+	
+	function init_page() {
+		page_curr = 1;
+		$('#orderTbody').empty();
+		//1.请求后端信息并展示
+		recordSearch();
+		//2.初始化分页信息
+		init_pager();
+	}
+	// 初始化分页信息
+	function init_pager() {
+		$('#callBackPager').extendPagination({
+			totalCount: total_count,
+			showCount: count_curr,
+			limit: limit,
+			callback: function(curr, limit, totalCount) {
+				page_curr = curr;
+				total_count = totalCount;
+				recordSearch();
+			}
+		});
+	}
+	$('#searOrder').on('click', function() {
+		recordSearch();
+		init_pager();
+		return false;
+	})
+
+	function recordSearch() {
+		var startExamTime   = $("#serStartExamTime").val();
+		var endExamTime = $("#serEndExamTime").val();
+		var orderNo = $("#serOrderNo").val();
+		var examSuiteId = $("#serExamSuiteName").val();
+		var branchId = $("#serBranchId").val();
+		var orgId = $("#serOrgId").val();
+		var orderStatus = $("#serOrderStatus").val();
+		var otype = "post";
+		var osync = false;
+		var param = {
+			"page": page_curr,
+			"rows": count_curr
+		};
+		if(orderNo) {
+			param.orderNo = orderNo;
+		}
+		if(branchId) {
+			param.branchId = branchId;
+		}
+		if(examSuiteId) {
+			param.examSuiteId = examSuiteId;
+		}
+		if(orgId) {
+			param.orgId = orgId;
+		}
+		if(startExamTime) {
+			param.startExamTime = startExamTime;
+		}
+		if(endExamTime) {
+			param.endExamTime = endExamTime;
+		}
+		if(orderStatus) {
+			param.orderStatus = orderStatus;
+		}
+		var reqResult = httpRequest(getCustomerOrderByPageUrl, param, otype, osync);
+		if(reqResult.result == 0) {
+			total_count = reqResult.data.total;
+			showRecordList(page_curr, limit, total_count, reqResult);
+		}
+		return false;
+	}
+	//展示列表
+	function showRecordList(currPage, limit, total, dataBack) {
+		$("#orderTbody").empty();
+		if(total - (currPage * limit) < 0) showNum = total - ((currPage - 1) * limit);
+		var datal = dataBack.data.list;
+		var str = '';
+		for(var i = 0; i < datal.length; i++) {
+			str += "<tr><td customerOrderId='" + datal[i].customerOrderId + "'>";
+			str += "<a href='/order/pages/companyBusiness/businessSector/companyOrderDetail.shtml?orderNo=" + datal[i].orderNo + "&cartId=" + datal[i].cartId + "&patientId=" + datal[i].customerPatientId + "' title='查看信息' data-toggle='modal'><i class='fa fa-eye'></i></a> ";
+			str += "</td>";
+			str += "<td>" + datal[i].orderNo + "</td>";
+			str += "<td>" + datal[i].orgName + "</td>";
+			if(datal[i].examSuiteName.length>10){
+				str += "<td>" + datal[i].examSuiteName.substring(0,9) + "...</td>";
+			}else{
+				str += "<td>" + datal[i].examSuiteName + "</td>";
+			}
+			str += "<td>" + datal[i].examTime + "</td>";
+            str += "<td>" + datal[i].customerOrderStatusName + "</td>";
+		}
+		$("#orderTbody").append(str);
+		return false;
+	}
+</script>

@@ -1,0 +1,401 @@
+<!--#include file="/order/pages/system/header.html"-->
+<div class="product-showcase">
+	<div class="product-showcase-pattern">
+		<div class="container">
+			<div class="row">
+				<div class="span12 product-background">
+					<div class="row">
+						<div class="span4 product-title">
+							<div class="product-description">
+								<form class="subscribe">
+									<select>
+										<option>---价 位---</option>
+										<option>2</option>
+										<option>3</option>
+										<option>4</option>
+										<option>5</option>
+									</select>
+									<select>
+										<option>---类 别---</option>
+										<option>2</option>
+										<option>3</option>
+										<option>4</option>
+										<option>5</option>
+									</select>
+									<select>
+										<option>---关键词---</option>
+										<option>2</option>
+										<option>3</option>
+										<option>4</option>
+										<option>5</option>
+									</select>
+									<select>
+										<option>---性 别---</option>
+										<option>2</option>
+										<option>3</option>
+										<option>4</option>
+										<option>5</option>
+									</select>
+									<div class="col-md-12 text-right">
+										<button type="submit">搜索</button>
+									</div>
+
+								</form>
+							</div>
+
+						</div>
+						<div class="span7 product-image">
+							<!-- Carousel================================================== -->
+							<div id="myCarousel" class="carousel slide">
+								<ol class="carousel-indicators">
+									<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+									<li data-target="#myCarousel" data-slide-to="1"></li>
+									<li data-target="#myCarousel" data-slide-to="2"></li>
+								</ol>
+								<div class="carousel-inner">
+									<div class="item active">
+										<img src="/order/assets/img/examples/slide-01.jpg" alt="">
+										<!--<div class="container">
+								            <div class="carousel-caption">
+								              <h1>Example headline.</h1>
+								              <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+								              <a class="btn btn-large btn-primary" href="#">Sign up today</a>
+								            </div>
+								          </div>-->
+									</div>
+									<div class="item">
+										<img src="/order/assets/img/examples/slide-02.jpg" alt="">
+										<!--<div class="container">
+								            <div class="carousel-caption">
+								              <h1>Another example headline.</h1>
+								              <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+								              <a class="btn btn-large btn-primary" href="#">Learn more</a>
+								            </div>
+								          </div>-->
+									</div>
+									<div class="item">
+										<img src="/order/assets/img/examples/slide-03.jpg" alt="">
+									</div>
+								</div>
+								<a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+								<a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
+							</div>
+							<!-- /.carousel -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="span12">
+			<!-- features -->
+			<div class="features_2">
+				<h3>体检套餐</h3>
+				<div id="productSearch">
+					<!--导航-->
+					<div class="nav">
+						<i class='fa icon-map-marker'></i>
+						<a class="a_style" href="home.html">首页</a>
+						<span>>></span>
+						<span>体检套餐</span>
+					</div>
+					<table data-toggle="table" data-height="268" class="table table-striped table-bordered table-hover table-condensed active">
+						<tr>
+							<td>医院类型</td>
+							<td><span>全部</span></td>
+							<td>
+								<ul id="hospId" value="1">
+								</ul>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>套餐类型</td>
+							<td><span>全部</span></td>
+							<td>
+								<ul id="suiteId" value "2">
+								</ul>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>高发疾病</td>
+							<td><span>全部</span></td>
+							<td>
+								<ul id="highDisId" value="3">
+								</ul>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>价位</td>
+							<td><span>全部</span></td>
+							<td>
+								<ul value="4">
+									<li class="search">0-100</li>
+									<li class="search">100-200</li>
+									<li class="search">200-300</li>
+									<li class="search">300-400</li>
+								</ul>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>性别</td>
+							<td><span>全部</span></td>
+							<td>
+								<ul value="5">
+									<li class="search" value="1">男性</li>
+									<li class="search" value="2">女性</li>
+									<li class="search" value="3">通用</li>
+								</ul>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>关键词</td>
+							<td></td>
+							<td><input type="text"><span>搜索</span></td>
+							<td></td>
+						</tr>
+					</table>
+				</div>
+				<div class="tab-content">
+					<div class="tab-pane active" id="suiteBody">
+					</div>
+					<div class="row">
+						<div id="callBackPager" class="page_div_style"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end container -->
+<!--#include file="/order/pages/system/footer.html"-->
+<script>
+	$(document).ready(function() {
+		$('.nav li').click(function(e) {
+			e.preventDefault();
+			$(this).addClass('active');
+			$(this).siblings('li').removeClass('active');
+			$(this).children().attr("src", "/order/index.shtml");
+		})
+	})
+	hosptialList();
+	suiteIdst();
+	heighDisList();
+	//创建医生类型信息
+	function hosptialList() {
+		$('#hospId').empty();
+		var otype = "post";
+		var osync = false;
+		var str = '';
+		var reqResult = httpRequest(getOrglevelUrl, null, otype, osync);
+		if(reqResult.result == 0) {
+			var datal = reqResult.data;
+			for(var i = 0; i < datal.length; i++) {
+				str += "<li class='search'>" + datal[i].orgLevelName + "</li>";
+			}
+			$("#hospId").append(str);
+			return false;
+		}
+	}
+	//分类搜索
+	$('.search').on('click', function() {
+			var hospSearchText, suiteSearchText, disHeighSearchText, sexVal;
+			if($(this).parent().val() == 1) {
+				hospSearchText = '';
+				hospSearchText = $(this).text();
+			}
+			if($(this).parent().val() == 2) {
+				suiteSearchText = '';
+				suiteSearchText = $(this).text();
+			}
+			if($(this).parent().val() == 3) {
+				disHeighSearchText = '';
+				disHeighSearchText = $(this).text();
+			}
+			if($(this).parent().val() == 5) {
+				sexVal = '';
+				sexVal = $(this).val();
+			}
+			var otype = "post";
+			var osync = false;
+			var param = {
+				"suiteTypeId": suiteSearchText,
+				"highDisease": disHeighSearchText,
+				"hospitalType": hospSearchText,
+				"examSuiteSex": sexVal,
+				"page": page_curr,
+				"rows": 16
+			};
+			var reqResult = httpRequest(searchSuiteUrl, param, otype, osync);
+			if(reqResult.result == 0) {
+				total_count = reqResult.data.total;
+				createTable(page_curr, limit, total_count, reqResult);
+				return false;
+			}
+
+		})
+		//判断li长度超出的隐藏
+	var hospLength = $('#hospId').children().length;
+	if(hospLength > 10) {
+		$('#hospId').parent().next().html("<span>展开<i class='fa fa-angle-down'></i></span>");
+		$('#hospId').addClass('down');
+	}
+	//展开收起
+	$($('#hospId').parent().next().children('span')).on('click', function() {
+			if($('#hospId').hasClass('down')) {
+				$('#hospId').removeClass('down');
+				$('#hospId').addClass('up');
+			} else {
+				$('#hospId').removeClass('up');
+				$('#hospId').addClass('down');
+			}
+		})
+		//创建套餐类型信息
+	function suiteIdst() {
+		$('#suiteId').empty();
+		var otype = "post";
+		var osync = false;
+		var str = '';
+		var reqResult = httpRequest(getsuitetypeUrl, null, otype, osync);
+		if(reqResult.result == 0) {
+			var datal = reqResult.data;
+			for(var i = 0; i < datal.length; i++) {
+				str += "<li class='search'>" + datal[i].examTypeName + "</li>";
+			}
+			$("#suiteId").append(str);
+			return false;
+		}
+	}
+	//判断li长度超出的隐藏
+	var suiteLength = $('#suiteId').children().length;
+	if(suiteLength > 10) {
+		$('#suiteId').parent().next().html("<span>展开<i class='fa fa-angle-down'></i></span>");
+		$('#suiteId').addClass('down');
+	}
+	//展开收起
+	$($('#suiteId').parent().next().children('span')).on('click', function() {
+			if($('#suiteId').hasClass('down')) {
+				$('#suiteId').removeClass('down');
+				$('#suiteId').addClass('up');
+			} else {
+				$('#suiteId').removeClass('up');
+				$('#suiteId').addClass('down');
+			}
+		})
+		//创建高发疾病信息
+	function heighDisList() {
+		$('#highDisId').empty();
+		var otype = "post";
+		var osync = false;
+		var str = '';
+		var reqResult = httpRequest(getHidDiseasesUrl, null, otype, osync);
+		if(reqResult.result == 0) {
+			var datal = reqResult.data;
+			for(var i = 0; i < datal.length; i++) {
+				str += "<li class='search'>" + datal[i].highIncidenceDiseaseName + "</li>";
+			}
+			$("#highDisId").append(str);
+			return false;
+		}
+	}
+	//判断li长度超出的隐藏
+	var highDisLength = $('#highDisId').children().length;
+	if(highDisLength > 10) {
+		$('#highDisId').parent().next().html("<span>展开<i class='fa fa-angle-down'></i></span>");
+		$('#highDisId').addClass('down');
+	}
+	//展开收起
+	$($('#highDisId').parent().next().children('span')).on('click', function() {
+			if($('#highDisId').hasClass('down')) {
+				$('#highDisId').parent().next().children().html("<span>收起<i class='fa fa-angle-up'></i></span>");
+				$('#highDisId').removeClass('down');
+				$('#highDisId').addClass('up');
+			} else {
+				$('#highDisId').removeClass('up');
+				$('#highDisId').addClass('down');
+				$('#highDisId').parent().next().children().html("<span>展开<i class='fa fa-angle-down'></i></span>");
+			}
+		})
+		//鼠标滑过搜索框改变样式
+	$($('table').find('li')).hover(function() {
+			$(this).addClass('li_style');
+		}, function() {
+			$(this).removeClass('li_style');
+		})
+		//		套餐分页信息展示
+	page_curr = 1;
+	suiteSearch();
+	init_pager();
+
+	function suiteSearch() {
+		var otype = "post";
+		var osync = false;
+		var param = {
+			"page": page_curr,
+			"rows": 16
+		};
+		var reqResult = httpRequest(searchSuiteUrl, param, otype, osync);
+		if(reqResult.result == 0) {
+			total_count = reqResult.data.total;
+			createTable(page_curr, limit, total_count, reqResult);
+			return false;
+		}
+	}
+	// 初始化分页信息
+	function init_pager() {
+		$('#callBackPager').extendPagination({
+			totalCount: total_count,
+			showCount: count_curr,
+			limit: limit,
+			callback: function(curr, limit, totalCount) {
+				page_curr = curr;
+				total_count = totalCount;
+				suiteSearch();
+			}
+		});
+	}
+
+	function createTable(currPage, limit, total, dataBack) {
+		$("#suiteBody").empty();
+		var showNum = limit;
+		if(total - (currPage * limit) < 0) showNum = total - ((currPage - 1) * limit);
+		var datal = dataBack.data.list;
+		var str = '';
+		for(var i = 0; i < datal.length; i++) {
+			if(i % 4 == 0) {
+				str += "<div class='" + 'row' + "'> ";
+			} else {
+				str += '';
+			}
+			str += "<div class='span3 single-feature features-left-span'>";
+			str += "<img class='inrow-style img-size'" + "src='" + orderIp + datal[i].examSuiteImgUrl + "'" + ">";
+			str += "<h4 class='inrow-style'>" + datal[i].examSuiteName + "</h4>";
+			str += "<div class='description_height'>";
+			if(datal[i].examSuiteNote.length > 30) {
+				str += "<p class='inrow-style'>" + datal[i].examSuiteNote.substring(0, 29) + "...</p>";
+			} else {
+				str += "<p class='inrow-style'>" + datal[i].examSuiteNote + "</p>";
+			}
+			str += "</div>";
+			str += "<p class='price_p'>";
+			str += "<span class='discountPrice_span price_top discountSign'>&yen;</span><span class='inrow-style discountPrice discountPrice_span'>" + datal[i].examSuiteDiscountPrice + "</span>";
+			str += "<del class='inrow-style discountPrice_span price_top'>" + datal[i].examSuitePrice + "</del>";
+			str += "</p>";
+			str += "</div>";
+			if((i + 1) % 4 == 0) {
+				str += "</div>";
+			} else {
+				str += '';
+			}
+		}
+		$("#suiteBody").append(str);
+		return false;
+	}
+</script>

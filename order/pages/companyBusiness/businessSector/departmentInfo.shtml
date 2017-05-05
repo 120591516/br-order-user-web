@@ -1,0 +1,292 @@
+<!--#include file="/order/pages/system/companyBusinessHeader.html"-->
+<!-- Content Header (Page header) -->
+<div class="container-fluid backgroundColor_beige minHeightJS">
+	<div class="container">
+		<section>
+			<div class="row">
+				<!-- left column -->
+				<div class="col-md-12">
+					<!-- general form elements -->
+					<div class="box box-primary contanerInfo">
+						<div class="box-header with-border">
+							<h4 class="box-title">
+								<span class="fontColor_black">
+									<i class="fa fa-circle-o"></i>团体&rArr;
+								</span>
+								<span>
+									<small><i class="fa fa-leaf fontColor_gray"></i>部门</small>
+								</span>
+							</h4>
+							<div class="row">
+								<div class="span2 offset2">
+									<a data-toggle="modal" class="btn btn-default pull-right" id="addDept" href="#addDeptInfo">添加部门</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-6 col-md-6">
+							<iframe src="about:blank" name="blankFrame" id="blankFrame" style="display: none;"></iframe>
+							<form target="blankFrame" id="exportDeptMsg" action="/br-order-user-controller/enterpriseDep/import" method="post" enctype="multipart/form-data">
+								<input type="file" class="uploadFile" name="uploadfile"/>
+								<button id="importDeptInfo" type="submit" class="btn btn-default exportInfoBtn">部门文件上传</button>
+							</form>
+						</div>
+						<div class="col-xs-6 col-md-6">
+							<form target="blankFrame" action="/br-order-user-controller/customerInfo/import" method="post" enctype="multipart/form-data">
+								<input type="file" class="uploadFile" name="uploadfile" />
+								<button id="importCusInfo" type="submit" class="btn btn-default exportInfoBtn">员工文件上传</button>
+							</form>
+						</div>
+						<!-- /.box-header -->
+						<!-- form start -->
+						<div class="box-body">
+							<ul id="treeDemo" class="ztree"></ul>
+							<form action="" id="departmentFormInfo" class="listInfo displayCssNo" role="form" method="post" novalidate="novalidate">
+								<span>
+									<i class="fa fa-paperclip"></i>
+									部门基本信息
+								</span>
+								<input type="hidden" id="enterpriseDeptId" name="enterpriseDeptId" />
+								<div class="input-group margin_10px">
+									<span class="input-group-addon">部门名称：</span>
+									<input type="text" id='departmentNameInfo' name="enterpriseDepName" class='col-lg-6 col-md-6 col-xs-6 col-sm-6 userAdmin_height_40' />
+									<span class="userlist_check_editloginname fontColor_red"></span>
+								</div>
+								<!--<div class="input-group margin_10px">
+									<span class="input-group-addon">部门等级：</span>
+									<input type="text" id='enterpriseDepLevel' name="enterpriseDepLevel" class='col-lg-6 col-md-6 col-xs-6 col-sm-6 userAdmin_height_40' />
+								</div>-->
+								<div class="input-group margin_10px">
+									<span class="input-group-addon">上级菜单：</span>
+									<select name="enterpriseDepParentId" id="departmentParentId" class='menuList col-lg-6 col-md-6 col-xs-6 col-sm-6 userAdmin_height_40'>
+										<option value="0">无</option>
+									</select>
+								</div>
+								<div class="input-group">
+									<button type="submit" id='departmentIncreaseInfo' class='btn btn-default'>新增</button>
+									<button type="submit" id='departmentEditInfo' class='btn btn-default'>修改</button>
+									<button type="submit" id='departmentDelInfo' class='btn btn-default'>删除</button>
+									<a href="#" class="btn btn-default" id='departmentStaffInfo' class='btn btn-default'>查看部门员工信息</a>
+								</div>
+							</form>
+						</div>
+					</div>
+					<!-- /.box-body -->
+				</div>
+			</div>
+	</div>
+	<!-- /.box -->
+	<!-- /.row -->
+	</section>
+	
+	<div class="modal fade displayCssNo" id="addDeptInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">企业
+					        <span>部门<small><i class="fa fa-paperclip"></i>添加部门信息</small></span>
+				        </h4>
+					</div>
+					<div class="modal-body">
+						<form action="" id="addDeptFormInfo" class="staffModal" role="form" novalidate="novalidate">
+							<span>
+						        <i class="fa fa-paperclip"></i>部门基本信息
+							</span>
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">部门名称：</span>
+								<input type="text" id='addEnterpriseDepName' name="enterpriseDepName" />
+								<!--<span class="addCheckStaffInfo"></span>-->
+							</div>
+
+							<!--<div class="input-group margin_10px">
+								<span class="input-group-addon">部门等级：</span>
+								<input type="text" id='addEnterpriseDepLevel' name="enterpriseDepLevel" />
+							</div>-->
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary" id="addDeptBtn" onclick="addDeptInfo()">添加</button>
+					</div>
+				</div>
+			</div>
+	</div>
+</div>
+</div>
+<!--z-tree插件-->
+<!--#include file="/order/pages/system/footer.html"-->
+<script src="/order/assets/js/plugin/jquery.ztree.core.js"></script>
+<script type="text/javascript">
+minHeight();
+    $("#importDeptInfo").click(function(){
+    	window.location.reload();
+    	alert('上传成功');
+    })
+    $("#importCusInfo").click(function(){
+    	window.location.reload();
+    	alert('上传成功');
+    })
+	var setting = {
+		view: {
+			selectedMulti: false
+		},
+		data: {
+			key: {
+				title: "t"
+			},
+			simpleData: {
+				enable: true
+			}
+		},
+		callback: {
+			beforeClick: beforeClick
+		}
+	};
+	var otype = "post";
+	var osync = false;
+	var reqResult = httpRequest(departmentInfo_getEnterpriseDepTree_url, null, otype, osync);
+	if(reqResult.result == 0) {
+		var zNodes = jQuery.parseJSON(reqResult.data);
+		$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+	} else {
+		alert(reqResult.message);
+	}
+	//点击权限树
+	function beforeClick(treeId, treeNode) {
+		//		初始化上级菜单
+		menuList();
+		//		定义基本信息划出
+		$('#departmentFormInfo').slideDown('slow');
+		//		获取部门id
+		$('#enterpriseDeptId').val(treeNode.id);
+		//		获取部门名称
+		$('#departmentNameInfo').val(treeNode.name);
+		//		存在父节点
+		if(treeNode.pId) {
+			$('#departmentParentId').val(treeNode.pId);
+		} else {
+			$('#departmentParentId').val(0);
+//			$('#departmentParentId').append('<option>无</option>');
+		}
+	}
+	//添加部门信息
+	function addDeptInfo(){
+		var otype = "post";
+		var osync = false;
+		var param = $('#addDeptFormInfo').serialize();
+		var reqResult = httpRequest(departmentInfo_insertEnterpriseDep_url, param, otype, osync);
+		if(reqResult.result == 0) {
+			alert('新增部门成功！');
+			window.location.reload();
+		}
+	}
+	//新增
+	$('#departmentIncreaseInfo').on('click', function() {
+		if($('#departmentIncreaseInfo').text() == '新增') {
+			$('#departmentNameInfo').val('');
+			$('#departmentParentId').val('0');
+			$('#departmentIncreaseInfo').text('保存').css({
+				'background': '#000',
+				'color': '#fff'
+			});
+		} else {
+			if($('#departmentNameInfo').val() == '' || $('#departmentParentId').val() == 0) {
+				alert('请输入完整信息后再添加！');
+			} else {
+				increaseDepInfo();
+			}
+		}
+		return false;
+	})
+
+	function increaseDepInfo() {
+		var otype = "post";
+		var osync = false;
+		var param = $('#departmentFormInfo').serialize();
+		var reqResult = httpRequest(departmentInfo_insertEnterpriseDep_url, param, otype, osync);
+		if(reqResult.result == 0) {
+			alert('新增部门成功！');
+			window.location.reload();
+			$('#departmentIncreaseInfo').text('新增').css({
+				'background': '',
+				'color': ''
+			});
+		}
+	}
+	//修改保存
+	$('#departmentEditInfo').on('click',function(){
+		editDepInfo();
+	})
+	function editDepInfo(){
+		var otype = "post";
+		var osync = false;
+		var param = $('#departmentFormInfo').serialize();
+		var reqResult = httpRequest(departmentInfo_updateEnterpriseDep_url, param, otype, osync);
+		if(reqResult.result == 0) {
+			alert('修改部门成功！');
+			window.location.reload();
+		}
+	}
+	//	删除部门信息
+	$('#departmentDelInfo').on('click',function(){
+		if(confirm('确认删除此部门及其相关信息？')){
+			delDepInfo();	
+		}
+	});
+	function delDepInfo(){
+		var enterpriseDeptId=$('#enterpriseDeptId').val();
+		var otype = "post";
+		var osync = false;
+		var param = {
+			'enterpriseDeptId':enterpriseDeptId
+		};
+		var reqResult = httpRequest(departmentInfo_deleteEnterpriseDep_url, param, otype, osync);
+		if(reqResult.result == 0) {
+			alert('删除部门成功！');
+			window.location.reload();
+		}else if(reqResult.result == 1){
+			alert(reqResult.data);
+		}
+	}
+	//	企业部门重名校验
+	$('#departmentNameInfo').blur(function() {
+		sameNameCheck();
+	})
+	$('#departmentNameInfo').focus(function() {
+		$(".userlist_check_editloginname").html("");
+	})
+	function sameNameCheck() {
+		var enterpriseDeptName = $('#departmentNameInfo').val();
+		var flag = false;
+		if(enterpriseDeptName == '') {
+			$(".userlist_check_editloginname").html("*部门名不能为空!");
+			flag = false;
+			return;
+		} else if(enterpriseDeptName.length < 1 || enterpriseDeptName.length > 20) {
+			$(".userlist_check_editloginname").html("*部门名长度1~20");
+			flag = false;
+			return;
+		} else {
+			$(".userlist_check_editloginname").html("");
+		}
+		var otype = "post";
+		var osync = false;
+		var param = {
+			'enterpriseDeptName': enterpriseDeptName
+		};
+		var reqResult = httpRequest(departmentInfo_checkDeptName_url, param, otype, osync);
+		if(reqResult.data == 0) {
+			$(".userlist_check_editloginname").html("");
+		} else {
+			$(".userlist_check_editloginname").html("*部门名已存在");
+			flag = false;
+			return;
+		}
+		flag = true;
+	}
+//	查看部门员工信息
+	$('#departmentStaffInfo').on('click',function(){
+		var enterpriseDeptId=$('#enterpriseDeptId').val();
+		window.location.href='/order/pages/companyBusiness/businessSector/staffInfo.shtml?enterpriseDeptId='+enterpriseDeptId+'';//跳转到员工列表页面
+	})
+</script>

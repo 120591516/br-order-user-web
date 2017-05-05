@@ -1,0 +1,240 @@
+<!--#include file="/order/pages/system/companyBusinessHeader.html"-->
+<!-- Content Header (Page header) -->
+<div class="container-fluid minHeightJS">
+	<div class="container">
+		<section>
+			<!-- general form elements -->
+			<div class="box box-primary staffInfo row">
+				<div class="box-header with-border">
+					<div class="span4">
+						<h4 class="box-title">
+							<span class="fontColor_black">
+								<i class="fa fa-circle-o"></i>
+								预约&rArr;
+							</span>
+							<span>
+								<small><i class="fa fa-leaf fontColor_gray"></i>企业订单信息详情</small>
+							</span>
+						</h4>
+					</div>
+				</div>
+				<div class="box-body">
+					<form action="" id="searchOrderListInfo" class="staffModal" role="form" novalidate="novalidate">
+						<!--<span>
+						<i class="fa fa-paperclip"></i>
+							订单搜索
+					    </span>-->
+						<div class="row margin-bottom">
+							<div class="span5">
+								<span>
+						            <i class="fa fa-paperclip"></i>订单搜索
+					            </span>
+							</div>
+							<div class="span2 offset4">
+								<div class="input-group">
+									<a href="/order/pages/companyBusiness/businessSector/bussinessOrder.shtml" style="margin-bottom:10px;" class="btn btn-primary" id="searOrder">返回</a>
+								</div>
+							</div>
+						</div>
+						<div class="row margin-bottom">
+							<div class="span5 offset1">
+								<div class="input-group">
+									<span class="input-group-addon letter_3px">订单号</span>
+									<input type="text" id='checkOrderNo' name="orderNo" class="form-control" disabled="disabled" />
+								</div>
+							</div>
+							<div class="span5">
+								<div class="input-group">
+									<span class="input-group-addon">购买人</span>
+									<input type="text" class="form-control" name="customerName" id="checkCustomerName" disabled="true">
+								</div>
+							</div>
+						</div>
+						<div class="row margin-bottom">
+							<div class="span5 offset1">
+								<div class="input-group">
+									<span class="input-group-addon">机构名称</span>
+									<input type="text" class="form-control" name="orgName" id="checkOrgName" disabled="true">
+								</div>
+							</div>
+							<div class="span5">
+								<div class="input-group">
+									<span class="input-group-addon">门店名称</span>
+									<input type="text" class="form-control" name="branchName" id="checkBranchName" disabled="true">
+								</div>
+							</div>
+						</div>
+						<div class="row margin-bottom">
+							<div class="span5 offset1">
+								<div class="input-group">
+									<span class="input-group-addon">套餐名称</span>
+									<input type="text" class="form-control" name="examSuiteName" id="checkExamSuiteName" disabled="true">
+								</div>
+							</div>
+							<div class="span5">
+								<div class="input-group">
+									<span class="input-group-addon">体检类型</span>
+									<input type="text" class="form-control" name="examType" id="checkExamType" disabled="true">
+								</div>
+							</div>
+						</div>
+						<div class="row margin-bottom">
+							<div class="span5 offset1">
+								<div class="input-group">
+									<span class="input-group-addon">单价</span>
+									<input type="text" class="form-control" name="singlePrice" id="checkSinglePrice" disabled="true">
+								</div>
+							</div>
+							<div class="span5">
+								<div class="input-group">
+									<span class="input-group-addon">体检者姓名</span>
+									<input type="text" class="form-control" name="customerPatientName" id="checkCustomerPatientName" disabled="true">
+								</div>
+							</div>
+						</div>
+						<div class="row margin-bottom">
+							<div class="span5 offset1">
+								<div class="input-group">
+									<span class="input-group-addon">体检人电话</span>
+									<input type="text" class="form-control" name="customerPatientPhone" id="checkCustomerPatientPhone" disabled="true">
+								</div>
+							</div>
+							<div class="span5">
+								<div class="input-group">
+									<span class="input-group-addon">体检人证件号</span>
+									<input type="text" class="form-control" name="customerPatientIdCard" id="checkCustomerPatientIdCard" disabled="true">
+								</div>
+							</div>
+						</div>
+						<div class="row margin-bottom">
+							<div class="span5 offset1">
+								<div class="input-group">
+									<span class="input-group-addon">体检时间</span>
+									<input type="text" class="form-control" name="examTime" id="checkExamTime" disabled="true">
+								</div>
+							</div>
+							<div class="span5">
+								<div class="input-group">
+									<span class="input-group-addon">创建时间</span>
+									<input type="text" class="form-control" name="customerOrderCreateTime" id="checkCustomerOrderCreateTime" disabled="true">
+								</div>
+							</div>
+						</div>
+						<div class="row margin-bottom">
+							<div class="span5 offset1">
+								<div class="input-group">
+									<span class="input-group-addon">订单状态</span>
+									<input type="text" class="form-control" name="customerOrderStatusName" id="checkCustomerOrderStatusName" disabled="true">
+								</div>
+							</div>
+							<div class="span5">
+								<div class="input-group">
+									<span class="input-group-addon">抬头名称</span>
+									<input type="text" class="form-control" name="patientReceiptName" id="checkPatientReceiptName" disabled="true">
+								</div>
+							</div>
+						</div>
+						<div class="row margin-bottom">
+							<div class="span5 offset1">
+								<div class="input-group">
+									<span class="input-group-addon">抬头内容</span>
+									<input type="text" class="form-control" name="patientReceiptContent" id="checkPatientReceiptContent" disabled="true">
+								</div>
+							</div>
+							<div class="span5">
+								<div class="input-group">
+									<span class="input-group-addon">发票类型</span>
+									<input type="text" class="form-control" name="receiptTypeName" id="checkReceiptTypeName" disabled="true">
+								</div>
+							</div>
+						</div>
+						<div class="row margin-bottom">
+							<div class="span5 offset1">
+								<div class="input-group" id="checkReceiptStatus">
+									<span class="input-group-addon userlist_status_right_border">是否开发票</span>
+									<input type="checkbox" name='receiptStatus' aria-describedby="basic-addon1" disabled="disabled" />否
+									<input type="checkbox" name='receiptStatus' aria-describedby="basic-addon1" disabled="disabled" />是
+								</div>
+							</div>
+							<div class="span5">
+								<div class="input-group" id="checkPatientReceiptType">
+									<span class="input-group-addon userlist_status_right_border">抬头类型</span>
+									<input type="checkbox" name='patientReceiptType' aria-describedby="basic-addon1" disabled="disabled" />个人
+									<input type="checkbox" name='patientReceiptType' aria-describedby="basic-addon1" disabled="disabled" />企业
+								</div>
+							</div>
+						</div>
+				</div>
+				</form>
+				<div class="row margin-bottom">
+					<div class="span2 offset10">
+						<div class="input-group" id="payForButton">
+							<!--<button onclick="payfor()">立即支付</button>-->
+						</div>
+					</div>
+				</div>
+			</div>
+			</session>
+	</div>
+</div>
+<!--#include file="/order/pages/system/footer.html"-->
+<script src="/order/assets/js/create/public.js"></script>
+<script type="text/javascript">
+minHeight();
+	$(document).ready(function() {
+		var param = {
+			"orderNo": getParamValue("orderNo"),
+			"cartId": getParamValue("cartId"),
+			"patientId": getParamValue("patientId")
+		};
+		var otype = "post";
+		var osync = false;
+		var reqResult = httpRequest(orderList_getCustomerOrder_url, param, otype, osync);
+		if(reqResult.data.orderStatus<30){
+				var addPay = '';
+				addPay += "<button onclick='payfor()'>立即支付</button>"
+			}
+		$('#payForButton').append(addPay);
+		if(reqResult.result == 0) {
+			$('#checkOrderNo').val(reqResult.data.orderNo);
+			$('#checkCustomerName').val(reqResult.data.customerName);
+			$('#checkOrgName').val(reqResult.data.orgName);
+			$('#checkBranchName').val(reqResult.data.branchName);
+			$('#checkExamSuiteName').val(reqResult.data.examSuiteName);
+			$('#checkExamType').val(reqResult.data.examType);
+			$('#checkSinglePrice').val(reqResult.data.singlePrice);
+			$('#checkCustomerPatientName').val(reqResult.data.customerPatientName);
+			$('#checkCustomerPatientPhone').val(reqResult.data.customerPatientPhone);
+			$('#checkCustomerPatientIdCard').val(reqResult.data.customerPatientIdCard);
+			$('#checkExamTime').val(getLocalTime(reqResult.data.examTime));
+			$('#checkCustomerOrderCreateTime').val(getLocalTime(reqResult.data.customerOrderCreateTime));
+			$('#checkCustomerOrderStatusName').val(reqResult.data.customerOrderStatusName);
+			$('#checkPatientReceiptName').val(reqResult.data.patientReceiptName);
+			$('#checkPatientReceiptContent').val(reqResult.data.patientReceiptContent);
+			$('#checkReceiptTypeName').val(reqResult.data.receipttypeName);
+			if(reqResult.data.receiptStatus == 0) {
+				$('#checkReceiptStatus input')[0].checked = "checked";
+			} else {
+				$('#checkReceiptStatus input')[1].checked = "checked";
+			}
+			if(reqResult.data.patientReceiptType == 1) {
+				$('#checkPatientReceiptType input')[0].checked = "checked";
+			} else if(reqResult.data.patientReceiptType == '' || reqResult.data.patientReceiptType == null) {
+				$('#checkPatientReceiptType input')[1].checked = "";
+				$('#checkPatientReceiptType input')[0].checked = "";
+			} else if(reqResult.data.patientReceiptType == 2) {
+				$('#checkPatientReceiptType input')[1].checked = "checked";
+			}
+		} else {
+			alert(reqResult.message);
+		}
+		return false;
+	})
+	function payfor(){
+		if(confirm("确认支付订单吗？")) {
+			var orderNo = $('#checkOrderNo').val();
+			var orderMoney = $('#checkSinglePrice').val();
+			window.location.href = '/order/pages/shopping/payment.shtml?orderNo=' + orderNo + '&orderMoney=' + orderMoney;
+		}
+	}
+</script>

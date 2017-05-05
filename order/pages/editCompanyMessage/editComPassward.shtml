@@ -1,0 +1,97 @@
+<!--#include file="/order/pages/system/companyBusinessHeader.html"-->
+
+<div class="container minHeightJS">
+	<div class="row">
+		<div class="span12">
+			<div class="span4 offset4 msg-span">
+				<h4 class="title">修改密码</h4>
+				<form class="bs-example bs-example-form" role="form" id="editPwdForm">
+					<div class="input-group">
+						<span class="input-group-addon">当前密码：</span>
+						<input type="password" id="editOldCustomerRegistPassword" class="form-control borders" name="oldCustomerRegistPassword">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">新密码：</span>
+						<input type="password" id="editNewCustomerRegistPassword" class="form-control borders" name="newCustomerRegistPassword">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">确认密码：</span>
+						<input type="password" id="newPasswordConf" class="form-control borders" name="newPasswordConf">
+					</div>
+					<div class="footer">
+						<button type="button" class="btn btn-primary" id="submitPwd">提交</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end container -->
+<!--#include file="/order/pages/system/footer.html"-->
+<script src="/order/assets/js/plugin/responsive-menu.min.js"></script>
+<script src="/order/assets/js/plugin/jquery.validate.min.js"></script>
+<script src="/order/assets/js/plugin/messages_zh.js"></script>
+
+<script>
+    minHeight();
+	// 二级导航
+	$(function() {
+		$('pre').addClass('prettyprint');
+	})
+	$(document).ready(function() {
+		var validator = $("#editPwdForm").validate({
+			rules: {
+				oldCustomerRegistPassword: {
+					required: true,
+					minlength: 6,
+					maxlength: 12
+				},
+				newCustomerRegistPassword: {
+					required: true,
+					minlength: 6,
+					maxlength: 12
+				},
+				newPasswordConf: {
+					required: true,
+					equalTo: "#editNewCustomerRegistPassword"
+				},
+			},
+			messages: {
+				oldCustomerRegistPassword: "请输入6-12位数字或字母密码",
+				newCustomerRegistPassword: "请输入6-12位数字或字母密码",
+				newPasswordConf: "两次输入的密码不一致",
+			},
+		})
+	})
+	$('#submitPwd').on('click',function(){
+		var pwdz = /([0-9 a-z A-Z]){6,12}/;
+		var editOldCustomerRegistPassword = $('#editOldCustomerRegistPassword').val();
+		var newCustomerRegistPassword = $('#editNewCustomerRegistPassword').val();
+		var newPasswordConf = $('#newPasswordConf').val();
+		var param ={
+			"oldCustomerRegistPassword":editOldCustomerRegistPassword,
+			"newCustomerRegistPassword":newCustomerRegistPassword
+		}
+		if(editOldCustomerRegistPassword == '' || !pwdz.test(editOldCustomerRegistPassword)) {
+			console.log('原密码为空，格式不正确');
+			return false;
+		}
+		if(newCustomerRegistPassword == '' || !pwdz.test(newCustomerRegistPassword)) {
+			console.log('新密码为空，格式不正确');
+			return false;
+		}
+		if(newPasswordConf == '') {
+			console.log('确认密码为空');
+			return false;
+		}
+		var otype = "post";
+		var osync = false;
+		var reqResult = httpRequest(updateCustomerRegistPasswordUrl, param, otype, osync);
+		if(reqResult.result == 0) {
+			    alert('修改成功');
+			    window.location.href="/order/pages/companyBusiness/businessSector/bussinessOrder.shtml";
+			} else {
+				alert(reqResult.data);
+			}
+	})
+</script>

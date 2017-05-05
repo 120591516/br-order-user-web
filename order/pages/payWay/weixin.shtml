@@ -1,0 +1,58 @@
+<!--#include file="/order/pages/system/cartHearder.html"-->
+	<div class="container  c-background">
+			<div class="row">
+				<div class="span7 o-com">
+				    <span class="c-wx-ts">请您及时付款，以便订单尽快受理！</span>
+			    </div>
+			</div>
+			<div class="row">
+				<div class="span4 c-height">
+					<span class="c-wx-ts">订单编号：<b id="orderNo"></b></span>
+				</div>
+				<div class="span2 offset3 c-height">
+					<span class="c-wx-ts">应付金额：<b class="c-color" id="money">666</b>元</span>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+					<div class="span6 offset3 wx">
+							<ul>
+								<li>
+									<span><img src="/order/assets/img/pay/wxlogo.png"</span><b>微信支付</b>
+								</li>
+								<li>
+									<!--<img src="/order/assets/img/pay/ewm.png">-->
+									<img id='code' src="/order/assets/img/pay/ewm.png">
+								</li>
+								<li>
+									<img src="/order/assets/img/pay/note.png">
+								</li>
+							</ul>
+						</div>
+			</div>
+		</div>
+		<script>
+			$('#orderNo').html(getParamValue('orderNo'));
+		    $('#money').html(getParamValue('orderMoney'));
+		    $('#code').attr('src',gwIp+'/br-order-user-controller/cusOrderCus/createQRCode?'+'orderNo='+getParamValue('orderNo'));
+		//定时器
+		var getStatus = function(){
+			var param = {
+			    "orderNo": getParamValue('orderNo')
+		    };
+		    var otype = "get";
+		    var osync = false;
+		    var reqResult = httpRequest(getOrderStateUrl, param, otype, osync);
+		    if(reqResult.state==40){
+		    	window.location.href="/order/pages/payResult/paySuccess.shtml?orderNo="+getParamValue('orderNo');
+		    }else if(reqResult.state==1){
+		    	console.log('未支付');
+		    }
+		}
+		var setTimer = setInterval( getStatus , 3000); 
+		var clearTimer = function(){
+            clearInterval(setTimer);
+        }
+		</script>
+<!--#include file="/order/pages/system/footer.html"-->

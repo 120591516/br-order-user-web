@@ -1,0 +1,591 @@
+<!--#include file="/order/pages/system/companyBusinessHeader.html"-->
+<!-- Content Header (Page header) -->
+<div class="container-fluid backgroundColor_beige">
+	<div class="container minHeightJS">
+		<section>
+			<!-- general form elements -->
+			<div class="box box-primary staffInfo">
+				<div class="box-header with-border">
+					<div class="col-md-4">
+						<h4 class="box-title">
+										<span class="fontColor_black">
+											<i class="fa fa-circle-o"></i>
+										团体&rArr;
+										</span>
+										<span>
+											<small><i class="fa fa-leaf fontColor_gray"></i>员工</small>
+										</span>
+									</h4>
+					</div>
+					<div class="col-md-4 pull-right">
+						<div class="row">
+							<div class="col-md-4 pull-right">
+								<a href="#addStaffInfo" onclick="sex()" data-toggle="modal" class="btn btn-default">添加</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="box-body">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>编辑</th>
+								<th>员工姓名</th>
+								<th>员工性别</th>
+								<th>企业全称</th>
+								<th>企业简称</th>
+								<th>部门名称</th>
+							</tr>
+						</thead>
+						<tbody id="staffInfoTbody"></tbody>
+					</table>
+					<div class="row">
+						<div class="col-md-12 pull-right">
+							<div id="callBackPager"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /.box -->
+			<!-- /.row -->
+		</section>
+		<!-- 添加员工信息 -->
+		<div class="modal fade displayCssNo" id="addStaffInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+						<h4 class="modal-title" id="myModalLabel">
+					企业
+					<span>
+						部门
+						<small><i class="fa fa-paperclip"></i>添加员工信息</small>
+					</span>
+				</h4>
+					</div>
+					<div class="modal-body">
+						<form action="" id="addStaffFormInfo" class="staffModal" role="form" novalidate="novalidate">
+							<!--企业id-->
+							<input type="hidden" name="enterpriseId" id="add_enterpriseId" value="" />
+							<!--部门id-->
+							<input type="hidden" name="enterpriseDepId" id="add_enterpriseDepId" value="" />
+							<span>
+						<i class="fa fa-paperclip"></i>
+							员工基本信息
+					</span>
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">员工名称：</span>
+								<input type="text" id='add_customerInfoName' name="customerInfoName" />
+								<span class="addCheckStaffInfo"></span>
+							</div>
+
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">员工性别：</span>
+								<select class="sexInfo" name="customerInfoSex" id="add_customerInfoSex"></select>
+							</div>
+
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">身份证号：</span>
+								<input type="text" id='add_customerInfoIdentityNumber' name="customerInfoIdentityNumber" />
+								<span class="addCheckStaffInfo"></span>
+							</div>
+
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">手机号码：</span>
+								<input type="text" id='add_customerInfoPhone' name="customerInfoPhone" />
+								<span class="addCheckStaffInfo"></span>
+							</div>
+
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">员工邮箱：</span>
+								<input type="text" id='add_customerInfoEmail' name="customerInfoEmail" />
+								<span class="addCheckStaffInfo"></span>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary" id="addStaffBtn" onclick="increaseStaffInfo()">添加</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /添加员工信息 -->
+
+		<!--查看员工信息-->
+		<div class="modal fade displayCssNo" id="checkStaffInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+						<h4 class="modal-title" id="myModalLabel">
+					企业
+					<span>
+						部门
+						<small><i class="fa fa-paperclip"></i>查看员工信息</small>
+					</span>
+				</h4>
+					</div>
+					<div class="modal-body">
+						<form action="" id="checkStaffFormInfo" class="staffModal" role="form" novalidate="novalidate">
+							<span>
+						<i class="fa fa-paperclip"></i>
+							员工基本信息
+					</span>
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">企业全称：</span>
+								<input type="text" id='check_enterpriseFullName' name="enterpriseFullName" disabled="disabled" />
+							</div>
+
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">企业简称：</span>
+								<input type="text" id='check_enterpriseSimpleName' name="enterpriseSimpleName" disabled="disabled" />
+							</div>
+
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">企业编码：</span>
+								<input type="text" id='check_enterpriseCode' name="enterpriseCode" disabled="disabled" />
+							</div>
+
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">部门名称：</span>
+								<input type="text" id='check_enterpriseDepName' name="enterpriseDepName" disabled="disabled" />
+							</div>
+
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">员工名称：</span>
+								<input type="text" id='check_customerInfoName' name="customerInfoName" disabled="disabled" />
+							</div>
+
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">员工性别：</span>
+								<select class="sexInfo" name="customerInfoSex" id="check_customerInfoSex" disabled="disabled"></select>
+							</div>
+
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">身份证号：</span>
+								<input type="text" id='check_customerInfoIdentityNumber' name="customerInfoIdentityNumber" disabled="disabled" />
+							</div>
+
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">手机号码：</span>
+								<input type="text" id='check_customerInfoPhone' name="customerInfoPhone" disabled="disabled" />
+							</div>
+
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">员工邮箱：</span>
+								<input type="text" id='check_customerInfoEmail' name="customerInfoEmail" disabled="disabled" />
+							</div>
+
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">创建时间：</span>
+								<input type="text" id='check_createtime' name="createtime" disabled="disabled" />
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--/查看员工信息-->
+
+		<!--编辑员工信息-->
+		<div class="modal fade displayCssNo" id="editStaffInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+						<h4 class="modal-title" id="myModalLabel">
+					企业
+					<span>
+						部门
+						<small><i class="fa fa-paperclip"></i>修改员工信息</small>
+					</span>
+				</h4>
+					</div>
+					<div class="modal-body">
+						<form action="" id="editStaffFormInfo" class="staffModal" role="form" novalidate="novalidate">
+							<span>
+						<i class="fa fa-paperclip"></i>
+							员工基本信息
+					</span>
+							<!--企业id-->
+							<input type="hidden" name="enterpriseId" id="edit_enterpriseId" value="" />
+							<!--部门id-->
+							<input type="hidden" name="enterpriseDepId" id="edit_enterpriseDepId" value="" />
+							<!--员工id-->
+							<input type="hidden" name="enterpriseEmpId" id="edit_enterpriseEmpId" value="" />
+							<!--custormInfoId-->
+							<input type="hidden" name="customerInfoId" id="edit_customerInfoId" value="" />
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">员工名称：</span>
+								<input type="text" id='edit_customerInfoName' name="customerInfoName" />
+							</div>
+
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">员工性别：</span>
+								<select class="sexInfo" name="customerInfoSex" id="edit_customerInfoSex"></select>
+							</div>
+
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">身份证号：</span>
+								<input type="text" id='edit_customerInfoIdentityNumber' name="customerInfoIdentityNumber" />
+							</div>
+
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">手机号码：</span>
+								<input type="text" id='edit_customerInfoPhone' name="customerInfoPhone" />
+							</div>
+
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">员工邮箱：</span>
+								<input type="text" id='edit_customerInfoEmail' name="customerInfoEmail" />
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="editStaffBtn" onclick="editCheckStaffInfo()">保存</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--编辑员工所属部门信息-->
+		<div class="modal fade displayCssNo" id="editDeptStaffInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+						<h4 class="modal-title" id="myModalLabel">
+					企业
+					<span>
+						部门
+						<small><i class="fa fa-paperclip"></i>修改员工部门</small>
+					</span>
+				</h4>
+					</div>
+					<div class="modal-body">
+						<ul id="treeDemo" class="ztree"></ul>
+						<form action="" id="departmentFormInfo" class="deptModalInfo" role="form" method="post" novalidate="novalidate">
+							<!--企业id-->
+							<input type="hidden" name="enterpriseId" id="editDept_enterpriseId" value="" />
+							<!--部门id-->
+							<input type="hidden" name="enterpriseDepId" id="editDept_enterpriseDepId" value="" />
+							<!--员工id-->
+							<input type="hidden" name="enterpriseEmpId" id="editDept_enterpriseEmpId" value="" />
+							<span>
+									<i class="fa fa-paperclip"></i>
+									部门基本信息
+							</span>
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">部门名称：</span>
+								<input type="text" id='departmentNameInfo' name="enterpriseDepName" class='col-lg-6 col-md-6 col-xs-6 col-sm-6 userAdmin_height_40' />
+								<span class="userlist_check_editloginname fontColor_red"></span>
+							</div>
+
+							<div class="input-group margin_10px">
+								<span class="input-group-addon">上级部门：</span>
+								<select name="enterpriseDepParentId" id="departmentParentId" class='menuList col-lg-6 col-md-6 col-xs-6 col-sm-6 userAdmin_height_40'>
+									<option value="0">无</option>
+								</select>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="editStaffBtn" onclick="editCheckDeptStaffInfo()">保存</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--/编辑员工信息-->
+<!--#include file="/order/pages/system/footer.html"-->
+<script src="/order/assets/js/create/public.js"></script>
+<!--分页插件-->
+<script src="/order/assets/js/plugin/extendPagination.js"></script>
+<!--z-tree插件-->
+<script src="/order/assets/js/plugin/jquery.ztree.core.js"></script>
+<script type="text/javascript">
+	//分页展示员工信息
+	minHeight();
+	//  分页
+	init_page();
+
+	function init_page() {
+		$('#staffInfoTbody').empty();
+		//1.请求后端信息并展示
+		staffInfo();
+	}
+	//  初始化分页信息
+	$('#callBackPager').extendPagination({
+		totalCount: total_count,
+		showCount: count_curr,
+		limit: limit,
+		callback: function(curr, limit, totalCount) {
+			page_curr = curr;
+			total_count = totalCount;
+			staffInfo();
+		}
+	});
+
+	function staffInfo() {
+		var thisURL = document.URL;
+		if(thisURL.indexOf("?") != -1) {
+			var getval = thisURL.split('?')[1];
+			var showval = getval.split("=")[1];
+			var decodeURI = decodeURIComponent(showval);
+			showvalString = decodeURI.substr(1, decodeURI.length - 2);
+		}
+		var otype = "get";
+		var osync = false;
+		var param = {
+			"page": page_curr,
+			"rows": count_curr,
+			'enterpriseDeptId': showvalString
+		}
+		var reqResult = httpRequest(staffInfo_getAllEnterpriseEmpByPage_url, param, otype, osync);
+		if(reqResult.result == 0) {
+			total_count = reqResult.data.total;
+			createTable(page_curr, limit, total_count, reqResult);
+		}
+		return false;
+	}
+	//		员工信息列表展示
+	function createTable(currPage, limit, total, dataBack) {
+		var showNum = limit;
+		if(total - (currPage * limit) < 0) showNum = total - ((currPage - 1) * limit);
+		var datal = dataBack.data.list;
+		var str = '';
+		for(var i = 0; i < showNum; i++) {
+			//			企业id加入隐士表单
+			$('#add_enterpriseId').val(datal[i].enterpriseId);
+			//			部门id加入表单
+			$('#add_enterpriseDepId').val(datal[i].enterpriseDepId);
+			str += "<tr><td customerInfoId='"+datal[i].customerInfoId+"' enterpriseEmpId='" + datal[i].enterpriseEmpId + "' enterpriseId='" + datal[i].enterpriseId + "' enterpriseDepId='" + datal[i].enterpriseDepId + "' enterpriseDepParentId='"+datal[i].enterpriseDepParentId+"'>";
+			str += "<a href='#checkStaffInfo' data-toggle='modal' class='padding_4px' title='查看员工详细信息' onclick='checkStaffInfo(this)'><i class='fa fa-eye'></i></a> ";
+			str += "<a href='#editDeptStaffInfo' data-toggle='modal' title='修改员工所属部门' style='margin-right:5px' class='padding_4px' onclick='editDeptStaffInfo(this)'><i class='fa fa-file-archive-o'></i></a>";
+			str += "<a href='#editStaffInfo' data-toggle='modal' class='padding_4px' title='编辑员工详细信息' onclick='editStaffDetailInfo(this)'><i class='fa fa-pencil'></i></a> ";
+			str += "<a href='#' title='删除门店信息' style='margin-right:5px' class='padding_4px' onclick='delStaffInfo(this)'><i class='fa fa-trash-o'></i></a>";
+			str += "</td>";
+			str += "<td>" + nullformat(datal[i].customerInfoName) + "</td>";
+			if(datal[i].customerInfoSex == 0){
+				str += "<td>" + '通用' + "</td>";
+			}else if(datal[i].customerInfoSex == 1) {
+				str += "<td>" + '男' + "</td>";
+			} else {
+				str += "<td>" + '女' + "</td>";
+			}
+			str += "<td>" + nullformat(datal[i].enterpriseFullName) + "</td>";
+			str += "<td>" + nullformat(datal[i].enterpriseSimpleName) + "</td>";
+			str += "<td>" + nullformat(datal[i].enterpriseDepName) + "</td>";
+			str += '</tr>';
+		}
+		$('#staffInfoTbody').empty().append(str);
+		return false;
+	}
+	//增加员工详细信息
+	function increaseStaffInfo() {
+		var otype = "post";
+		var osync = false;
+		var param = $('#addStaffFormInfo').serialize();
+		var reqResult = httpRequest(staffInfo_insertEnterpriseEmp_url, param, otype, osync);
+		if(reqResult.result == 0) {
+			alert('您已将该员工成功加入员工信息列表！');
+			window.location.reload();
+		}
+	}
+	//删除员工信息
+	function delStaffInfo(id) {
+		var enterpriseId = $(id).parent().attr('enterpriseId');
+		var enterpriseDepId = $(id).parent().attr('enterpriseDepId');
+		var enterpriseEmpId = $(id).parent().attr('enterpriseEmpId');
+		if(confirm('确定将该员工从员工列表中删除？')) {
+			var otype = "post";
+			var osync = false;
+			var param = {
+				'enterpriseId': enterpriseId,
+				'enterpriseDepId': enterpriseDepId,
+				'enterpriseEmpId': enterpriseEmpId
+
+			};
+			var reqResult = httpRequest(staffInfo_deleteEnterpriseEmp_url, param, otype, osync);
+			if(reqResult.result == 0) {
+				alert('您已将该员工成功从员工信息列表中删除！');
+				window.location.reload();
+			}
+		}
+	}
+
+	//	编辑
+	//编辑回显员工信息
+	function editStaffDetailInfo(id) {
+		var enterpriseId = $(id).parent().attr('enterpriseId');
+		var enterpriseDepId = $(id).parent().attr('enterpriseDepId');
+		var enterpriseEmpId = $(id).parent().attr('enterpriseEmpId');
+		var customerInfoId = $(id).parent().attr('customerInfoId');
+		$('#edit_enterpriseId').val(enterpriseId);
+		$('#edit_enterpriseEmpId').val(enterpriseEmpId);
+		$('#edit_customerInfoId').val(customerInfoId);
+		var otype = "post";
+		var osync = false;
+		var param = {
+			'enterpriseId': enterpriseId,
+			'enterpriseDepId': enterpriseDepId,
+			'enterpriseEmpId': enterpriseEmpId
+
+		};
+		var reqResult = httpRequest(staffInfo_getEnterpriseEmp_url, param, otype, osync);
+		if(reqResult.result == 0) {
+			var dataInfo = reqResult.data;
+			//			员工姓名
+			$('#edit_customerInfoName').val(nullformat(dataInfo.customerInfoName));
+			//			定义性别
+			sex();
+			//			员工性别
+			$('#edit_customerInfoSex').val(nullformat(dataInfo.customerInfoSex));
+			//			身份证号
+			$('#edit_customerInfoIdentityNumber').val(nullformat(dataInfo.customerInfoIdentityNumber));
+			//			手机号
+			$('#edit_customerInfoPhone').val(nullformat(dataInfo.customerInfoPhone));
+			//			邮箱
+			$('#edit_customerInfoEmail').val(nullformat(dataInfo.customerInfoEmail));
+		}
+	}
+	//编辑保存员工信息
+	function editCheckStaffInfo() {
+		var otype = "post";
+		var osync = false;
+		var param = $('#editStaffFormInfo').serialize();
+		var reqResult = httpRequest(staffInfo_updateCustomerInfo_url, param, otype, osync);
+		if(reqResult.result == 0) {
+			alert('您已成功修改该员工详细信息！');
+			window.location.reload();
+		} else {
+			alert('修改失败！');
+		}
+	}
+
+	//编辑员工所属部门
+	function editDeptStaffInfo(id) {
+		var enterpriseId = $(id).parent().attr('enterpriseId');
+		var enterpriseEmpId = $(id).parent().attr('enterpriseEmpId');
+		var enterpriseDepParentId = $(id).parent().attr('enterpriseDepParentId');
+		var enterpriseDepName=$(id).parent().parent().find('>td:last').text();
+		$('#editDept_enterpriseId').val(enterpriseId);
+		$('#editDept_enterpriseEmpId').val(enterpriseEmpId);
+		//		获取部门名称
+		$('#departmentNameInfo').val(enterpriseDepName);
+		//初始化上级菜单
+		menuList();
+		//定义上级菜单
+		$('#departmentParentId').val(enterpriseDepParentId);
+		var setting = {
+			view: {
+				selectedMulti: false
+			},
+			data: {
+				key: {
+					title: "t"
+				},
+				simpleData: {
+					enable: true
+				}
+			},
+			callback: {
+				beforeClick: beforeClick
+			}
+		};
+		var otype = "post";
+		var osync = false;
+		var reqResult = httpRequest(departmentInfo_getEnterpriseDepTree_url, null, otype, osync);
+		if(reqResult.result == 0) {
+			var zNodes = jQuery.parseJSON(reqResult.data);
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+		} else {
+			alert(reqResult.message);
+		}
+	}
+	//编辑保存所选部门
+	function editCheckDeptStaffInfo(){
+		var otype = "post";
+		var osync = false;
+		var param = $('#departmentFormInfo').serialize();
+		var reqResult = httpRequest(staffInfo_updateEnterpriseEmp_url, param, otype, osync);
+		if(reqResult.result == 0) {
+			alert('您已成功修改该员工所属部门！');
+			window.location.reload();
+		} else {
+			alert('修改失败！');
+		}
+	}
+	//点击权限树
+	function beforeClick(treeId, treeNode) {
+		//		初始化上级菜单
+		menuList();
+		//		定义基本信息划出
+		$('#departmentFormInfo').slideDown('slow');
+		//编辑员工部门赋值
+		$('#editDept_enterpriseDepId').val(treeNode.id);
+		//		获取部门名称
+		$('#departmentNameInfo').val(treeNode.name);
+		//		存在父节点
+		if(treeNode.pId) {
+			$('#departmentParentId').val(treeNode.pId);
+		} else {
+			$('#departmentParentId').val(0);
+		}
+	}
+	//	查看
+	//查看员工详细信息
+	function checkStaffInfo(id) {
+		var enterpriseId = $(id).parent().attr('enterpriseId');
+		var enterpriseDepId = $(id).parent().attr('enterpriseDepId');
+		var enterpriseEmpId = $(id).parent().attr('enterpriseEmpId');
+		var otype = "post";
+		var osync = false;
+		var param = {
+			'enterpriseId': enterpriseId,
+			'enterpriseDepId': enterpriseDepId,
+			'enterpriseEmpId': enterpriseEmpId
+
+		};
+		var reqResult = httpRequest(staffInfo_getEnterpriseEmp_url, param, otype, osync);
+		if(reqResult.result == 0) {
+			var dataInfo = reqResult.data;
+			//			企业全称
+			$('#check_enterpriseFullName').val(nullformat(dataInfo.enterpriseFullName));
+			//			企业简称
+			$('#check_enterpriseSimpleName').val(nullformat(dataInfo.enterpriseSimpleName));
+			//			企业编码
+			$('#check_enterpriseCode').val(nullformat(dataInfo.enterpriseCode));
+			//			部门名称
+			$('#check_enterpriseDepName').val(nullformat(dataInfo.enterpriseDepName));
+			//			员工姓名
+			$('#check_customerInfoName').val(nullformat(dataInfo.customerInfoName));
+			//			定义性别
+			sex();
+			//			员工性别
+			$('#check_customerInfoSex').val(nullformat(dataInfo.customerInfoSex));
+			//			身份证号
+			$('#check_customerInfoIdentityNumber').val(nullformat(dataInfo.customerInfoIdentityNumber));
+			//			手机号
+			$('#check_customerInfoPhone').val(nullformat(dataInfo.customerInfoPhone));
+			//			邮箱
+			$('#check_customerInfoEmail').val(nullformat(dataInfo.customerInfoEmail));
+			//			创建时间
+			$('#check_createtime').val(getLocalTime(nullformat(dataInfo.createtime)));
+		}
+	}
+</script>

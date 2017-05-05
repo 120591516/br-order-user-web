@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit">
+		<title>预约平台</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<!-- CSS -->
+		<link rel="stylesheet" href="/order/assets/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/order/assets/prettyPhoto/css/prettyPhoto.css">
+		<link rel="stylesheet" href="/order/assets/font-awesome/css/font-awesome.css">
+		<link rel="stylesheet" href="/order/assets/css/social-icons.css">
+		<link rel="stylesheet" href="/order/assets/css/ebook-style.css">
+		<link rel="stylesheet" href="/order/assets/css/creat/common.css">
+		<link rel="stylesheet" href="/order/assets/css/creat/package.css">
+		<link rel="stylesheet" href="/order/assets/css/creat/cart.css">
+		<!--<link rel="shortcut icon" href="assets/ico/favicon.ico">
+		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/order/assets/ico/apple-touch-icon-114-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/order/assets/ico/apple-touch-icon-72-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" href="/order/assets/ico/apple-touch-icon-57-precomposed.png">-->
+		<script src="/order/assets/js/plugin/jQuery-2.2.0.min.js"></script>
+		<script src="/order/assets/bootstrap/js/bootstrap.js"></script>
+		<script src="/order/assets/js/plugin/jquery-1.11.1.min.js"></script>
+		<script src="/order/assets/js/jquery-1.8.2.min.js"></script>
+		<script src="/order/assets/js/create/Ajax.js"></script>
+		<script src="/order/assets/js/create/public.js"></script>
+	</head>
+
+	<body>
+		<div class="container">
+			<div class="header row">
+				<div class="logo span4">
+					<h2><a href="/order/index.shtml">Produkta</a></h2>
+				</div>
+				<div class="span2 title">
+					支付结果
+				</div>
+				<div class="tel-skype span6">
+					<p><i class="icon-phone-sign"></i> Phone: 400-728-7289 <span class="pipe">|</span> <i class="icon-user"></i> Skype: hello@domain.com</p>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+				<div class="span12 s-title">
+					<span class="fa fa-check"></span><b>您已支付成功！</b>
+				</div>
+			</div>
+			<div class="row s-code">
+				<div class="span4">
+					订单号:<span id="orderNu"></span>
+				</div>
+				<div class="span3 offset3 s-pre">
+					预约日期：<span id="preTime"></span>
+				</div>
+			</div>
+			<div class="row s-wran">
+				<div class="span12">
+					体检相关信息会以短信的形式发送至您的手机或邮箱的形式发送至您的邮箱，请您注意查收。
+				</div>
+			</div>
+			<div class="row">
+				<div class="span12 s-detail">
+					<div class="row s-detail-one">
+						<div class="span5">所选机构：<span id="orgId"></span></div>
+						<div class="span5 offset1">所选门店：<span id="branchId"></span></div>
+					</div>
+					<div class="row s-detail-two">
+						<div class="span5">所选套餐：<span id="suiteId"></span></div>
+						<div class="span5 offset1"><span>市场价：<del id="examSuitePriceId"></del>元</span><span class="s-int">优惠价：<ins id="examSuiteDiscountPriceId"></ins>元</span></div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span12 s-warn2">
+					预约支付成功后客服人员会与您联系确认预约信息，一个工作日后预约信息会在<span>体检预约平台</span>自动备案成功。
+				</div>
+			</div>
+			<div class="row">
+				<div class="span12 s-msg">
+					<p class="s-msg1">体检当天需要抽血，前一天晚上请吃一些清淡的食物，抽血前不能进食，体检完该机构会有提供。</p>
+					<p class="s-msg2">前一天晚上尽量保证充足的睡眠。</p>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			$(document).ready(function() {
+				var param = {
+					"orderNo": getParamValue('orderNo')
+				};
+				var otype = "get";
+				var osync = false;
+				var reqResult = httpRequest(getCustomerOrderByOrderNoUrl, param, otype, osync);
+				if(reqResult.result == 0) {
+					$('#orderNu').append(getParamValue('orderNo'));
+					$('#orgId').append(reqResult.data[0].orgName);
+					$('#branchId').append(reqResult.data[0].branchName);
+					$('#branchId').append(reqResult.data[0].branchName);
+					$('#suiteId').append(reqResult.data[0].examSuiteName);
+					$('#preTime').append(getLocalTime(reqResult.data[0].examTime));
+					$('#examSuitePriceId').append(reqResult.data[0].examSuitePrice);
+					$('#examSuiteDiscountPriceId').append(reqResult.data[0].examSuiteDiscountPrice);
+//                  alert('成功');
+				} else {
+					alert('失败');
+				}
+			})
+		</script>
+
+		<!--#include file="/order/pages/system/footer.html"-->

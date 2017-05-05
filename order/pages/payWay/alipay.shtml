@@ -1,0 +1,37 @@
+<!--#include file="/order/pages/system/cartHearder.html"-->
+	<div class="container  c-background">
+			<div class="row">
+				<div class="span7 o-com">
+				    <span class="c-ts">请您及时付款，以便订单尽快受理！</span>
+			    </div>
+			</div>
+			<div class="row">
+				<div class="span4 c-height">
+					<span class="c-ts">订单编号：<b id="orderNo"></b></span>
+				</div>
+				<div class="span2 offset4 c-height">
+					<span class="c-ts">应付金额：<b class="c-color">666</b>元</span>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+					<div class="span6 offset3 zfb">
+							<ul>
+								<li>
+									<span><img src="/order/assets/img/pay/alipay.png"</span><b>支付宝支付</b>
+								</li>
+								<li>
+									<div>
+										<img src="/order/assets/img/pay/ewm.png">
+										<p>打开手机支付宝<br>扫一扫继续支付</p>
+									</div>
+								</li>
+								<li>
+									<!--<p>首次使用请下载手机支付宝</p>-->
+								</li>
+							</ul>
+						</div>
+			</div>
+		</div>
+<!--#include file="/order/pages/system/footer.html"-->

@@ -1,0 +1,583 @@
+<!--#include file="/order/pages/system/header.html"-->
+<div class="container">
+	<div class="row minHeightJS">
+		<div class="span12">
+			<!-- features -->
+			<div class="features_2">
+				<h3>体检套餐</h3>
+				<div id="productSearch" class="cjys-div">
+					<!--导航-->
+					<div class="nav">
+						<i class='fa icon-map-marker'></i>
+						<a class="a_style" href="home.html">首页</a>
+						<span>>></span>
+						<span>体检套餐</span>
+					</div>
+					<table data-toggle="table" data-height="268" class="table table-striped table-bordered table-hover table-condensed active">
+						<tr>
+							<td>机构类型</td>
+							<td><span class='all_style' id='hospAll'>全部</span></td>
+							<td>
+								<ul id="hospId" class="hosptial">
+								</ul>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>医院等级</td>
+							<td><span id="orgLevelAll" class='all_style'>全部</span></td>
+							<td>
+								<ul id="orgLevelId" class="orgLevls">
+								</ul>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>套餐类型</td>
+							<td><span class='all_style' id="suiteAll">全部</span></td>
+							<td>
+								<ul id="suiteId" class="package">
+								</ul>
+							</td>
+							<td></td>
+						</tr>
+						<!--<tr>
+							<td>高发疾病</td>
+							<td><span class='all_style' id="highDisAll">全部</span></td>
+							<td>
+								<ul id="highDisId" class="highdis">
+								</ul>
+							</td>
+							<td></td>
+						</tr>-->
+						<tr>
+							<td>价位</td>
+							<td><span class='all_style' id="priceAll">全部</span></td>
+							<td>
+								<ul class="price" id="priceValue">
+									<li class="search">0-100</li>
+									<li class="search">100-200</li>
+									<li class="search">200-300</li>
+									<li class="search">300-400</li>
+									<li class="search">400-600</li>
+								</ul>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>性别</td>
+							<td><span class='all_style' id="sexAll">全部</span></td>
+							<td>
+								<ul class="sex" id="sexValue">
+									<li class="search" value="1">男性</li>
+									<li class="search" value="2">女性</li>
+									<li class="search" value="3">通用</li>
+								</ul>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>关键词</td>
+							<td></td>
+							<td><input type="text" placeholder="请输入套餐名称" id="keyWordText"><span class="serInput" id="searchKeyWord">搜索</span></td>
+							<td><span class="search_style" id="emptySerchSel">清空</span></td>
+						</tr>
+						<tr></tr>
+					</table>
+				</div>
+				<div class="tab-content">
+					<div class="tab-pane active" id="suiteBody">
+					</div>
+					<div class="row">
+						<div id="callBackPager" class="page_div_style"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end container -->
+
+<!--#include file="/order/pages/system/footer.html"-->
+<script src="/order/assets/js/plugin/extendPagination.js"></script>
+<script>
+	//	套餐分页信息展示
+	page_curr = 1;
+	suiteSearch();
+	init_pager();
+	hosptialList();
+	suiteIdList();
+//	heighDisList();
+	orgLevelList();
+	// 初始化分页信息
+	function init_pager() {
+		$('#callBackPager').extendPagination({
+			totalCount: total_count,
+			showCount: count_curr,
+			limit: limit,
+			callback: function(curr, limit, totalCount) {
+				page_curr = curr;
+				total_count = totalCount;
+				suiteSearch();
+			}
+		});
+	}
+	//鼠标滑过添加样式
+	$($('table').find('li')).hover(function() {
+			$(this).addClass('li_style');
+		}, function() {
+			$(this).removeClass('li_style');
+		})
+		//导航样式
+	var thisURL = document.URL;
+	if(thisURL != orderIp + '/order/index.shtml') {
+		$('#suiteNavId').addClass('active');
+		$('#suiteNavId').siblings('li').removeClass('active');
+	}
+	//接收主页参数
+	var passPriceStart, passPriceEnd, passSuiteSexVal, passKeywordsVal, passSuiteTypeId;
+	if(thisURL.indexOf("?") != -1) {
+		passPriceStart = getParamValue('priceStart');
+		if(passPriceStart == 'NaN' || typeof(passPriceStart) == 'undefined') {
+			passPriceStart = '';
+		}
+		passPriceEnd = getParamValue('priceEnd');
+		if(passPriceEnd == 'NaN' || typeof(passPriceEnd) == 'undefined') {
+			passPriceEnd = '';
+		}
+		passSuiteSexVal = getParamValue('examSuiteSex');
+		if(passSuiteSexVal == 'null' || typeof(passSuiteSexVal) == 'undefined') {
+			passSuiteSexVal = '';
+		}
+		passKeywordsVal = getParamValue('Keyword');
+		if(passKeywordsVal == 'null' || typeof(passKeywordsVal) == 'undefined') {
+			passKeywordsVal = '';
+		}
+		passSuiteTypeId = getParamValue('suiteTypeId');
+		if(passSuiteTypeId == 'null' || typeof(passSuiteTypeId) == 'undefined') {
+			passSuiteTypeId = '';
+		}
+		suiteSearch();
+	}
+	//首页传参搜索
+	function suiteSearch() {
+		var otype = "post";
+		var osync = false;
+		var param = {
+			"suiteTypeId": passSuiteTypeId,
+//			"highDisease": '',
+			"hospitalType": '',
+			"orgLevel": '',
+			"examSuiteSex": passSuiteSexVal,
+			"priceStart": passPriceStart,
+			"priceEnd": passPriceEnd,
+			"Keyword": passKeywordsVal,
+			"page": page_curr,
+			"rows": count_curr
+		};
+		var reqResult = httpRequest(searchSuiteUrl, param, otype, osync);
+		if(reqResult.result == 0) {
+			total_count = reqResult.data.total;
+			createTable(page_curr, limit, total_count, reqResult);
+			return false;
+		}
+	}
+
+	//首页搜索传参回显样式
+	$($('#sexValue').children()).each(function() {
+		var allSexValue = $('#sexAll');
+		var sexLiVal = $(this).val();
+		var sexLi = $(this);
+		if(passSuiteSexVal == sexLiVal) {
+			sexLi.addClass('search_bg');
+			allSexValue.removeClass('all_style').addClass('all_add_sty');
+		}
+	})
+	$('#keyWordText').val(passKeywordsVal);
+	$($('#suiteId').children()).each(function() {
+		var allSuiteValue = $('#suiteAll');
+		var suiteLiVal = $(this).val();
+		var suiteLi = $(this);
+		if(passSuiteTypeId == suiteLiVal) {
+			suiteLi.addClass('search_bg');
+			allSuiteValue.removeClass('all_style').addClass('all_add_sty');
+		}
+	})
+	$($('#priceValue').children()).each(function() {
+			var allPriceValue = $('#priceAll');
+			var priceLiVal = $(this).text();
+			var newPrice = priceLiVal.split("-");
+			var priceLiValEnd = parseInt(newPrice[1]);
+			var priceLi = $(this);
+			if(passPriceEnd == priceLiValEnd) {
+				priceLi.addClass('search_bg');
+				allPriceValue.removeClass('all_style').addClass('all_add_sty');
+			}
+		})
+		//创建分页信息
+	function createTable(currPage, limit, total, dataBack) {
+		$("#suiteBody").empty();
+		var showNum = limit;
+		if(total - (currPage * limit) < 0) showNum = total - ((currPage - 1) * limit);
+		var datal = dataBack.data.list;
+		var str = '';
+		for(var i = 0; i < datal.length; i++) {
+			if(i % 4 == 0) {
+				str += "<div class='" + 'row' + "'> ";
+			} else {
+				str += '';
+			}
+			str += "<div class='span3 single-feature features-left-span' suiteId='" + datal[i].examSuiteId + "' onclick='suiteInfo(this)'>";
+			str += "<img class='inrow-style img-size'" + "src='" + orderIp + datal[i].examSuiteImgUrl + "'" + ">";
+			if(datal[i].examSuiteName.length > 10) {
+				str += "<h4 title=' " + datal[i].examSuiteName + " ' class='inrow-style cursor'>" + datal[i].examSuiteName.substring(0, 10) + "...</h4>";
+			} else {
+				str += "<h4 title=' " + datal[i].examSuiteName + " ' class='inrow-style cursor'>" + datal[i].examSuiteName + "</h4>";
+			}
+			str += "<div class='description_height'>";
+			if(datal[i].examSuiteNote.length > 30) {
+				str += "<p class='inrow-style'>" + datal[i].examSuiteNote.substring(0, 29) + "...</p>";
+			} else {
+				str += "<p class='inrow-style'>" + datal[i].examSuiteNote + "</p>";
+			}
+			str += "</div>";
+			str += "<p class='price_p'>";
+			str += "<span class='discountPrice_span price_top discountSign'>&yen;</span><span class='inrow-style discountPrice discountPrice_span'>" + datal[i].examSuiteDiscountPrice + "</span>";
+			str += "<del class='inrow-style discountPrice_span price_top'>" + datal[i].examSuitePrice + "</del>";
+			str += "</p>";
+			str += "</div>";
+			if((i + 1) % 4 == 0) {
+				str += "</div>";
+			} else {
+				str += '';
+			}
+		}
+		$("#suiteBody").append(str);
+		return false;
+	}
+		minHeight();
+	//根据id查询套餐详情
+	function suiteInfo(suiteId) {
+		var suiteId = $(suiteId).attr('suiteId');
+		window.location.href = '/order/pages/homepage/suiteInfo.shtml?suiteId=' + suiteId + '';
+	}
+	//创建机构类型信息
+	function hosptialList() {
+		$($('tbody').children('tr').eq(1)).hide();
+		$('#hospId').empty();
+		var otype = "post";
+		var osync = false;
+		var str = '';
+		var reqResult = httpRequest(getOrgTypeUrl, null, otype, osync);
+		if(reqResult.result == 0) {
+			var datal = reqResult.data;
+			for(var i = 1; i < 3; i++) {
+				str += "<li class='search' value='" + i + "'>" + datal[i] + "</li>";
+			}
+			$("#hospId").append(str);
+			return false;
+		}
+	}
+	//机构类型获取参数、添加样式
+	$($('#hospId').children('li')).on('click', function() {
+			$(this).addClass('search_bg').siblings('li').removeClass('search_bg').parent().prev().addClass('all_remove');
+			$('#hospAll').removeClass('all_style').addClass('all_add_sty');
+			$('#orgLevAll').addClass('all_style');
+			hospSearchText = '';
+			hospSearchText = $(this).val();
+			conditionSearch();
+
+			//根据机构类型获取医院等级信息
+			if($(this).val() == '2') {
+				$($('tbody').children('tr').eq(1)).show();
+				//判断医院等级信息长度
+				var orgLevelLiWidth = 0;
+				$($('#orgLevelId').children()).each(function() {
+					orgLevelLiWidth += $(this).width();
+				})
+				if(orgLevelLiWidth > 750) {
+					$('#orgLevelId').parent().next().html("<span>展开<i class='fa fa-angle-down'></i></span>");
+					$('#orgLevelId').addClass('down');
+				}
+				//展开收起动作
+				$($('#orgLevelId').parent().next().children('span')).on('click', function() {
+					if($('#orgLevelId').hasClass('down')) {
+						$('#orgLevelId').parent().next().children().html("<span>收起<i class='fa fa-angle-up'></i></span>");
+						$('#orgLevelId').removeClass('down');
+						$('#orgLevelId').addClass('up');
+					} else {
+						$('#orgLevelId').removeClass('up');
+						$('#orgLevelId').addClass('down');
+						$('#orgLevelId').parent().next().children().html("<span>展开<i class='fa fa-angle-down'></i></span>");
+					}
+				})
+			} else {
+				$($('tbody').children('tr').eq(1)).hide();
+				orgLevelSearchText = '';
+			}
+		})
+		//创建医院等级信息
+	function orgLevelList() {
+		$('#orgLevelId').empty();
+		var otype = "post";
+		var osync = false;
+		var str = '';
+		var reqResult = httpRequest(getOrglevelUrl, null, otype, osync);
+		if(reqResult.result == 0) {
+			var datal = reqResult.data;
+			for(var i = 1; i < datal.length; i++) {
+				str += "<li class='search' value='" + datal[i].orgLevelId + "'>" + datal[i].orgLevelName + "</li>";
+			}
+			$("#orgLevelId").append(str);
+			return false;
+		}
+	}
+
+	//医院等级获取参数、添加样式
+	$($('#orgLevelId').children('li')).on('click', function() {
+			$(this).addClass('search_bg').siblings('li').removeClass('search_bg').parent().prev().addClass('all_remove');
+			$('#orgLevelAll').removeClass('all_style').addClass('all_add_sty');
+			orgLevelSearchText = '';
+			if(orgLevelSearchText == undefined) {
+				orgLevelSearchText = null;
+			} else {
+				orgLevelSearchText = $(this).val();
+			}
+			conditionSearch();
+		})
+		//分类搜索获取参数
+	var hospSearchText, orgLevelSearchText, suiteSearchText, disHeighSearchText, sexVal, minPriceVal, maxPriceVal;
+	$('.search').on('click', function() {
+		if($(this).parent().hasClass('package')) {
+			$(this).addClass('search_bg').siblings('li').removeClass('search_bg');
+			$('#suiteAll').removeClass('all_style').addClass('all_add_sty');
+			suiteSearchText = '';
+			suiteSearchText = $(this).val();
+			conditionSearch();
+		}
+//		if($(this).parent().hasClass('highdis')) {
+//			$(this).addClass('search_bg').siblings('li').removeClass('search_bg');
+//			$('#highDisAll').removeClass('all_style').addClass('all_add_sty');
+//			disHeighSearchText = '';
+//			disHeighSearchText = $(this).val();
+//			conditionSearch();
+//		}
+		if($(this).parent().hasClass('sex')) {
+			$(this).addClass('search_bg').siblings('li').removeClass('search_bg');
+			$('#sexAll').removeClass('all_style').addClass('all_add_sty');
+			sexVal = '';
+			sexVal = $(this).val();
+			conditionSearch();
+		}
+		if($(this).parent().hasClass('price')) {
+			minPriceVal = '';
+			maxPriceVal = '';
+			price = $(this).text();
+			priceNum = price.split("-");
+			minPriceVal = parseInt(priceNum[0]);
+			maxPriceVal = parseInt(priceNum[1]);
+			$(this).addClass('search_bg').siblings('li').removeClass('search_bg');
+			$('#priceAll').removeClass('all_style').addClass('all_add_sty');
+			conditionSearch();
+		}
+	})
+	$('#searchKeyWord').on('click', function() {
+			conditionSearch();
+		})
+		//搜索按钮多条件搜索
+		//	$('#searchAll').on('click', function() {
+	function conditionSearch() {
+		var Keyword = $('#keyWordText').val();
+		if($('table').find('li').hasClass('search_bg') || !Keyword == '') {
+			var otype = "post";
+			var osync = false;
+			var param = {
+				"orgLevel": orgLevelSearchText,
+				"suiteTypeId": suiteSearchText,
+//				"highDisease": disHeighSearchText,
+				"hospitalType": hospSearchText,
+				"examSuiteSex": sexVal,
+				"priceStart": minPriceVal,
+				"priceEnd": maxPriceVal,
+				"Keyword": Keyword,
+				"page": page_curr,
+				"rows": count_curr
+			};
+			var reqResult = httpRequest(searchSuiteUrl, param, otype, osync);
+			if(reqResult.result == 0) {
+				total_count = reqResult.data.total;
+				createTable(page_curr, limit, total_count, reqResult);
+			}
+			init_pager();
+			return false;
+		} else {
+			var Keyword = $('#keyWordText').val("");
+			var otype = "post";
+			var osync = false;
+			var param = {
+				"orgLevel": '',
+				"suiteTypeId": '',
+//				"highDisease": '',
+				"hospitalType": '',
+				"examSuiteSex": '',
+				"priceStart": '',
+				"priceEnd": '',
+				"Keyword": '',
+				"page": page_curr,
+				"rows": count_curr
+			};
+			var reqResult = httpRequest(searchSuiteUrl, param, otype, osync);
+			if(reqResult.result == 0) {
+				total_count = reqResult.data.total;
+				createTable(page_curr, limit, total_count, reqResult);
+			}
+			init_pager();
+			return false;
+		}
+	}
+	//	})
+	//按‘全部’清空当前搜索条件
+	$('#sexAll').on('click', function() {
+		$(this).addClass('all_style').removeClass('all_add_sty');
+		$('#sexValue').children().removeClass('search_bg');
+		sexVal = '';
+		conditionSearch();
+	})
+	$('#priceAll').on('click', function() {
+		$(this).addClass('all_style').removeClass('all_add_sty');
+		$('#priceValue').children().removeClass('search_bg');
+		minPriceVal = '';
+		maxPriceVal = '';
+		conditionSearch();
+	})
+//	$('#highDisAll').on('click', function() {
+//		$(this).addClass('all_style').removeClass('all_add_sty');
+//		$('#highDisId').children().removeClass('search_bg');
+//		disHeighSearchText = '';
+//		conditionSearch();
+//	})
+	$('#suiteAll').on('click', function() {
+		$(this).addClass('all_style').removeClass('all_add_sty');
+		$('#suiteId').children().removeClass('search_bg');
+		suiteSearchText = '';
+		conditionSearch();
+	})
+	$('#hospAll').on('click', function() {
+		$($('tbody').children('tr').eq(1)).hide();
+		$(this).addClass('all_style').removeClass('all_add_sty');
+		$('#hospId').children().removeClass('search_bg');
+		hospSearchText = '';
+		conditionSearch();
+	})
+	$('#orgLevelAll').on('click', function() {
+			$(this).addClass('all_style').removeClass('all_add_sty');
+			$('#orgLevelId').children().removeClass('search_bg');
+			hospSearchText = '';
+			conditionSearch();
+		})
+		//按钮清空搜索条件
+	$('#emptySerchSel').on('click', function() {
+			$($('tbody').children('tr').eq(1)).hide();
+			$('#orgLevelId').empty();
+			$('table').find('li').removeClass('search_bg');
+			$('#keyWordText').val("");
+			$('#priceAll').addClass('all_style').removeClass('all_add_sty');
+			$('#orgLevelAll').addClass('all_style').removeClass('all_add_sty');
+			$('#sexAll').addClass('all_style').removeClass('all_add_sty');
+//			$('#highDisAll').addClass('all_style').removeClass('all_add_sty');
+			$('#suiteAll').addClass('all_style').removeClass('all_add_sty');
+			$('#hospAll').addClass('all_style').removeClass('all_add_sty');
+			var otype = "post";
+			var osync = false;
+			var param = {
+				"orgLevel": '',
+				"suiteTypeId": '',
+//				"highDisease": '',
+				"hospitalType": '',
+				"examSuiteSex": '',
+				"priceStart": '',
+				"priceEnd": '',
+				"Keyword": '',
+				"page": page_curr,
+				"rows": count_curr
+			};
+			var reqResult = httpRequest(searchSuiteUrl, param, otype, osync);
+			if(reqResult.result == 0) {
+				total_count = reqResult.data.total;
+				createTable(page_curr, limit, total_count, reqResult);
+			}
+			init_pager();
+			return false;
+		})
+		//创建套餐类型信息
+	function suiteIdList() {
+		$('#suiteId').empty();
+		var otype = "post";
+		var osync = false;
+		var str = '';
+		var reqResult = httpRequest(getsuitetypeUrl, null, otype, osync);
+		if(reqResult.result == 0) {
+			var datal = reqResult.data;
+			for(var i = 0; i < datal.length; i++) {
+				str += "<li class='search' value='" + datal[i].examTypeId + "'>" + datal[i].examTypeName + "</li>";
+			}
+			$("#suiteId").append(str);
+			return false;
+		}
+	}
+	//判断套餐类型li长度超出的隐藏
+	var suiteLength = $('#suiteId').children().length;
+	if(suiteLength > 10) {
+		$('#suiteId').parent().next().html("<span>展开<i class='fa fa-angle-down'></i></span>");
+		$('#suiteId').addClass('down');
+	}
+	//展开收起
+	$($('#suiteId').parent().next().children('span')).on('click', function() {
+			if($('#suiteId').hasClass('down')) {
+				$('#suiteId').removeClass('down');
+				$('#suiteId').addClass('up');
+			} else {
+				$('#suiteId').removeClass('up');
+				$('#suiteId').addClass('down');
+			}
+		})
+
+//		//创建高发疾病信息
+//	function heighDisList() {
+//		$('#highDisId').empty();
+//		var otype = "post";
+//		var osync = false;
+//		var str = '';
+//		var reqResult = httpRequest(getHidDiseasesUrl, null, otype, osync);
+//		if(reqResult.result == 0) {
+//			var datal = reqResult.data;
+//			for(var i = 0; i < datal.length; i++) {
+//				str += "<li class='search' value='" + datal[i].highIncidenceDiseaseId + "'>" + datal[i].highIncidenceDiseaseName + "</li>";
+//			}
+//			$("#highDisId").append(str);
+//			return false;
+//		}
+//	}
+	//判断高发疾病li长度超出的隐藏
+//	var highDisLiWidth = 0;
+//	$($('#highDisId').children()).each(function() {
+//		highDisLiWidth += $(this).width();
+//	})
+//	if(highDisLiWidth > 850) {
+//		$('#highDisId').parent().next().html("<span>展开<i class='fa fa-angle-down'></i></span>");
+//		$('#highDisId').addClass('down');
+//	}
+	//展开收起
+//	$($('#highDisId').parent().next().children('span')).on('click', function() {
+//		if($('#highDisId').hasClass('down')) {
+//			$('#highDisId').parent().next().children().html("<span>收起<i class='fa fa-angle-up'></i></span>");
+//			$('#highDisId').removeClass('down');
+//			$('#highDisId').addClass('up');
+//		} else {
+//			$('#highDisId').removeClass('up');
+//			$('#highDisId').addClass('down');
+//			$('#highDisId').parent().next().children().html("<span>展开<i class='fa fa-angle-down'></i></span>");
+//		}
+//	})
+</script>
+

@@ -1,0 +1,92 @@
+<!--#include file="/order/pages/system/companyBusinessHeader.html"-->
+<div class="container minHeightJS">
+	<div class="row">
+		<div class="span12">
+			<div class="span6 offset3 msg-span">
+				<h4 class="title">公司资料</h4>
+				<img src="/order/assets/img/gallery/3.jpg" class="msg-img">
+				<form class="bs-example bs-example-form" role="form" id="checkDeptForm">
+					<div class="input-group">
+						<span class="input-group-addon">公司全称：</span>
+						<input type="text" id="enterpriseFullName" class="form-control" name="enterpriseFullName" disabled="disabled">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">公司简称：</span>
+						<input type="text" id="enterpriseSimpleName" class="form-control" name="enterpriseSimpleName" disabled="disabled">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">公司代码：</span>
+						<input type="text" id="enterpriseCode" class="form-control" name="enterpriseCode" disabled="true">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">公司营业执照号：</span>
+						<input type="text" id="enterpriceLicenseNo" class="form-control" name="enterpriceLicenseNo" disabled="true">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">联系人：</span>
+						<input type="text" id="customerInfoName" class="form-control" name="customerInfoName" disabled="disabled">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">企业法人：</span>
+						<input type="text" id="enterpriceLicensePerson" class="form-control" name="enterpriceLicensePerson" disabled="true">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">企业联系人电话：</span>
+						<input type="text" id="customerInfoPhone" class="form-control" name="customerInfoPhone" disabled="true">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">企业联系人邮箱：</span>
+						<input type="text" id="customerInfoEmail" class="form-control" name="customerInfoEmail" disabled="true">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">公司详细地址：</span>
+						<input type="text" id="enterpriseAddress" class="form-control" name="enterpriseAddress" disabled="true">
+					</div>
+					<div class="footer">
+					<a type="button" class="btn btn-primary" href="/order/pages/companyBusiness/editCompanyInfo.shtml">编辑</a>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end container -->
+<!--#include file="/order/pages/system/footer.html"-->
+<script src="/order/assets/js/plugin/responsive-menu.min.js"></script>
+<script>
+minHeight();
+	// 二级导航
+	$(function() {
+		$('pre').addClass('prettyprint');
+	})
+	$(document).ready(function(){
+		checkPersonalMsg();
+	})
+	function checkPersonalMsg(){
+			var otype = "get";
+			var osync = false;
+			var reqResult = httpRequest(getEnterpriseListUrl, null, otype, osync);
+			if(reqResult.result == 0) {
+				var checkEnterpriseFullName = $('#enterpriseFullName');
+				var checkEnterpriseSimpleName = $('#enterpriseSimpleName');
+				var checkEnterpriseCode = $('#enterpriseCode');
+				var checkEnterpriceLicenseNo = $('#enterpriceLicenseNo');
+				var checkCustomerInfoName = $('#customerInfoName');
+				var checkEnterpriceLicensePerson = $('#enterpriceLicensePerson');
+				var checkCustomerInfoPhone = $('#customerInfoPhone');
+				var checkCustomerInfoEmail = $('#customerInfoEmail');
+				var checkEnterpriseAddress = $('#enterpriseAddress');
+				checkEnterpriseFullName.val(reqResult.data.enterpriseFullName);
+				checkEnterpriseSimpleName.val(reqResult.data.enterpriseSimpleName);
+				checkEnterpriseCode.val(reqResult.data.enterpriseCode);
+				checkEnterpriceLicenseNo.val(reqResult.data.enterpriceLicenseNo);
+				checkCustomerInfoName.val(reqResult.data.customerInfoName);
+				checkEnterpriceLicensePerson.val(reqResult.data.enterpriceLicensePerson);
+				checkCustomerInfoPhone.val(reqResult.data.customerInfoPhone);
+				checkCustomerInfoEmail.val(reqResult.data.customerInfoEmail);
+				checkEnterpriseAddress.val(reqResult.data.enterpriseAddress);
+			} else {
+				alert(reqResult.message);
+			}
+		}
+</script>
